@@ -72,13 +72,13 @@ function litTumoral(seed = 11) {
     sources.push({ x: c[0] + rr * Math.cos(a), y: c[1] + rr * Math.sin(a), w: w * (0.7 + 0.6 * R()) }); } };
   const nodule = at(-0.7, 0.9);
   amas(nodule, 3.6, 150, 1);                                         // résidu sur la paroi
-  for (let i = 0; i < 70; i++) {                                     // infiltration le long de la marge
+  for (let i = 0; i < 110; i++) {                                    // infiltration le long de la marge (renforcée)
     const p = at(-0.45 + R() * 1.0, 0.88 + 0.2 * R());
-    sources.push({ x: p[0] + gauss() * 0.9, y: p[1] + gauss() * 0.9, w: 0.55 * (0.7 + 0.6 * R()) });
+    sources.push({ x: p[0] + gauss() * 0.9, y: p[1] + gauss() * 0.9, w: 1.3 * (0.7 + 0.6 * R()) });
   }
   const foyer1 = [C[0] - 7, C[1] + 6], foyer2 = at(2.55, 0.95);
-  amas(foyer1, 1.1, 16, 0.9);                                        // micro-foyers
-  amas(foyer2, 1.3, 22, 0.9);
+  amas(foyer1, 3.0, 110, 0.8);                                       // micro-foyers (activité renforcée : lisibles sur les 6 pétales)
+  amas(foyer2, 3.2, 120, 0.8);
   // cellules saines : grille jitterée, plus clairsemée au fond de la cavité
   const cellules = [];
   for (let y = 1; y < CFG.champ[1]; y += 2.3) for (let x = 1; x < CFG.champ[0]; x += 2.3) {

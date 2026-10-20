@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Beams — Accueil</title>
 <script src="./support.js"></script>
-<script src="/_blob/762b2ada0b8380f356e2905e1bea5bb5"></script>
+<script src="/_blob/eb7fe07021c52a4bf73c9e3d424dfde1"></script>
 </head>
 <body>
 <x-dc>
@@ -77,10 +77,13 @@ a:hover .arrow{transform:translateX(4px)}
 @keyframes nodePing{0%{transform:scale(1);opacity:.9}28%{transform:scale(5);opacity:0}100%{transform:scale(5);opacity:0}}
 .scroll{animation:scrollX 9s linear infinite}
 @keyframes scrollX{to{transform:translateX(-50%)}}
-.nowdot{animation:nowdot 1.6s ease-out infinite}
+.nowdot{animation:nowFollow 9s linear infinite,nowdot 1.6s ease-out infinite}
 @keyframes nowdot{0%{box-shadow:0 0 0 0 rgba(55,191,239,.7)}100%{box-shadow:0 0 0 10px rgba(55,191,239,0)}}
+@keyframes nowFollow{0%{top:80.04%}1%{top:82.07%}2%{top:79.89%}3%{top:79.69%}4%{top:78.81%}5%{top:75.90%}6%{top:77.41%}7%{top:77.80%}8%{top:77.92%}9%{top:77.89%}10%{top:75.95%}11%{top:76.21%}12%{top:76.24%}13%{top:76.76%}14%{top:77.06%}15%{top:79.52%}16%{top:77.54%}17%{top:76.01%}18%{top:74.58%}19%{top:75.69%}20%{top:72.81%}21%{top:67.46%}22%{top:60.05%}23%{top:56.62%}24%{top:55.58%}25%{top:61.55%}26%{top:66.66%}27%{top:69.89%}28%{top:71.86%}29%{top:73.95%}30%{top:76.77%}31%{top:80.13%}32%{top:80.78%}33%{top:80.46%}34%{top:78.74%}35%{top:78.03%}36%{top:80.41%}37%{top:78.17%}38%{top:78.47%}39%{top:79.42%}40%{top:81.52%}41%{top:81.72%}42%{top:82.66%}43%{top:83.18%}44%{top:79.93%}45%{top:76.08%}46%{top:71.76%}47%{top:72.20%}48%{top:72.04%}49%{top:70.87%}50%{top:67.22%}51%{top:60.67%}52%{top:57.34%}53%{top:51.02%}54%{top:47.50%}55%{top:42.83%}56%{top:38.77%}57%{top:38.34%}58%{top:33.29%}59%{top:32.53%}60%{top:33.43%}61%{top:34.40%}62%{top:33.33%}63%{top:36.39%}64%{top:37.88%}65%{top:44.14%}66%{top:49.42%}67%{top:55.39%}68%{top:61.75%}69%{top:66.11%}70%{top:68.25%}71%{top:71.72%}72%{top:71.62%}73%{top:71.73%}74%{top:74.26%}75%{top:76.15%}76%{top:78.68%}77%{top:79.72%}78%{top:80.15%}79%{top:77.98%}80%{top:74.73%}81%{top:77.15%}82%{top:78.77%}83%{top:79.33%}84%{top:81.45%}85%{top:78.47%}86%{top:77.88%}87%{top:77.38%}88%{top:76.07%}89%{top:75.19%}90%{top:74.33%}91%{top:75.18%}92%{top:78.75%}93%{top:81.66%}94%{top:82.46%}95%{top:82.73%}96%{top:77.43%}97%{top:76.34%}98%{top:79.20%}99%{top:79.31%}100%{top:80.04%}}
+.probe-img{animation:probeFloat 6s ease-in-out infinite}
+@keyframes probeFloat{50%{transform:translateY(6px)}}
 .suck{animation:suck 2.4s cubic-bezier(.55,0,.8,.2) infinite both}
-@keyframes suck{0%{transform:translate(0,0) scale(1);opacity:0}15%{opacity:1}100%{transform:translate(var(--sx),-104px) scale(.3);opacity:0}}
+@keyframes suck{0%{transform:translate(0,0) scale(1);opacity:0}15%{opacity:1}100%{transform:translate(var(--sx),-92px) scale(.3);opacity:0}}
 .range-b{animation:rangeB 3s ease-in-out infinite}
 @keyframes rangeB{50%{transform:scale(1.25);opacity:1}}
 .range-g{animation:rangeG 6s linear infinite both}
@@ -126,6 +129,7 @@ triop-simulateur::part(window){--page:#0F1014;--card:#15161B;--line:rgba(255,255
 <a class="navlink" href="#plateforme">Technologie</a>
 <a class="navlink" href="#produit">Démonstration</a>
 <a class="navlink" href="V3-Equipe.dc.html">Équipe</a>
+<a class="navlink" href="V3-Actualites.dc.html">Actualités</a>
 <a class="navlink" href="V3-Media.dc.html">Média</a>
 </div>
 <div style="display: flex; align-items: center; gap: 12px">
@@ -144,7 +148,7 @@ triop-simulateur::part(window){--page:#0F1014;--card:#15161B;--line:rgba(255,255
 <svg aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.07; mix-blend-mode: overlay; pointer-events: none"><filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"></feTurbulence></filter><rect width="100%" height="100%" filter="url(#grain)"></rect></svg>
 
 <div style="position: relative; z-index: 5; max-width: 1240px; margin: 0 auto; padding: clamp(72px, 9vw, 128px) clamp(20px, 4vw, 40px) 0; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 28px">
-<a href="#actualites" class="gborder blur-in" style="display: inline-flex; align-items: center; gap: 10px; padding: 7px 8px 7px 14px; border-radius: 999px; background: rgba(255, 255, 255, 0.03); text-decoration: none; font-size: 14px">
+<a href="V3-Actualites.dc.html" class="gborder blur-in" style="display: inline-flex; align-items: center; gap: 10px; padding: 7px 8px 7px 14px; border-radius: 999px; background: rgba(255, 255, 255, 0.03); text-decoration: none; font-size: 14px">
 <span style="width: 6px; height: 6px; border-radius: 50%; background: #86C5FF; box-shadow: 0 0 10px #86C5FF"></span>
 <span class="shimmer">Best Pitch INPI · VivaTech 2026</span>
 <span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: rgba(255, 255, 255, 0.08); color: #FFFFFF"><svg class="arrow" width="12" height="12" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
@@ -161,10 +165,6 @@ triop-simulateur::part(window){--page:#0F1014;--card:#15161B;--line:rgba(255,255
 </div>
 
 <div style="position: relative; height: clamp(420px, 44vw, 620px); margin-top: clamp(20px, 3vw, 40px)">
-<div aria-hidden="true" class="shoot hide-sm" style="position: absolute; z-index: 4; left: 0; top: calc(clamp(110px, 11vw, 160px) - 26px); width: 50%; height: 20px; display: flex; justify-content: flex-end">
-<svg viewBox="0 33.5 59.4 9.3" width="200" height="31" style="filter: drop-shadow(0 0 10px rgba(55, 191, 239, 0.95))"><path fill="#37BFEF" d="{{logoBeam}}"></path></svg>
-</div>
-<span aria-hidden="true" class="impact" style="position: absolute; z-index: 4; left: 50%; top: calc(clamp(110px, 11vw, 160px) - 16px); width: 260px; height: 70px; border-radius: 50%; border: 1px solid rgba(134, 197, 255, 0.8); box-shadow: 0 0 30px rgba(134, 197, 255, 0.6), inset 0 0 20px rgba(134, 197, 255, 0.4)"></span>
 
 <div class="rise-planet" style="position: absolute; z-index: 3; left: 50%; top: clamp(110px, 11vw, 160px); width: 1800px; height: 1800px; margin-left: -900px">
 <div class="planet-par" style="position: absolute; inset: 0">
@@ -204,6 +204,7 @@ triop-simulateur::part(window){--page:#0F1014;--card:#15161B;--line:rgba(255,255
 <span style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #8A8D97">Face de détection TRIOP · 6 pétales β</span>
 </div>
 
+<div aria-hidden="true" style="position: absolute; z-index: 4; left: 0; right: 0; bottom: 0; height: 62%; background: linear-gradient(180deg, rgba(11, 12, 15, 0) 0%, rgba(11, 12, 15, 0.55) 40%, #0B0C0F 88%); pointer-events: none"></div>
 <div style="position: absolute; z-index: 5; left: 0; right: 0; bottom: clamp(24px, 4vw, 56px); display: flex; flex-direction: column; align-items: center; gap: 22px">
 <span style="font-size: 14px; color: #8A8D97">Issue de la recherche publique française, soutenue par</span>
 <div class="fade-edges" style="width: min(1080px, 100%); overflow: hidden">
@@ -344,7 +345,7 @@ triop-simulateur::part(window){--page:#0F1014;--card:#15161B;--line:rgba(255,255
 </svg>
 </div>
 </div>
-<span class="nowdot" style="position: absolute; right: 10px; top: 50%; width: 7px; height: 7px; margin-top: -3.5px; border-radius: 50%; background: #37BFEF"></span>
+<span class="nowdot" style="position: absolute; right: 2px; top: 80%; width: 8px; height: 8px; margin: -4px -4px 0 0; border-radius: 50%; background: #FFFFFF; border: 2px solid #37BFEF; box-sizing: border-box"></span>
 </div>
 <div style="position: relative; z-index: 1; padding: 18px 30px 30px; display: flex; flex-direction: column; gap: 8px">
 <h3 style="margin: 0; font-size: 24px; font-weight: 600; letter-spacing: -0.015em">En temps réel</h3>
@@ -370,8 +371,11 @@ triop-simulateur::part(window){--page:#0F1014;--card:#15161B;--line:rgba(255,255
 
 <article class="spot reveal" style="min-height: 340px; border-radius: 24px; background: linear-gradient(180deg, #15161B, #111216); border: 1px solid rgba(255, 255, 255, 0.07); overflow: hidden; display: flex; flex-direction: column">
 <div aria-hidden="true" style="position: relative; z-index: 1; flex: 1 1 auto; min-height: 190px">
-<span style="position: absolute; left: 50%; top: 0; width: 30px; height: 84px; margin-left: -15px; border-radius: 0 0 15px 15px; background: linear-gradient(90deg, #2A2C33, #3A3D46 50%, #24262C); box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.15)"></span>
-<span style="position: absolute; left: 50%; top: 84px; width: 12px; height: 3px; margin-left: -6px; border-radius: 2px; background: #86C5FF; box-shadow: 0 0 14px 2px rgba(134, 197, 255, 0.9)"></span>
+<span style="position: absolute; left: 50%; top: 88px; width: 140px; height: 70px; margin-left: -70px; border-radius: 50%; background: radial-gradient(closest-side, rgba(134, 197, 255, 0.45), transparent)"></span>
+<div class="probe-img" style="position: absolute; left: calc(50% - 192px); top: -136px; width: 226px">
+<img src="/_blob/d6e535a89271700d9ed7dec846ed3df3" alt="" style="display: block; width: 226px; height: auto; filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.55)) drop-shadow(0 0 18px rgba(55, 191, 239, 0.25))">
+</div>
+<span style="position: absolute; left: 50%; top: 112px; width: 50px; height: 2px; margin-left: -25px; border-radius: 2px; background: #86C5FF; box-shadow: 0 0 16px 3px rgba(134, 197, 255, 0.85)"></span>
 <sc-for list="{{suckDots}}" as="s" hint-placeholder-count="8"><span class="suck" style="{{s}}"></span></sc-for>
 </div>
 <div style="position: relative; z-index: 1; padding: 0 30px 30px; display: flex; flex-direction: column; gap: 8px">
@@ -431,10 +435,17 @@ triop-simulateur::part(window){--page:#0F1014;--card:#15161B;--line:rgba(255,255
 
 <!-- ACTUALITES -->
 <section id="actualites" style="position: relative">
-<div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px) clamp(64px, 8vw, 120px)">
+<div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px) clamp(64px, 8vw, 120px); display: flex; flex-direction: column; gap: 40px">
+<div class="reveal" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 20px">
+<span style="display: inline-flex; align-self: flex-start; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #A3A6AF"><span style="width: 5px; height: 5px; border-radius: 50%; background: #AF7DFF"></span>À la une</span>
+<h2 style="margin: 0; font-size: clamp(34px, 4.4vw, 60px); line-height: 1.04; letter-spacing: -0.03em; font-weight: 700"><span class="tg">Actualités</span></h2>
+</div>
+<a class="btn-g" href="V3-Actualites.dc.html" style="display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 22px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(255, 255, 255, 0.03); color: #FFFFFF; font-size: 15px; text-decoration: none">Toutes les actualités <svg class="arrow" width="14" height="14" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
+</div>
 <div class="spot-grid" onMouseMove="{{spotMove}}" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px">
 <sc-for list="{{news}}" as="n" hint-placeholder-count="3">
-<a class="spot reveal lift" href="V3-Media.dc.html" style="display: flex; flex-direction: column; gap: 16px; min-height: 220px; padding: 28px; border-radius: 22px; background: #111216; border: 1px solid rgba(255, 255, 255, 0.07); color: #FFFFFF; text-decoration: none">
+<a class="spot reveal lift" href="V3-Actualites.dc.html" style="display: flex; flex-direction: column; gap: 16px; min-height: 220px; padding: 28px; border-radius: 22px; background: #111216; border: 1px solid rgba(255, 255, 255, 0.07); color: #FFFFFF; text-decoration: none">
 <span style="position: relative; z-index: 1; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #86C5FF">{{n.tag}}</span>
 <span style="position: relative; z-index: 1; font-size: 22px; line-height: 1.25; font-weight: 600; letter-spacing: -0.015em">{{n.title}}</span>
 <span style="position: relative; z-index: 1; margin-top: auto; display: inline-flex; align-items: center; gap: 8px; font-size: 15px; color: #A3A6AF">Lire <svg class="arrow" width="14" height="14" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
@@ -465,6 +476,7 @@ triop-simulateur::part(window){--page:#0F1014;--card:#15161B;--line:rgba(255,255
 <div style="display: flex; flex-wrap: wrap; gap: 28px; font-size: 14px">
 <a class="navlink" href="#plateforme">Technologie</a>
 <a class="navlink" href="V3-Equipe.dc.html">Équipe</a>
+<a class="navlink" href="V3-Actualites.dc.html">Actualités</a>
 <a class="navlink" href="V3-Media.dc.html">Média</a>
 <a class="navlink" href="V3-Contact.dc.html">Contact</a>
 <a class="navlink" href="V3-Contact.dc.html">Recrutement</a>
@@ -509,8 +521,8 @@ function buildSignal() {
     v.push(0.2 + 0.07 * s / 7 * 2.4 + 0.58 * bump);
   }
   var pts = [];
-  for (var c = 0; c < 2; c++) for (var j = 0; j < N; j++) pts.push([(c * N + j) * 8, 150 - v[j] * 130]);
-  pts.push([2 * N * 8, 150 - v[0] * 130]);
+  for (var c = 0; c < 2; c++) for (var j = 0; j < N; j++) pts.push([(c * N + j) * 4, 150 - v[j] * 130]);
+  pts.push([2 * N * 4, 150 - v[0] * 130]);
   var line = pts.map(function (p, idx) { return (idx ? 'L' : 'M') + p[0] + ' ' + p[1].toFixed(1); }).join(' ');
   return { line: line, area: line + ' L1600 160 L0 160 Z', noiseY: (150 - 0.2 * 130).toFixed(1) };
 }
@@ -532,7 +544,7 @@ class Component extends DCLogic {
     var suckDots = [];
     var sx = [-54, -26, 0, 24, 52, -40, 12, 40];
     for (var q = 0; q < 8; q++) {
-      suckDots.push('position:absolute;left:calc(50% + ' + sx[q] + 'px);top:' + (180 - (q % 3) * 12) + 'px;width:7px;height:7px;margin-left:-3.5px;border-radius:50%;background:' + (q % 2 ? '#86C5FF' : '#AF7DFF') + ';box-shadow:0 0 10px ' + (q % 2 ? '#37BFEF' : '#773AED') + ';--sx:' + (-sx[q]) + 'px;animation-delay:' + (q * 0.3).toFixed(1) + 's');
+      suckDots.push('position:absolute;left:calc(50% + ' + sx[q] + 'px);top:' + (206 - (q % 3) * 10) + 'px;width:7px;height:7px;margin-left:-3.5px;border-radius:50%;background:' + (q % 2 ? '#86C5FF' : '#AF7DFF') + ';box-shadow:0 0 10px ' + (q % 2 ? '#37BFEF' : '#773AED') + ';--sx:' + (-sx[q]) + 'px;animation-delay:' + (q * 0.3).toFixed(1) + 's');
     }
 
     // Traînée du faisceau : couches décalées dans le temps ; la queue s’étire en vitesse et se replie à chaque étape.

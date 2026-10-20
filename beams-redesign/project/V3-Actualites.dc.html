@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Beams — Actualités</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,200..800;1,200..800&amp;display=swap">
+<style>
+body{margin:0;background:#0B0C0F}
+a{color:#86C5FF}a:hover{color:#FFFFFF}
+@property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
+.v3{font-family:'Jost',system-ui,sans-serif;color:#FFFFFF;background:#0B0C0F;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.v3 *{box-sizing:border-box}
+.navlink{color:#A3A6AF;text-decoration:none;transition:color .25s}
+.navlink:hover,.navlink.on{color:#FFFFFF}
+.btn-v{box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 0 0 1px rgba(175,125,255,.55),0 10px 40px -10px rgba(119,58,237,.9);transition:box-shadow .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1),background-color .3s}
+.btn-v:hover{transform:translateY(-2px);background-color:#8649F5}
+.btn-g{box-shadow:inset 0 1px 0 rgba(255,255,255,.08);transition:background-color .3s,border-color .3s,color .3s}
+.btn-g:hover{background-color:rgba(255,255,255,.07);border-color:rgba(255,255,255,.24);color:#FFFFFF}
+.arrow{transition:transform .45s cubic-bezier(.16,1,.3,1)}
+a:hover .arrow{transform:translate(3px,-3px)}
+.tg{background:linear-gradient(180deg,#FFFFFF 25%,#9A9DA7 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tg2{background:linear-gradient(90deg,#86C5FF 0%,#AF7DFF 70%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.blur-in{display:inline-block;animation:blurIn 1.5s cubic-bezier(.16,1,.3,1) both}
+@keyframes blurIn{from{opacity:0;filter:blur(16px);transform:translateY(22px)}}
+.swap{animation:swap .8s cubic-bezier(.16,1,.3,1) both}
+@keyframes swap{from{opacity:0;filter:blur(8px);transform:translateY(14px)}}
+.twinkle{animation:twinkle 4s ease-in-out infinite both}
+@keyframes twinkle{0%,100%{opacity:.12}50%{opacity:.85}}
+.breathe{animation:breathe 8s ease-in-out infinite}
+@keyframes breathe{50%{opacity:.62;transform:scale(1.08)}}
+@keyframes spin{to{--a:360deg}}
+.gborder{position:relative;isolation:isolate}
+.gborder::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:conic-gradient(from var(--a),rgba(255,255,255,.07) 0deg,rgba(255,255,255,.07) 200deg,#86C5FF 260deg,#AF7DFF 300deg,rgba(255,255,255,.07) 345deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 7s linear infinite;pointer-events:none;z-index:4}
+.eclipse{position:absolute;border-radius:50%;background:#0B0C0F;box-shadow:0 -50px 160px -40px rgba(55,191,239,.5),0 -20px 90px -30px rgba(119,58,237,.55),inset 0 60px 120px -60px rgba(55,191,239,.3)}
+.eclipse::before{content:"";position:absolute;inset:0;border-radius:50%;padding:1.5px;background:conic-gradient(from var(--a),rgba(134,197,255,.08) 0deg,rgba(134,197,255,.08) 300deg,#86C5FF 330deg,#FFFFFF 340deg,#AF7DFF 350deg,rgba(134,197,255,.08) 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 18s linear infinite}
+.eclipse::after{content:"";position:absolute;inset:0;border-radius:50%;padding:1.5px;background:linear-gradient(180deg,rgba(190,220,255,.95) 0%,rgba(175,125,255,.45) 5%,transparent 12%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.spot{position:relative;isolation:isolate;--mx:-999px;--my:-999px}
+.spot::before{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(560px circle at var(--mx) var(--my),rgba(134,197,255,.09),transparent 42%);opacity:0;transition:opacity .5s;pointer-events:none;z-index:0}
+.spot::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:radial-gradient(420px circle at var(--mx) var(--my),rgba(134,197,255,.8),rgba(175,125,255,.38) 25%,transparent 55%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .5s;pointer-events:none;z-index:3}
+.spot-grid:hover .spot::after{opacity:1}
+.spot:hover::before{opacity:1}
+.lift{transition:transform .7s cubic-bezier(.16,1,.3,1)}
+.lift:hover{transform:translateY(-4px)}
+.thumb .mark{transition:transform 1.1s cubic-bezier(.16,1,.3,1),letter-spacing 1.1s cubic-bezier(.16,1,.3,1)}
+.lift:hover .thumb .mark{transform:scale(1.07);letter-spacing:.01em}
+.chip{transition:background-color .35s,color .35s,border-color .35s,box-shadow .35s}
+.chip:hover{color:#FFFFFF}
+@supports (animation-timeline: view()){
+.reveal{animation:reveal linear both;animation-timeline:view();animation-range:entry 0% entry 80%}
+@keyframes reveal{from{opacity:0;filter:blur(10px);transform:translateY(44px)}}
+}
+@media (prefers-reduced-motion: reduce){.v3 *,.v3 *::before,.v3 *::after{animation:none!important;transition:none!important}}
+.nav-links{display:flex}
+@media (max-width: 960px){.nav-links{display:none}}
+</style>
+</helmet>
+<div class="v3">
+
+<header style="position: sticky; top: 0; z-index: 40; background: rgba(11, 12, 15, 0.62); backdrop-filter: saturate(1.6) blur(18px); border-bottom: 1px solid rgba(255, 255, 255, 0.06)">
+<nav aria-label="Navigation principale" style="max-width: 1240px; margin: 0 auto; padding: 14px clamp(20px, 4vw, 40px); display: flex; align-items: center; justify-content: space-between; gap: 24px">
+<a href="V3-Accueil.dc.html" aria-label="Beams — accueil" style="display: flex; align-items: center; padding: 4px 0">
+<svg viewBox="0 0 269 100" width="100" height="37" role="img" aria-label="Beams"><path fill="#37BFEF" d="{{logoBeam}}"></path><path fill="#FFFFFF" d="{{logoLetters}}"></path></svg>
+</a>
+<div class="nav-links" style="align-items: center; gap: 34px; font-size: 15px">
+<a class="navlink" href="V3-Accueil.dc.html">Technologie</a>
+<a class="navlink" href="V3-Equipe.dc.html">Équipe</a>
+<a class="navlink on" href="V3-Actualites.dc.html" aria-current="page">Actualités</a>
+<a class="navlink" href="V3-Media.dc.html">Média</a>
+</div>
+<a class="btn-v" href="V3-Contact.dc.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 18px; border-radius: 999px; background: #773AED; color: #FFFFFF; font-size: 14px; font-weight: 500; text-decoration: none">Contact</a>
+</nav>
+</header>
+
+<!-- HERO -->
+<section style="position: relative; overflow: hidden">
+<div aria-hidden="true" style="position: absolute; inset: 0">
+<sc-for list="{{stars}}" as="s" hint-placeholder-count="30"><span class="twinkle" style="{{s}}"></span></sc-for>
+</div>
+<div aria-hidden="true" class="eclipse" style="left: 50%; top: 400px; width: 2400px; height: 2400px; margin-left: -1200px"></div>
+<div style="position: relative; z-index: 2; max-width: 1000px; margin: 0 auto; padding: clamp(80px, 10vw, 140px) clamp(20px, 4vw, 40px) clamp(100px, 12vw, 170px); display: flex; flex-direction: column; align-items: center; gap: 26px; text-align: center">
+<span class="blur-in" style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #A3A6AF"><span style="width: 5px; height: 5px; border-radius: 50%; background: #AF7DFF"></span>Actualités</span>
+<h1 style="margin: 0; font-size: clamp(48px, 7vw, 104px); line-height: 0.96; letter-spacing: -0.04em; font-weight: 700"><span class="blur-in tg" style="animation-delay: 0.1s">Les nouvelles</span><br><span class="blur-in tg2" style="animation-delay: 0.3s; font-weight: 200">de Beams.</span></h1>
+<p class="blur-in" style="margin: 0; max-width: 540px; font-size: clamp(17px, 1.5vw, 20px); line-height: 1.6; color: #A3A6AF; animation-delay: 0.5s">Distinctions, presse, événements : le parcours de TRIOP, du laboratoire au bloc opératoire.</p>
+</div>
+</section>
+
+<!-- A LA UNE -->
+<section style="position: relative">
+<div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px) 64px">
+<a class="gborder reveal lift" href="{{featured.href}}" style="display: flex; flex-wrap: wrap; border-radius: 28px; background: #111216; overflow: hidden; color: #FFFFFF; text-decoration: none; box-shadow: 0 40px 120px -40px rgba(0, 0, 0, 0.9)">
+<div class="thumb" style="position: relative; flex: 1 1 460px; min-height: 340px; overflow: hidden; background: radial-gradient(70% 90% at 30% 20%, rgba(55, 191, 239, 0.45), rgba(119, 58, 237, 0.25) 45%, #121318 75%); display: flex; align-items: center; justify-content: center">
+<span aria-hidden="true" class="breathe" style="position: absolute; left: 50%; top: 50%; width: 360px; height: 360px; margin: -180px 0 0 -180px; border-radius: 50%; background: repeating-radial-gradient(circle, rgba(255, 255, 255, 0.10) 0 1px, transparent 1px 34px)"></span>
+<span class="mark tg" style="position: relative; font-size: clamp(90px, 10vw, 150px); font-weight: 200; letter-spacing: -0.05em">2026</span>
+<span style="position: absolute; left: 22px; top: 20px; padding: 6px 12px; border-radius: 999px; background: rgba(11, 12, 15, 0.55); border: 1px solid rgba(255, 255, 255, 0.14); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #FFFFFF">À la une</span>
+</div>
+<div style="flex: 1 1 420px; padding: clamp(28px, 4vw, 52px); display: flex; flex-direction: column; justify-content: center; gap: 18px">
+<span style="font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #86C5FF">{{featured.cat}} · {{featured.date}}</span>
+<h2 style="margin: 0; font-size: clamp(30px, 3.4vw, 46px); line-height: 1.06; letter-spacing: -0.03em; font-weight: 700"><span class="tg">{{featured.title}}</span></h2>
+<p style="margin: 0; font-size: 17px; line-height: 1.6; color: #A3A6AF">{{featured.excerpt}}</p>
+<span style="display: inline-flex; align-items: center; gap: 8px; font-size: 15px; color: #FFFFFF">{{featured.cta}} <svg class="arrow" width="14" height="14" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+</div>
+</a>
+</div>
+</section>
+
+<!-- LISTE -->
+<section style="position: relative">
+<div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px) clamp(96px, 11vw, 150px); display: flex; flex-direction: column; gap: 28px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
+<h2 style="margin: 0; font-size: clamp(28px, 3vw, 40px); letter-spacing: -0.03em; font-weight: 700"><span class="tg">Tous les articles</span></h2>
+<div role="tablist" aria-label="Filtrer par catégorie" style="display: flex; flex-wrap: wrap; gap: 6px; padding: 5px; border-radius: 16px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.07)">
+<sc-for list="{{filters}}" as="f" hint-placeholder-count="5"><button type="button" role="tab" class="chip" aria-selected="{{f.sel}}" onClick="{{f.pick}}" style="{{f.style}}">{{f.label}}<span style="margin-left: 6px; font-size: 12px; opacity: 0.6">{{f.count}}</span></button></sc-for>
+</div>
+</div>
+<div class="spot-grid swap" key="{{filter}}" onMouseMove="{{spotMove}}" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px">
+<sc-for list="{{articles}}" as="a" hint-placeholder-count="6">
+<a class="spot lift" href="{{a.href}}" style="display: flex; flex-direction: column; border-radius: 22px; background: #111216; border: 1px solid rgba(255, 255, 255, 0.07); overflow: hidden; color: #FFFFFF; text-decoration: none">
+<div class="thumb" style="{{a.thumb}}">
+<span aria-hidden="true" style="{{a.rings}}"></span>
+<span class="mark tg" style="{{a.markStyle}}">{{a.mark}}</span>
+</div>
+<div style="position: relative; z-index: 1; padding: 20px 24px 24px; display: flex; flex-direction: column; gap: 10px; flex: 1 1 auto">
+<span style="font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: {{a.col}}">{{a.cat}} · {{a.date}}</span>
+<span style="font-size: 21px; line-height: 1.25; font-weight: 600; letter-spacing: -0.015em">{{a.title}}</span>
+<span style="font-size: 15px; line-height: 1.55; color: #A3A6AF">{{a.excerpt}}</span>
+<span style="margin-top: auto; padding-top: 8px; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: #C9CBD1">{{a.cta}} <svg class="arrow" width="12" height="12" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+</div>
+</a>
+</sc-for>
+</div>
+<div style="display: flex; align-items: center; justify-content: center; padding: 20px; border-radius: 18px; border: 1px dashed rgba(255, 255, 255, 0.14); color: #8A8D97; font-size: 14px; text-align: center">[Autres articles publiés sur beams.bio/news à ajouter : titres, dates et liens]</div>
+</div>
+</section>
+
+<!-- PRESSE -->
+<section style="position: relative">
+<div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px) clamp(96px, 11vw, 150px)">
+<div class="gborder reveal" style="border-radius: 30px; background: radial-gradient(80% 120% at 50% 0%, rgba(55, 191, 239, 0.14), #111216 60%); padding: clamp(36px, 5vw, 64px) clamp(24px, 5vw, 64px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 28px">
+<div style="flex: 1 1 420px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: clamp(30px, 3.4vw, 48px); line-height: 1.04; letter-spacing: -0.03em; font-weight: 700"><span class="tg">Journaliste ?</span> <span class="tg2" style="font-weight: 200">Tout est dans le kit.</span></h2>
+<p style="margin: 0; max-width: 520px; font-size: 17px; line-height: 1.6; color: #A3A6AF">Logos, guidelines, communiqués et dossier de presse, ou un contact direct avec l’équipe.</p>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<a class="btn-v" href="V3-Media.dc.html" style="display: inline-flex; align-items: center; min-height: 52px; padding: 0 26px; border-radius: 999px; background: #773AED; color: #FFFFFF; font-size: 16px; font-weight: 500; text-decoration: none">Kit média</a>
+<a class="btn-g" href="V3-Contact.dc.html" style="display: inline-flex; align-items: center; min-height: 52px; padding: 0 26px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(255, 255, 255, 0.03); color: #FFFFFF; font-size: 16px; text-decoration: none">Contact presse</a>
+</div>
+</div>
+</div>
+<footer style="border-top: 1px solid rgba(255, 255, 255, 0.06)">
+<div style="max-width: 1240px; margin: 0 auto; padding: 40px clamp(20px, 4vw, 40px); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 24px">
+<svg viewBox="0 0 269 100" width="92" height="34" role="img" aria-label="Beams"><path fill="#37BFEF" d="{{logoBeam}}"></path><path fill="#FFFFFF" d="{{logoLetters}}"></path></svg>
+<div style="display: flex; flex-wrap: wrap; gap: 28px; font-size: 14px">
+<a class="navlink" href="V3-Accueil.dc.html">Accueil</a>
+<a class="navlink" href="V3-Equipe.dc.html">Équipe</a>
+<a class="navlink" href="V3-Actualites.dc.html">Actualités</a>
+<a class="navlink" href="V3-Media.dc.html">Média</a>
+<a class="navlink" href="V3-Contact.dc.html">Contact</a>
+</div>
+<span style="font-size: 13px; color: #8A8D97">© 2026 Beams</span>
+</div>
+</footer>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2600}}'>
+var LOGO_BEAM = 'M55.2672 42.7476L0 37.3216L55.2672 33.5366C58.1369 33.5366 60.1407 36.6991 59.1728 39.6982C58.5841 41.5278 57.0218 42.7476 55.2672 42.7476Z';
+var LOGO_LETTERS = 'M103.448 30.5313H136.509L133.458 40H112.759L110.489 47.0481H129.689L126.774 56.0956H107.574L104.761 64.835H126.055L122.823 74.8758H89.161L103.442 30.5313H103.448Z'
++ 'M156.371 67.5574H142.368L138.066 74.8758H125.472L154.758 30.5313H168.213L168.932 74.8758H156.015L156.377 67.5574H156.371ZM156.898 57.9692L157.628 42.0245L148.136 57.9692H156.903H156.898Z'
++ 'M186.999 30.5313H203.222L200.788 57.5165L215.691 30.5313H231.908L217.627 74.8758H207.524L218.414 41.0563L199.735 74.8758H190.588L193.712 41.0563L182.822 74.8758H172.718L186.999 30.5313Z'
++ 'M228.065 60.2075L240.065 59.3901C239.634 61.509 239.634 63.1185 240.059 64.2314C240.749 66.0233 242.278 66.9224 244.638 66.9224C246.398 66.9224 247.904 66.4634 249.155 65.5454C250.406 64.6275 251.221 63.5649 251.612 62.3515C251.979 61.2009 251.861 60.176 251.244 59.2644C250.627 58.359 248.798 57.4976 245.753 56.6929C240.778 55.3411 237.495 53.5492 235.916 51.3109C234.314 49.0726 234.07 46.2182 235.185 42.7476C235.921 40.4715 237.206 38.315 239.051 36.2905C240.891 34.266 243.195 32.669 245.957 31.5121C248.719 30.3552 252.178 29.7705 256.332 29.7705C261.432 29.7705 264.981 30.8268 266.985 32.933C268.983 35.0393 269.498 38.3904 268.525 42.9928L256.655 43.7472C256.989 41.7479 256.808 40.2955 256.112 39.3901C255.415 38.4848 254.193 38.0258 252.449 38.0258C251.017 38.0258 249.829 38.3653 248.883 39.038C247.938 39.7171 247.31 40.5344 246.998 41.5027C246.772 42.2069 246.868 42.8419 247.281 43.4077C247.672 43.9925 248.878 44.5395 250.893 45.0424C255.868 46.3313 259.31 47.6391 261.217 48.9594C263.125 50.2798 264.296 51.9208 264.726 53.8761C265.157 55.8315 264.987 58.0195 264.206 60.4401C263.289 63.282 261.738 65.9038 259.547 68.3056C257.357 70.7073 254.793 72.5244 251.855 73.763C248.912 75.0016 245.51 75.624 241.644 75.624C234.851 75.624 230.618 74.1716 228.942 71.2669C227.261 68.3621 226.972 64.6715 228.07 60.1949L228.065 60.2075Z'
++ 'M84.2592 0H54.6106L54.4747 0.414964H54.4351L49.205 16.1836H58.9916L60.7407 10.6885H80.8064C87.361 10.6885 91.0629 15.7246 89.0591 21.9176C87.0554 28.1107 80.0989 33.1468 73.5442 33.1468L70.0915 43.8353C76.6461 43.8353 80.3479 48.8714 78.3442 55.0644C76.3404 61.2575 69.3839 66.2936 62.8293 66.2936H33.458L22.7544 99.9874H32.541L39.5881 76.9758H59.3709C72.1575 76.9758 85.7422 67.1424 89.6478 55.0582C91.7874 48.4439 90.5931 42.5024 86.9761 38.4847C93.1911 34.4609 98.2288 28.5256 100.368 21.9113C104.274 9.83338 97.0458 0 84.2592 0Z';
+
+var CATS = { distinction: ['Distinction', '#86C5FF', '55,191,239'], presse: ['Presse', '#AF7DFF', '119,58,237'], evenement: ['Événement', '#86C5FF', '134,197,255'], financement: ['Financement', '#AF7DFF', '175,125,255'] };
+var ARTICLES = [
+  { cat: 'distinction', date: 'Juin 2026', mark: '2026', title: 'Beams remporte le Best Pitch du concours INPI à VivaTech', excerpt: 'Au Pitch Contest INPI & WIPO x HEC de VivaTech, Beams présente TRIOP et l’avancée de ses essais cliniques, vétérinaires et chez l’humain.', href: 'https://www.inpi.fr/a-la-une/beams-une-start-suivre-vivatech', cta: 'Lire sur inpi.fr' },
+  { cat: 'financement', date: '2026', mark: '2030', title: '[À confirmer] Beams lauréate de l’appel à projets France 2030 de Bpifrance', excerpt: '[Résumé à rédiger à partir de l’article publié.]', href: '#', cta: '[Lien à ajouter]' },
+  { cat: 'presse', date: '2026', mark: 'VS', title: 'Les Deeptech : portrait de leadership de Virginie Simon', excerpt: 'Bpifrance consacre un portrait à Virginie Simon, CEO et co-fondatrice de Beams.', href: 'https://www.beams.bio/post/beams-featured-on-les-deeptech-a-portrait-of-leadership-virginie-simon', cta: 'Lire l’article' },
+  { cat: 'evenement', date: 'Octobre 2025', mark: '10 ans', title: 'Invités par le 3DEXPERIENCE Lab à partager notre vision', excerpt: 'Pour les 10 ans du programme, Beams présente le prototype TRIOP dans une émission de BFM Business.', href: 'https://www.beams.bio/post/beams-3dexperience-lab', cta: 'Lire l’article' },
+  { cat: 'presse', date: '2023', mark: '“', title: 'Beams à l’honneur dans Challenges', excerpt: 'Le magazine consacre un article aux travaux de Beams, au croisement de la physique, de la médecine nucléaire et de l’ingénierie.', href: 'https://www.beams.bio/post/beams-challenges-2023', cta: 'Lire l’article' },
+  { cat: 'distinction', date: '2023', mark: 'i-Lab', title: 'Beams lauréate du concours i-Lab 2023, catégorie Technologies médicales', excerpt: 'Le projet TRIOP, porté par Virginie Simon, est récompensé par le concours d’innovation i-Lab.', href: 'https://www.beams.bio/post/beams-i-lab-2023', cta: 'Lire l’article' }
+];
+var FILTERS = [['tous', 'Tous'], ['distinction', 'Distinctions'], ['presse', 'Presse'], ['evenement', 'Événements'], ['financement', 'Financement']];
+
+function rnd(seed) {
+  var s = seed;
+  return function () { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; };
+}
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { filter: 'tous' };
+    var r = rnd(52), stars = [];
+    for (var i = 0; i < 80; i++) {
+      stars.push('position:absolute;left:' + (r() * 100).toFixed(2) + '%;top:' + (r() * 65).toFixed(2) + '%;width:1px;height:1px;border-radius:50%;background:' + (r() < 0.22 ? '#86C5FF' : '#FFFFFF') + ';animation-duration:' + (3 + r() * 5).toFixed(1) + 's;animation-delay:-' + (r() * 6).toFixed(1) + 's');
+    }
+    this.stars = stars;
+  }
+  renderVals() {
+    var self = this, f = this.state.filter;
+    var filters = FILTERS.map(function (x) {
+      var on = x[0] === f;
+      var count = x[0] === 'tous' ? ARTICLES.length : ARTICLES.filter(function (a) { return a.cat === x[0]; }).length;
+      return {
+        label: x[1], count: count, sel: on ? 'true' : 'false',
+        pick: function () { self.setState({ filter: x[0] }); },
+        style: 'min-height:40px;padding:0 14px;border-radius:12px;border:1px solid ' + (on ? 'rgba(134,197,255,.35)' : 'transparent') + ';background:' + (on ? 'linear-gradient(180deg,rgba(134,197,255,.14),rgba(119,58,237,.10))' : 'transparent') + ';color:' + (on ? '#FFFFFF' : '#A3A6AF') + ';box-shadow:' + (on ? 'inset 0 1px 0 rgba(255,255,255,.12),0 8px 24px -12px rgba(134,197,255,.7)' : 'none') + ';font-family:inherit;font-size:14px;font-weight:500;cursor:pointer'
+      };
+    });
+    var list = ARTICLES.filter(function (a) { return f === 'tous' || a.cat === f; }).map(function (a, i) {
+      var c = CATS[a.cat];
+      var ext = a.href.indexOf('http') === 0;
+      return {
+        cat: c[0], col: c[1], date: a.date, title: a.title, excerpt: a.excerpt, cta: a.cta, mark: a.mark,
+        href: a.href,
+        thumb: 'position:relative;z-index:1;height:180px;margin:8px;border-radius:16px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:radial-gradient(80% 100% at ' + (20 + (i * 23) % 60) + '% 0%,rgba(' + c[2] + ',.42),rgba(' + c[2] + ',.08) 55%,#15161B 80%)',
+        rings: 'position:absolute;left:50%;top:50%;width:300px;height:300px;margin:-150px 0 0 -150px;border-radius:50%;background:repeating-radial-gradient(circle,rgba(255,255,255,.08) 0 1px,transparent 1px 28px)',
+        markStyle: 'position:relative;font-size:' + (a.mark.length > 4 ? 56 : 72) + 'px;font-weight:200;letter-spacing:-.04em;line-height:1',
+        external: ext
+      };
+    });
+    return {
+      logoBeam: LOGO_BEAM, logoLetters: LOGO_LETTERS, stars: this.stars,
+      featured: { cat: 'Distinction', date: ARTICLES[0].date, title: ARTICLES[0].title, excerpt: ARTICLES[0].excerpt, href: ARTICLES[0].href, cta: ARTICLES[0].cta },
+      filters: filters, filter: f, articles: list,
+      spotMove: function (e) {
+        var cards = e.currentTarget.querySelectorAll('.spot');
+        for (var i = 0; i < cards.length; i++) {
+          var b = cards[i].getBoundingClientRect();
+          cards[i].style.setProperty('--mx', (e.clientX - b.left) + 'px');
+          cards[i].style.setProperty('--my', (e.clientY - b.top) + 'px');
+        }
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>
