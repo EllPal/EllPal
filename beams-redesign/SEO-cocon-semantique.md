@@ -90,7 +90,7 @@ Chaque **page mère** porte un champ sémantique et ne lie que vers ses **pages 
 
 **Version anglaise** : la même arborescence sous `/en/`, avec des balises `hreflang` réciproques (`fr`, `en`, `x-default`).
 
-**Migration** : il faut des redirections 301 des anciennes URL Wix `/post/…` vers `/actualites/…` et de `/about` vers `/entreprise/` ou `/equipe/`, pour conserver les positions acquises.
+**Migration** : il faut des redirections 301 des anciennes URL Webflow `/post/…` vers `/actualites/…` et de `/about` vers `/entreprise/` ou `/equipe/`, pour conserver les positions acquises.
 
 ---
 
