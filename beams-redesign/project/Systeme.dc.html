@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Beams — Système visuel</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&amp;family=Geist+Mono:wght@400;500&amp;family=Instrument+Serif:ital@0;1&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#2F5BEA}a:hover{color:#0B0E14}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1080px; box-sizing: border-box; padding: 64px; background: #F3F5F7; color: #0B0E14; font-family: Geist, system-ui, sans-serif; display: flex; flex-direction: column; gap: 40px">
+
+<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 48px">
+<div style="display: flex; flex-direction: column; gap: 12px">
+<span style="font-family: 'Geist Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #5B6577">Beams · Système visuel v0.1</span>
+<h1 style="margin: 0; font-size: 64px; line-height: 1; letter-spacing: -0.045em; font-weight: 500">Le faisceau. <span style="font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; color: #2F5BEA">Voir l’invisible.</span></h1>
+</div>
+<p style="margin: 0; max-width: 420px; font-size: 15px; line-height: 1.6; color: #5B6577">Nuit du bloc opératoire, lumière du signal, blancheur clinique. Une alternance sombre / clair qui rythme le récit : le problème dans la clarté, la technologie dans la nuit.</p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; flex: 1 1 auto; min-height: 0">
+
+<div style="display: flex; flex-direction: column; gap: 16px; padding: 28px; border-radius: 22px; background: #FFFFFF; border: 1px solid #E1E5EB">
+<span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #5B6577">Couleur</span>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 8px"><div style="height: 84px; border-radius: 14px; background: #07090F"></div><span style="font-size: 14px; font-weight: 500">Nuit</span><span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: #5B6577">#07090F · fond</span></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><div style="height: 84px; border-radius: 14px; background: #0E1320"></div><span style="font-size: 14px; font-weight: 500">Encre</span><span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: #5B6577">#0E1320 · surfaces</span></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><div style="height: 84px; border-radius: 14px; background: #2F5BEA"></div><span style="font-size: 14px; font-weight: 500">Tcherenkov</span><span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: #5B6577">#2F5BEA · accent clair</span></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><div style="height: 84px; border-radius: 14px; background: #A9C1FF"></div><span style="font-size: 14px; font-weight: 500">Halo</span><span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: #5B6577">#A9C1FF · accent nuit</span></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><div style="height: 84px; border-radius: 14px; background: #F3F5F7; border: 1px solid #D5DAE1"></div><span style="font-size: 14px; font-weight: 500">Blanc bloc</span><span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: #5B6577">#F3F5F7 · fond clair</span></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><div style="height: 84px; border-radius: 14px; background: #5B6577"></div><span style="font-size: 14px; font-weight: 500">Acier</span><span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: #5B6577">#5B6577 · texte 2</span></div>
+</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.55; color: #5B6577">Un seul accent, deux réglages : Tcherenkov sur fond clair, Halo sur fond nuit. Tous les couples texte / fond passent AA.</p>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 22px; padding: 28px; border-radius: 22px; background: #FFFFFF; border: 1px solid #E1E5EB">
+<span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #5B6577">Typographie</span>
+<div style="display: flex; flex-direction: column; gap: 6px; padding-bottom: 18px; border-bottom: 1px solid #E1E5EB">
+<span style="font-size: 56px; line-height: 1; letter-spacing: -0.045em; font-weight: 500">Geist</span>
+<span style="font-size: 13px; color: #5B6577">Titres 500 · texte 300–400 · interlettrage serré en grand corps</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px; padding-bottom: 18px; border-bottom: 1px solid #E1E5EB">
+<span style="font-family: 'Instrument Serif', serif; font-style: italic; font-size: 56px; line-height: 1; color: #2F5BEA">Instrument Serif</span>
+<span style="font-size: 13px; color: #5B6577">Italique d’accent — un seul groupe de mots par titre, jamais en texte courant</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'Geist Mono', monospace; font-size: 22px; letter-spacing: 0.06em; text-transform: uppercase">Geist Mono · 02 — TRIOP</span>
+<span style="font-size: 13px; color: #5B6577">Étiquettes, index, données — la voix « instrument de mesure »</span>
+</div>
+<div style="margin-top: auto; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; font-family: 'Geist Mono', monospace; font-size: 11px; color: #5B6577">
+<span>H1 108/0.96</span><span>H2 76/1.02</span><span>Corps 18/1.6</span><span>Label 12/+10%</span>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 20px; padding: 28px; border-radius: 22px; background: #07090F; color: #E9EDF5; position: relative; overflow: hidden">
+<span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #8B95A8">Motif &amp; composants</span>
+<div style="display: flex; justify-content: center; padding: 8px 0">
+<svg width="220" height="220" viewBox="0 0 220 220" role="img" aria-label="Motif signature : anneaux de détection autour d’un point lumineux">
+<defs>
+<radialGradient id="sysCore" cx="50%" cy="50%" r="50%">
+<stop offset="0" stop-color="#FFFFFF" stop-opacity="0.95"></stop>
+<stop offset="0.15" stop-color="#A9C1FF" stop-opacity="0.85"></stop>
+<stop offset="0.5" stop-color="#2F5BEA" stop-opacity="0.35"></stop>
+<stop offset="1" stop-color="#2F5BEA" stop-opacity="0"></stop>
+</radialGradient>
+</defs>
+<circle cx="110" cy="110" r="100" fill="url(#sysCore)"></circle>
+<circle cx="110" cy="110" r="30" fill="none" stroke="#A9C1FF" stroke-opacity="0.7"></circle>
+<circle cx="110" cy="110" r="58" fill="none" stroke="#A9C1FF" stroke-opacity="0.38"></circle>
+<circle cx="110" cy="110" r="86" fill="none" stroke="#A9C1FF" stroke-opacity="0.2" stroke-dasharray="2 6"></circle>
+<circle cx="110" cy="110" r="5" fill="#FFFFFF"></circle>
+</svg>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 10px">
+<a href="#" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px; border-radius: 999px; background: #A9C1FF; color: #07090F; font-size: 14px; font-weight: 500; text-decoration: none">Découvrir TRIOP</a>
+<a href="#" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px; border-radius: 999px; border: 1px solid rgba(169, 193, 255, 0.3); color: #E9EDF5; font-size: 14px; text-decoration: none">Secondaire</a>
+</div>
+<div style="display: inline-flex; align-self: flex-start; align-items: center; gap: 10px; padding: 8px 14px; border: 1px solid rgba(169, 193, 255, 0.22); border-radius: 999px; font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #C3CBD9">
+<span style="width: 6px; height: 6px; border-radius: 50%; background: #A9C1FF; box-shadow: 0 0 10px #A9C1FF"></span>Étiquette signal
+</div>
+<div style="margin-top: auto; padding: 18px; border-radius: 16px; background: #0E1320; border: 1px solid rgba(169, 193, 255, 0.10); display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: #A9C1FF">02 · Au bloc</span>
+<span style="font-size: 18px; font-weight: 500; color: #FFFFFF">Carte étape</span>
+<span style="font-size: 13px; color: #A7B0C2">Rayon 22 px · filet 10 % · pas d’ombre portée</span>
+</div>
+</div>
+
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; padding-top: 24px; border-top: 1px solid #D5DAE1">
+<div style="display: flex; flex-direction: column; gap: 6px"><span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #2F5BEA">Grille</span><span style="font-size: 14px; line-height: 1.5; color: #3A4252">12 colonnes, 1280 max, marge 64. Colonne d’index fixe à 180 px à gauche des titres.</span></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #2F5BEA">Rythme</span><span style="font-size: 14px; line-height: 1.5; color: #3A4252">Sections 160 px de respiration. Alternance nuit / clair à chaque chapitre.</span></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #2F5BEA">Mouvement</span><span style="font-size: 14px; line-height: 1.5; color: #3A4252">Le halo du hero respire (4 s). Les anneaux se dessinent au scroll. Rien d’autre ne bouge.</span></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #2F5BEA">Image</span><span style="font-size: 14px; line-height: 1.5; color: #3A4252">Produit en studio sur fond nuit. Portraits N&amp;B. Aucune photo de banque d’images.</span></div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1080}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

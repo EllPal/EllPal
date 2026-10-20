@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Beams — Accueil mobile</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&amp;family=Geist+Mono:wght@400;500&amp;family=Instrument+Serif:ital@0;1&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#A9C1FF}a:hover{color:#FFFFFF}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; overflow: hidden; position: relative; background: #07090F; color: #E9EDF5; font-family: Geist, system-ui, sans-serif; display: flex; flex-direction: column">
+
+<nav aria-label="Navigation principale" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid rgba(169, 193, 255, 0.10)">
+<a href="#top" style="display: flex; align-items: center; gap: 8px; text-decoration: none; color: #FFFFFF">
+<svg width="22" height="22" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="12" fill="none" stroke="#A9C1FF" stroke-opacity="0.35"></circle><circle cx="13" cy="13" r="7" fill="none" stroke="#A9C1FF" stroke-opacity="0.7"></circle><circle cx="13" cy="13" r="2.6" fill="#A9C1FF"></circle></svg>
+<span style="font-size: 19px; font-weight: 600; letter-spacing: -0.04em">beams</span>
+</a>
+<button type="button" aria-label="Ouvrir le menu" style="width: 44px; height: 44px; border-radius: 999px; border: 1px solid rgba(169, 193, 255, 0.25); background: transparent; color: #E9EDF5; display: flex; align-items: center; justify-content: center; cursor: pointer">
+<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 6h12M3 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
+</button>
+</nav>
+
+<div style="padding: 28px 20px 0; display: flex; flex-direction: column; gap: 20px">
+<div style="display: inline-flex; align-self: flex-start; align-items: center; gap: 8px; padding: 7px 12px; border: 1px solid rgba(169, 193, 255, 0.22); border-radius: 999px; font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #C3CBD9">
+<span style="width: 6px; height: 6px; border-radius: 50%; background: #A9C1FF; box-shadow: 0 0 10px #A9C1FF"></span>TRIOP · Sonde β
+</div>
+<h1 style="margin: 0; font-size: 46px; line-height: 0.98; letter-spacing: -0.045em; font-weight: 500; color: #FFFFFF">Retirer toute la tumeur. <span style="font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; letter-spacing: -0.02em; color: #A9C1FF">Rien de plus.</span></h1>
+<p style="margin: 0; font-size: 16px; line-height: 1.55; color: #A7B0C2; font-weight: 300">Une sonde chirurgicale qui détecte en temps réel les cellules tumorales résiduelles pendant l’opération.</p>
+</div>
+
+<div style="position: relative; flex: 1 1 auto; min-height: 0; display: flex; justify-content: center; align-items: center">
+<svg viewBox="0 0 390 300" aria-hidden="true" style="width: 100%; height: auto; display: block">
+<defs>
+<radialGradient id="mCore" cx="50%" cy="50%" r="50%">
+<stop offset="0" stop-color="#FFFFFF" stop-opacity="0.95"></stop>
+<stop offset="0.12" stop-color="#A9C1FF" stop-opacity="0.9"></stop>
+<stop offset="0.42" stop-color="#2F5BEA" stop-opacity="0.45"></stop>
+<stop offset="1" stop-color="#2F5BEA" stop-opacity="0"></stop>
+</radialGradient>
+<linearGradient id="mBeam" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#A9C1FF" stop-opacity="0"></stop>
+<stop offset="1" stop-color="#A9C1FF" stop-opacity="1"></stop>
+</linearGradient>
+</defs>
+<circle cx="195" cy="190" r="150" fill="url(#mCore)"></circle>
+<circle cx="195" cy="190" r="42" fill="none" stroke="#A9C1FF" stroke-opacity="0.7"></circle>
+<circle cx="195" cy="190" r="80" fill="none" stroke="#A9C1FF" stroke-opacity="0.38"></circle>
+<circle cx="195" cy="190" r="120" fill="none" stroke="#A9C1FF" stroke-opacity="0.2" stroke-dasharray="2 6"></circle>
+<rect x="194" y="90" width="2" height="100" fill="url(#mBeam)"></rect>
+<rect x="183" y="-20" width="24" height="112" rx="12" fill="#1A2233" stroke="#A9C1FF" stroke-opacity="0.35"></rect>
+<circle cx="195" cy="190" r="5" fill="#FFFFFF"></circle>
+<circle cx="232" cy="166" r="2.4" fill="#A9C1FF"></circle>
+<circle cx="160" cy="214" r="2" fill="#A9C1FF" fill-opacity="0.8"></circle>
+<circle cx="226" cy="230" r="1.6" fill="#FFFFFF" fill-opacity="0.8"></circle>
+</svg>
+</div>
+
+<div style="padding: 0 20px 28px; display: flex; flex-direction: column; gap: 10px">
+<a href="#technologie" style="display: flex; align-items: center; justify-content: center; min-height: 52px; border-radius: 999px; background: #A9C1FF; color: #07090F; font-size: 15px; font-weight: 500; text-decoration: none">Découvrir TRIOP</a>
+<a href="#contact" style="display: flex; align-items: center; justify-content: center; min-height: 52px; border-radius: 999px; border: 1px solid rgba(169, 193, 255, 0.3); color: #E9EDF5; font-size: 15px; text-decoration: none">Partenariats cliniques</a>
+<span style="margin-top: 8px; text-align: center; font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #8B95A8">Spin-off CNRS · Lauréat i-Lab 2023</span>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>
