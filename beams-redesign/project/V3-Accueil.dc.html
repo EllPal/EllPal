@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Beams — Accueil</title>
 <script src="./support.js"></script>
-<script src="/_blob/5abe107b34da928d153e941a221f4641"></script>
+<script src="/_blob/762b2ada0b8380f356e2905e1bea5bb5"></script>
 </head>
 <body>
 <x-dc>
@@ -42,20 +42,24 @@ a:hover .arrow{transform:translateX(4px)}
 .eclipse{position:absolute;border-radius:50%;background:#0B0C0F;box-shadow:0 -50px 160px -40px rgba(55,191,239,.55),0 -20px 90px -30px rgba(119,58,237,.6),inset 0 60px 120px -60px rgba(55,191,239,.35)}
 .eclipse::before{content:"";position:absolute;inset:0;border-radius:50%;padding:1.5px;background:conic-gradient(from var(--a),rgba(134,197,255,.08) 0deg,rgba(134,197,255,.08) 300deg,#86C5FF 330deg,#FFFFFF 340deg,#AF7DFF 350deg,rgba(134,197,255,.08) 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 18s linear infinite}
 .eclipse::after{content:"";position:absolute;inset:0;border-radius:50%;padding:1.5px;background:linear-gradient(180deg,rgba(190,220,255,.95) 0%,rgba(175,125,255,.45) 5%,transparent 12%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
-.halo-ring{position:absolute;border-radius:50%;padding:1.5px;background:conic-gradient(from var(--a),transparent 0deg,transparent 150deg,rgba(134,197,255,.95) 220deg,rgba(175,125,255,.95) 270deg,transparent 330deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 9s linear infinite}
-.halo-ring.rev{animation-direction:reverse;animation-duration:15s;opacity:.55}
-.petal{animation:petal 4.8s cubic-bezier(.4,0,.2,1) infinite both}
-@keyframes petal{0%,100%{opacity:.26}9%{opacity:1}34%{opacity:.5}}
-.petal-glow{animation:petalG 4.8s cubic-bezier(.4,0,.2,1) infinite both}
-@keyframes petalG{0%,100%{opacity:0}9%{opacity:.95}34%{opacity:0}}
-.sunrise{animation:sunrise 2.6s cubic-bezier(.16,1,.3,1) .25s both}
-@keyframes sunrise{from{transform:translateY(42%);opacity:0;filter:blur(10px)}}
-.para{transform:translate(calc(var(--hx,0) * 18px),calc(var(--hy,0) * 12px));transition:transform 1.2s cubic-bezier(.16,1,.3,1)}
+.planet{position:absolute;border-radius:50%;overflow:hidden;background:#0C0D11;box-shadow:0 -60px 180px -40px rgba(55,191,239,.6),0 -24px 100px -30px rgba(119,58,237,.65)}
+.planet::before{content:"";position:absolute;inset:0;border-radius:50%;padding:1.5px;background:conic-gradient(from var(--a),rgba(134,197,255,.08) 0deg,rgba(134,197,255,.08) 300deg,#86C5FF 330deg,#FFFFFF 340deg,#AF7DFF 350deg,rgba(134,197,255,.08) 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 18s linear infinite;z-index:3}
+.planet::after{content:"";position:absolute;inset:0;border-radius:50%;padding:1.5px;background:linear-gradient(180deg,rgba(190,220,255,.95) 0%,rgba(175,125,255,.45) 4%,transparent 10%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;z-index:3}
+.planet-par{transform:translate(calc(var(--hx,0) * -14px),calc(var(--hy,0) * -6px)) rotate(calc(var(--hx,0) * 2.5deg));transition:transform 1.6s cubic-bezier(.16,1,.3,1)}
+.planet-spin{animation:spinT 260s linear infinite}
+.rise-planet{animation:risePlanet 2.8s cubic-bezier(.16,1,.3,1) .2s both}
+@keyframes risePlanet{from{transform:translateY(18%);opacity:0}}
+.petal-d{animation:petalD 7.2s cubic-bezier(.4,0,.2,1) infinite both}
+@keyframes petalD{0%,100%{opacity:.16}9%{opacity:.62}34%{opacity:.28}}
 .para-rev{transform:translate(calc(var(--hx,0) * -12px),calc(var(--hy,0) * -8px));transition:transform 1.4s cubic-bezier(.16,1,.3,1)}
-.pingc{animation:pingc 4.8s cubic-bezier(0,0,.2,1) infinite both}
-@keyframes pingc{0%{transform:scale(.92);opacity:.6}100%{transform:scale(1.85);opacity:0}}
 .shoot{animation:shoot 4.8s cubic-bezier(.6,0,.25,1) infinite both}
 @keyframes shoot{0%{transform:translateX(-100%);opacity:0}10%{opacity:1}46%{transform:translateX(0);opacity:1}54%,100%{transform:translateX(0);opacity:0}}
+.impact{animation:impact 4.8s cubic-bezier(0,0,.2,1) infinite both}
+@keyframes impact{0%,45%{transform:translate(-50%,-50%) scale(.2);opacity:0}48%{opacity:1}75%,100%{transform:translate(-50%,-50%) scale(1);opacity:0}}
+.petal{animation:petal 4.8s cubic-bezier(.4,0,.2,1) infinite both}
+@keyframes petal{0%,100%{opacity:.26}9%{opacity:1}34%{opacity:.5}}
+.pingc{animation:pingc 4.8s cubic-bezier(0,0,.2,1) infinite both}
+@keyframes pingc{0%{transform:scale(.92);opacity:.6}100%{transform:scale(1.85);opacity:0}}
 .spot{position:relative;isolation:isolate;--mx:-999px;--my:-999px}
 .spot::before{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(560px circle at var(--mx) var(--my),rgba(134,197,255,.09),transparent 42%);opacity:0;transition:opacity .5s;pointer-events:none;z-index:0}
 .spot::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:radial-gradient(420px circle at var(--mx) var(--my),rgba(134,197,255,.8),rgba(175,125,255,.38) 25%,transparent 55%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .5s;pointer-events:none;z-index:3}
@@ -63,12 +67,18 @@ a:hover .arrow{transform:translateX(4px)}
 .spot:hover::before{opacity:1}
 .lift{transition:transform .7s cubic-bezier(.16,1,.3,1)}
 .lift:hover{transform:translateY(-4px)}
-.travel{animation:travel 4.2s cubic-bezier(.65,0,.35,1) infinite both}
-@keyframes travel{0%{width:12%;opacity:0}8%{opacity:1}78%{width:88%;opacity:1}88%,100%{width:88%;opacity:0}}
-.node{animation:node 4.2s ease-out infinite both}
-@keyframes node{0%{background:#22242B;box-shadow:0 0 0 1px rgba(255,255,255,.12)}6%{background:#86C5FF;box-shadow:0 0 0 7px rgba(134,197,255,.14),0 0 30px rgba(134,197,255,.9)}50%{background:#86C5FF;box-shadow:0 0 0 1px rgba(134,197,255,.5),0 0 14px rgba(134,197,255,.5)}75%,100%{background:#22242B;box-shadow:0 0 0 1px rgba(255,255,255,.12)}}
-.wave{animation:wave 4s linear infinite}
-@keyframes wave{to{transform:translateX(-50%)}}
+.run{stroke-dashoffset:var(--l);animation:run 5s infinite both}
+@keyframes run{0%{stroke-dashoffset:var(--l);opacity:0;animation-timing-function:cubic-bezier(.7,0,.3,1)}5%{opacity:1}38%{stroke-dashoffset:calc(var(--l) - 500);animation-timing-function:linear}50%{stroke-dashoffset:calc(var(--l) - 500);animation-timing-function:cubic-bezier(.7,0,.3,1)}86%{stroke-dashoffset:calc(var(--l) - 1000);opacity:1}94%,100%{stroke-dashoffset:calc(var(--l) - 1000);opacity:0}}
+.trackfill{animation:trackfill 5s infinite both}
+@keyframes trackfill{0%{stroke-dashoffset:1000;opacity:0;animation-timing-function:cubic-bezier(.7,0,.3,1)}5%{opacity:.7}38%{stroke-dashoffset:500;animation-timing-function:linear}50%{stroke-dashoffset:500;animation-timing-function:cubic-bezier(.7,0,.3,1)}86%{stroke-dashoffset:0;opacity:.7}100%{stroke-dashoffset:0;opacity:0}}
+.node-on{animation:nodeOn 5s ease-out infinite both}
+@keyframes nodeOn{0%{opacity:0}3%{opacity:1}55%{opacity:.55}96%,100%{opacity:0}}
+.node-ping{transform-box:fill-box;transform-origin:center;animation:nodePing 5s cubic-bezier(0,0,.2,1) infinite both}
+@keyframes nodePing{0%{transform:scale(1);opacity:.9}28%{transform:scale(5);opacity:0}100%{transform:scale(5);opacity:0}}
+.scroll{animation:scrollX 9s linear infinite}
+@keyframes scrollX{to{transform:translateX(-50%)}}
+.nowdot{animation:nowdot 1.6s ease-out infinite}
+@keyframes nowdot{0%{box-shadow:0 0 0 0 rgba(55,191,239,.7)}100%{box-shadow:0 0 0 10px rgba(55,191,239,0)}}
 .suck{animation:suck 2.4s cubic-bezier(.55,0,.8,.2) infinite both}
 @keyframes suck{0%{transform:translate(0,0) scale(1);opacity:0}15%{opacity:1}100%{transform:translate(var(--sx),-104px) scale(.3);opacity:0}}
 .range-b{animation:rangeB 3s ease-in-out infinite}
@@ -81,8 +91,6 @@ a:hover .arrow{transform:translateX(4px)}
 .marquee{display:flex;width:max-content;animation:marquee 50s linear infinite}
 @keyframes marquee{to{transform:translateX(-50%)}}
 .fade-edges{-webkit-mask-image:linear-gradient(90deg,transparent,#000 15%,#000 85%,transparent);mask-image:linear-gradient(90deg,transparent,#000 15%,#000 85%,transparent)}
-.portal .pglow{transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
-.portal:hover .pglow{opacity:1;transform:scale(1.1)}
 .portrait .ini{transition:transform 1s cubic-bezier(.16,1,.3,1),letter-spacing 1s cubic-bezier(.16,1,.3,1)}
 .portrait:hover .ini{transform:scale(1.06);letter-spacing:.02em}
 triop-simulateur{display:block;--triop-font:'Jost',system-ui,sans-serif;--triop-height:560px}
@@ -94,22 +102,15 @@ triop-simulateur::part(window){--page:#0F1014;--card:#15161B;--line:rgba(255,255
 @keyframes tilt{from{transform:perspective(1600px) rotateX(24deg) scale(.9);opacity:.35}}
 .ink{animation:ink linear both;animation-timeline:view();animation-range:cover 20% cover 42%}
 @keyframes ink{from{color:#34363E}}
-.vdraw{transform-origin:top center;animation:vdraw linear both;animation-timeline:view();animation-range:entry 30% exit 60%}
-@keyframes vdraw{from{transform:scaleY(0)}}
-.lit{animation:lit linear both;animation-timeline:view();animation-range:entry 70% cover 45%}
-@keyframes lit{from{background-color:#22242B;box-shadow:0 0 0 1px rgba(255,255,255,.12)}}
-.exit-up{animation:exitUp linear both;animation-timeline:view();animation-range:exit 0% exit 100%}
-@keyframes exitUp{to{transform:translateY(-22%) scale(1.12);opacity:.15;filter:blur(6px)}}
 .hline{transform-origin:center;animation:hline linear both;animation-timeline:view();animation-range:entry 20% cover 40%}
 @keyframes hline{from{transform:scaleX(0);opacity:0}}
 }
 .still *,.still *::before,.still *::after{animation:none!important;transition:none!important}
-@media (prefers-reduced-motion: reduce){.v3 *,.v3 *::before,.v3 *::after{animation:none!important;transition:none!important}}
+@media (prefers-reduced-motion: reduce){.v3 *,.v3 *::before,.v3 *::after{animation:none!important;transition:none!important}.run{stroke-dashoffset:calc(var(--l) - 500)}}
 .nav-links{display:flex}
 .span2{grid-column:span 2}
 .span-all{grid-column:1 / -1}
-.sticky-col{position:sticky;top:120px}
-@media (max-width: 960px){.nav-links{display:none}.sticky-col{position:static}}
+@media (max-width: 960px){.nav-links{display:none}}
 @media (max-width: 720px){.span2{grid-column:auto}.hide-sm{display:none}}
 </style>
 </helmet>
@@ -123,10 +124,9 @@ triop-simulateur::part(window){--page:#0F1014;--card:#15161B;--line:rgba(255,255
 </a>
 <div class="nav-links" style="align-items: center; gap: 34px; font-size: 15px">
 <a class="navlink" href="#plateforme">Technologie</a>
-<a class="navlink" href="#produit">Simulateur</a>
-<a class="navlink" href="#indications">Indications</a>
-<a class="navlink" href="#parcours">Clinique</a>
+<a class="navlink" href="#produit">Démonstration</a>
 <a class="navlink" href="V3-Equipe.dc.html">Équipe</a>
+<a class="navlink" href="V3-Media.dc.html">Média</a>
 </div>
 <div style="display: flex; align-items: center; gap: 12px">
 <a class="btn-g hide-sm" href="V3-Contact.dc.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.12); color: #E4E5E9; font-size: 14px; text-decoration: none">Nous rejoindre</a>
@@ -135,7 +135,7 @@ triop-simulateur::part(window){--page:#0F1014;--card:#15161B;--line:rgba(255,255
 </nav>
 </header>
 
-<!-- HERO : lever de sonde -->
+<!-- HERO : la sonde comme horizon -->
 <section id="top" onMouseMove="{{heroMove}}" style="position: relative; overflow: hidden">
 <div aria-hidden="true" class="para-rev" style="position: absolute; inset: -20px">
 <sc-for list="{{stars}}" as="s" hint-placeholder-count="30"><span class="twinkle" style="{{s}}"></span></sc-for>
@@ -155,57 +155,54 @@ triop-simulateur::part(window){--page:#0F1014;--card:#15161B;--line:rgba(255,255
 </h1>
 <p class="blur-in" style="margin: 0; max-width: 560px; font-size: clamp(17px, 1.5vw, 20px); line-height: 1.6; color: #A3A6AF; animation-delay: 0.68s">TRIOP détecte en temps réel, au contact du tissu, les cellules tumorales que l’œil ne voit pas. Le chirurgien ne change pas de geste : il gagne un sens.</p>
 <div class="blur-in" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; animation-delay: 0.82s">
-<a class="btn-v" href="#produit" style="display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 26px; border-radius: 999px; background: #773AED; color: #FFFFFF; font-size: 16px; font-weight: 500; text-decoration: none">Essayer le simulateur <svg class="arrow" width="16" height="16" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
+<a class="btn-v" href="#produit" style="display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 26px; border-radius: 999px; background: #773AED; color: #FFFFFF; font-size: 16px; font-weight: 500; text-decoration: none">Essayer la détection <svg class="arrow" width="16" height="16" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
 <a class="btn-g" href="V3-Contact.dc.html" style="display: inline-flex; align-items: center; min-height: 52px; padding: 0 26px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(255, 255, 255, 0.03); color: #FFFFFF; font-size: 16px; text-decoration: none">Partenariats cliniques</a>
 </div>
 </div>
 
-<div style="position: relative; height: clamp(440px, 48vw, 660px); margin-top: clamp(28px, 4vw, 56px)">
-<div class="exit-up" style="position: absolute; left: 50%; top: 0; width: clamp(280px, 32vw, 430px); aspect-ratio: 1 / 1; margin-left: calc(clamp(280px, 32vw, 430px) / -2)">
-<div class="sunrise" style="position: absolute; inset: 0">
-<div class="para" style="position: absolute; inset: 0">
-<span aria-hidden="true" class="breathe" style="position: absolute; inset: -60%; border-radius: 50%; background: radial-gradient(closest-side, rgba(55, 191, 239, 0.32), rgba(119, 58, 237, 0.16) 55%, transparent)"></span>
-<span aria-hidden="true" class="pingc" style="position: absolute; inset: 0; border-radius: 50%; border: 1px solid rgba(134, 197, 255, 0.6)"></span>
-<span aria-hidden="true" class="pingc" style="position: absolute; inset: 0; border-radius: 50%; border: 1px solid rgba(175, 125, 255, 0.5); animation-delay: 2.4s"></span>
-<span aria-hidden="true" class="halo-ring" style="inset: -16px"></span>
-<span aria-hidden="true" class="halo-ring rev" style="inset: -34px"></span>
-<svg viewBox="0 0 315 315" role="img" aria-label="Face de détection de la sonde TRIOP : six pétales qui s’allument tour à tour" style="position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 30px 60px rgba(55, 191, 239, 0.25))">
-<defs><filter id="pg" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="10"></feGaussianBlur></filter></defs>
-<circle cx="157.5" cy="157.5" r="157.5" fill="#F7F8FA"></circle>
+<div style="position: relative; height: clamp(420px, 44vw, 620px); margin-top: clamp(20px, 3vw, 40px)">
+<div aria-hidden="true" class="shoot hide-sm" style="position: absolute; z-index: 4; left: 0; top: calc(clamp(110px, 11vw, 160px) - 26px); width: 50%; height: 20px; display: flex; justify-content: flex-end">
+<svg viewBox="0 33.5 59.4 9.3" width="200" height="31" style="filter: drop-shadow(0 0 10px rgba(55, 191, 239, 0.95))"><path fill="#37BFEF" d="{{logoBeam}}"></path></svg>
+</div>
+<span aria-hidden="true" class="impact" style="position: absolute; z-index: 4; left: 50%; top: calc(clamp(110px, 11vw, 160px) - 16px); width: 260px; height: 70px; border-radius: 50%; border: 1px solid rgba(134, 197, 255, 0.8); box-shadow: 0 0 30px rgba(134, 197, 255, 0.6), inset 0 0 20px rgba(134, 197, 255, 0.4)"></span>
+
+<div class="rise-planet" style="position: absolute; z-index: 3; left: 50%; top: clamp(110px, 11vw, 160px); width: 1800px; height: 1800px; margin-left: -900px">
+<div class="planet-par" style="position: absolute; inset: 0">
+<div class="planet" role="img" aria-label="La face de détection de la sonde TRIOP, agrandie, forme l’horizon : ses six pétales s’allument tour à tour" style="inset: 0">
+<div class="planet-spin" style="position: absolute; inset: 0">
+<svg viewBox="0 0 315 315" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block">
+<defs>
+<radialGradient id="planetShade" cx="50%" cy="0%" r="75%"><stop offset="0" stop-color="#FFFFFF" stop-opacity="0.07"></stop><stop offset="0.5" stop-color="#FFFFFF" stop-opacity="0.015"></stop><stop offset="1" stop-color="#000000" stop-opacity="0.35"></stop></radialGradient>
+<filter id="pBlur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3"></feGaussianBlur></filter>
+</defs>
+<circle cx="157.5" cy="157.5" r="157.5" fill="#0C0D11"></circle>
 <g transform="rotate(-30 157.5 157.5)">
-<path class="petal-glow" filter="url(#pg)" fill="#45C0F5" style="animation-delay: 0s" d="M166.379 41.3693V120.025C166.379 129.847 177.009 135.979 185.509 131.066L253.633 91.7448C263.147 86.2512 264.92 73.3927 257.474 65.3132C238.943 45.2416 214.448 30.7707 186.8 24.701C176.29 22.3919 166.379 30.601 166.379 41.3693Z"></path>
-<path class="petal-glow" filter="url(#pg)" fill="#4478FB" style="animation-delay: 1.6s" d="M186.8 290.291C214.444 284.221 238.943 269.754 257.47 249.678C264.92 241.599 263.147 228.749 253.633 223.251L185.509 183.925C177.009 179.021 166.379 185.149 166.379 194.966V273.627C166.379 284.395 176.286 292.595 186.8 290.291Z"></path>
-<path class="petal-glow" filter="url(#pg)" fill="#773AED" style="animation-delay: 3.2s" d="M52.4594 107.109C42.959 101.62 30.9351 106.484 27.6566 116.971C23.6635 129.767 21.4883 143.384 21.4883 157.498C21.4883 171.616 23.6635 185.22 27.6566 198.021C30.9351 208.503 42.959 213.372 52.4594 207.878L120.61 168.539C129.106 163.626 129.106 151.357 120.61 146.453L52.4594 107.109Z"></path>
-<path class="petal-glow" filter="url(#pg)" fill="#45C0F5" style="animation-delay: 0.8s" d="M287.353 116.978C284.07 106.491 272.051 101.631 262.541 107.116L194.391 146.46C185.891 151.364 185.891 163.633 194.391 168.55L262.541 207.889C272.051 213.378 284.07 208.51 287.34 198.028C291.346 185.227 293.512 171.623 293.512 157.505C293.512 143.391 291.346 129.774 287.353 116.978Z"></path>
-<path class="petal-glow" filter="url(#pg)" fill="#4478FB" style="animation-delay: 4s" d="M61.3669 91.739L129.495 131.069C137.986 135.978 148.621 129.846 148.621 120.024V41.3635C148.621 30.6041 138.705 22.395 128.196 24.6996C100.548 30.7738 76.0441 45.2402 57.5302 65.3118C50.071 73.3914 51.8532 86.2499 61.3669 91.739Z"></path>
-<path class="petal-glow" filter="url(#pg)" fill="#773AED" style="animation-delay: 2.4s" d="M129.491 183.929L61.3669 223.255C51.8532 228.753 50.071 241.603 57.5302 249.682C76.0441 269.758 100.543 284.225 128.196 290.295C138.705 292.599 148.621 284.399 148.621 273.626V194.97C148.621 185.153 138 179.025 129.491 183.929Z"></path>
-<path class="petal" fill="#45C0F5" style="animation-delay: 0s" d="M166.379 41.3693V120.025C166.379 129.847 177.009 135.979 185.509 131.066L253.633 91.7448C263.147 86.2512 264.92 73.3927 257.474 65.3132C238.943 45.2416 214.448 30.7707 186.8 24.701C176.29 22.3919 166.379 30.601 166.379 41.3693Z"></path>
-<path class="petal" fill="#4478FB" style="animation-delay: 1.6s" d="M186.8 290.291C214.444 284.221 238.943 269.754 257.47 249.678C264.92 241.599 263.147 228.749 253.633 223.251L185.509 183.925C177.009 179.021 166.379 185.149 166.379 194.966V273.627C166.379 284.395 176.286 292.595 186.8 290.291Z"></path>
-<path class="petal" fill="#773AED" style="animation-delay: 3.2s" d="M52.4594 107.109C42.959 101.62 30.9351 106.484 27.6566 116.971C23.6635 129.767 21.4883 143.384 21.4883 157.498C21.4883 171.616 23.6635 185.22 27.6566 198.021C30.9351 208.503 42.959 213.372 52.4594 207.878L120.61 168.539C129.106 163.626 129.106 151.357 120.61 146.453L52.4594 107.109Z"></path>
-<path class="petal" fill="#45C0F5" style="animation-delay: 0.8s" d="M287.353 116.978C284.07 106.491 272.051 101.631 262.541 107.116L194.391 146.46C185.891 151.364 185.891 163.633 194.391 168.55L262.541 207.889C272.051 213.378 284.07 208.51 287.34 198.028C291.346 185.227 293.512 171.623 293.512 157.505C293.512 143.391 291.346 129.774 287.353 116.978Z"></path>
-<path class="petal" fill="#4478FB" style="animation-delay: 4s" d="M61.3669 91.739L129.495 131.069C137.986 135.978 148.621 129.846 148.621 120.024V41.3635C148.621 30.6041 138.705 22.395 128.196 24.6996C100.548 30.7738 76.0441 45.2402 57.5302 65.3118C50.071 73.3914 51.8532 86.2499 61.3669 91.739Z"></path>
-<path class="petal" fill="#773AED" style="animation-delay: 2.4s" d="M129.491 183.929L61.3669 223.255C51.8532 228.753 50.071 241.603 57.5302 249.682C76.0441 269.758 100.543 284.225 128.196 290.295C138.705 292.599 148.621 284.399 148.621 273.626V194.97C148.621 185.153 138 179.025 129.491 183.929Z"></path>
+<path class="petal-d" filter="url(#pBlur)" fill="#45C0F5" style="animation-delay: 0s" d="M166.379 41.3693V120.025C166.379 129.847 177.009 135.979 185.509 131.066L253.633 91.7448C263.147 86.2512 264.92 73.3927 257.474 65.3132C238.943 45.2416 214.448 30.7707 186.8 24.701C176.29 22.3919 166.379 30.601 166.379 41.3693Z"></path>
+<path class="petal-d" filter="url(#pBlur)" fill="#4478FB" style="animation-delay: 2.4s" d="M186.8 290.291C214.444 284.221 238.943 269.754 257.47 249.678C264.92 241.599 263.147 228.749 253.633 223.251L185.509 183.925C177.009 179.021 166.379 185.149 166.379 194.966V273.627C166.379 284.395 176.286 292.595 186.8 290.291Z"></path>
+<path class="petal-d" filter="url(#pBlur)" fill="#773AED" style="animation-delay: 4.8s" d="M52.4594 107.109C42.959 101.62 30.9351 106.484 27.6566 116.971C23.6635 129.767 21.4883 143.384 21.4883 157.498C21.4883 171.616 23.6635 185.22 27.6566 198.021C30.9351 208.503 42.959 213.372 52.4594 207.878L120.61 168.539C129.106 163.626 129.106 151.357 120.61 146.453L52.4594 107.109Z"></path>
+<path class="petal-d" filter="url(#pBlur)" fill="#45C0F5" style="animation-delay: 1.2s" d="M287.353 116.978C284.07 106.491 272.051 101.631 262.541 107.116L194.391 146.46C185.891 151.364 185.891 163.633 194.391 168.55L262.541 207.889C272.051 213.378 284.07 208.51 287.34 198.028C291.346 185.227 293.512 171.623 293.512 157.505C293.512 143.391 291.346 129.774 287.353 116.978Z"></path>
+<path class="petal-d" filter="url(#pBlur)" fill="#4478FB" style="animation-delay: 6s" d="M61.3669 91.739L129.495 131.069C137.986 135.978 148.621 129.846 148.621 120.024V41.3635C148.621 30.6041 138.705 22.395 128.196 24.6996C100.548 30.7738 76.0441 45.2402 57.5302 65.3118C50.071 73.3914 51.8532 86.2499 61.3669 91.739Z"></path>
+<path class="petal-d" filter="url(#pBlur)" fill="#773AED" style="animation-delay: 3.6s" d="M129.491 183.929L61.3669 223.255C51.8532 228.753 50.071 241.603 57.5302 249.682C76.0441 269.758 100.543 284.225 128.196 290.295C138.705 292.599 148.621 284.399 148.621 273.626V194.97C148.621 185.153 138 179.025 129.491 183.929Z"></path>
+<g fill="none" stroke="#FFFFFF" stroke-opacity="0.07" stroke-width="0.35">
+<path d="M166.379 41.3693V120.025C166.379 129.847 177.009 135.979 185.509 131.066L253.633 91.7448C263.147 86.2512 264.92 73.3927 257.474 65.3132C238.943 45.2416 214.448 30.7707 186.8 24.701C176.29 22.3919 166.379 30.601 166.379 41.3693Z"></path>
+<path d="M186.8 290.291C214.444 284.221 238.943 269.754 257.47 249.678C264.92 241.599 263.147 228.749 253.633 223.251L185.509 183.925C177.009 179.021 166.379 185.149 166.379 194.966V273.627C166.379 284.395 176.286 292.595 186.8 290.291Z"></path>
+<path d="M52.4594 107.109C42.959 101.62 30.9351 106.484 27.6566 116.971C23.6635 129.767 21.4883 143.384 21.4883 157.498C21.4883 171.616 23.6635 185.22 27.6566 198.021C30.9351 208.503 42.959 213.372 52.4594 207.878L120.61 168.539C129.106 163.626 129.106 151.357 120.61 146.453L52.4594 107.109Z"></path>
+<path d="M287.353 116.978C284.07 106.491 272.051 101.631 262.541 107.116L194.391 146.46C185.891 151.364 185.891 163.633 194.391 168.55L262.541 207.889C272.051 213.378 284.07 208.51 287.34 198.028C291.346 185.227 293.512 171.623 293.512 157.505C293.512 143.391 291.346 129.774 287.353 116.978Z"></path>
+<path d="M61.3669 91.739L129.495 131.069C137.986 135.978 148.621 129.846 148.621 120.024V41.3635C148.621 30.6041 138.705 22.395 128.196 24.6996C100.548 30.7738 76.0441 45.2402 57.5302 65.3118C50.071 73.3914 51.8532 86.2499 61.3669 91.739Z"></path>
+<path d="M129.491 183.929L61.3669 223.255C51.8532 228.753 50.071 241.603 57.5302 249.682C76.0441 269.758 100.543 284.225 128.196 290.295C138.705 292.599 148.621 284.399 148.621 273.626V194.97C148.621 185.153 138 179.025 129.491 183.929Z"></path>
 </g>
-<circle cx="157.5" cy="157.5" r="21" fill="#ECEDEF"></circle>
-<circle cx="157.5" cy="157.5" r="4" fill="#42444C"></circle>
+</g>
+<circle cx="157.5" cy="157.5" r="21" fill="#121318" stroke="#FFFFFF" stroke-opacity="0.06" stroke-width="0.35"></circle>
+<circle cx="157.5" cy="157.5" r="157.5" fill="url(#planetShade)"></circle>
 </svg>
 </div>
 </div>
 </div>
-
-<div aria-hidden="true" class="shoot hide-sm" style="position: absolute; left: 0; top: clamp(130px, 15vw, 200px); width: calc(50% - clamp(150px, 17vw, 230px)); height: 20px; display: flex; justify-content: flex-end; z-index: 2">
-<svg viewBox="0 33.5 59.4 9.3" width="180" height="28" style="filter: drop-shadow(0 0 10px rgba(55, 191, 239, 0.9))"><path fill="#37BFEF" d="{{logoBeam}}"></path></svg>
-</div>
-<div aria-hidden="true" class="shoot hide-sm" style="position: absolute; left: 0; top: clamp(170px, 19vw, 260px); width: calc(50% - clamp(146px, 16.5vw, 224px)); height: 20px; display: flex; justify-content: flex-end; z-index: 2; animation-delay: 0.35s">
-<svg viewBox="0 33.5 59.4 9.3" width="110" height="17" style="filter: drop-shadow(0 0 8px rgba(119, 58, 237, 0.9))"><path fill="#AF7DFF" d="{{logoBeam}}"></path></svg>
 </div>
 
-<div aria-hidden="true" class="hide-sm" style="position: absolute; z-index: 6; left: calc(50% + clamp(170px, 19vw, 260px)); top: clamp(60px, 7vw, 100px); display: flex; align-items: center; gap: 12px">
-<span style="width: 56px; height: 1px; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5))"></span>
-<span style="font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #A3A6AF; white-space: nowrap">Face de détection · 6 pétales β</span>
+<div style="position: absolute; z-index: 5; left: 0; right: 0; top: calc(clamp(110px, 11vw, 160px) + clamp(40px, 5vw, 70px)); display: flex; justify-content: center">
+<span style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #8A8D97">Face de détection TRIOP · 6 pétales β</span>
 </div>
-
-<div aria-hidden="true" class="eclipse" style="left: 50%; top: clamp(250px, 29vw, 400px); width: 2600px; height: 2600px; margin-left: -1300px; z-index: 3"></div>
 
 <div style="position: absolute; z-index: 5; left: 0; right: 0; bottom: clamp(24px, 4vw, 56px); display: flex; flex-direction: column; align-items: center; gap: 22px">
 <span style="font-size: 14px; color: #8A8D97">Issue de la recherche publique française, soutenue par</span>
@@ -229,11 +226,11 @@ triop-simulateur::part(window){--page:#0F1014;--card:#15161B;--line:rgba(255,255
 </div>
 </section>
 
-<!-- SIMULATEUR -->
+<!-- DEMONSTRATION -->
 <section id="produit" style="position: relative">
 <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(16px, 3vw, 32px) clamp(96px, 12vw, 176px); display: flex; flex-direction: column; gap: 56px">
 <div class="reveal" style="display: flex; flex-direction: column; align-items: center; gap: 20px; text-align: center">
-<span style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #A3A6AF"><span style="width: 5px; height: 5px; border-radius: 50%; background: #86C5FF"></span>Le simulateur TRIOP</span>
+<span style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #A3A6AF"><span style="width: 5px; height: 5px; border-radius: 50%; background: #86C5FF"></span>Au bout de la sonde</span>
 <h2 style="margin: 0; max-width: 900px; font-size: clamp(38px, 5vw, 72px); line-height: 1; letter-spacing: -0.035em; font-weight: 700"><span class="tg">Cherchez le résidu.</span> <span class="tg2" style="font-weight: 200">La sonde l’entend.</span></h2>
 <p style="margin: 0; max-width: 600px; font-size: 18px; line-height: 1.6; color: #A3A6AF">Les cellules tumorales sont à peine plus marquées que le tissu sain. Survolez le lit tumoral : chaque pétale compte les particules β de son secteur et indique d’où vient le signal.</p>
 </div>
@@ -245,12 +242,9 @@ triop-simulateur::part(window){--page:#0F1014;--card:#15161B;--line:rgba(255,255
 <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 16px; padding: 14px 18px; border-bottom: 1px solid rgba(255, 255, 255, 0.06); background: rgba(255, 255, 255, 0.02)">
 <div style="display: flex; align-items: center; gap: 12px">
 <svg viewBox="0 0 101 100" width="24" height="24" role="img" aria-label="Symbole Beams"><path fill="#37BFEF" d="{{logoBeam}}"></path><path fill="#FFFFFF" d="{{logoBeta}}"></path></svg>
-<span style="font-size: 14px; font-weight: 500; color: #E4E5E9">TRIOP · Simulateur</span>
+<span style="font-size: 14px; font-weight: 500; color: #E4E5E9">TRIOP · Démonstration</span>
 </div>
-<div style="display: flex; flex-wrap: wrap; gap: 8px">
-<span style="padding: 5px 10px; border-radius: 999px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #A3A6AF">Modèle du simulateur de bureau</span>
 <span style="padding: 5px 10px; border-radius: 999px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #A3A6AF">Simulation illustrative</span>
-</div>
 </div>
 <triop-simulateur theme="dark" header="off" lang="fr"></triop-simulateur>
 </div>
@@ -268,13 +262,13 @@ triop-simulateur::part(window){--page:#0F1014;--card:#15161B;--line:rgba(255,255
 </div>
 <div class="reveal" style="display: flex; gap: 16px; padding: 20px 4px">
 <span style="flex: 0 0 auto; width: 32px; height: 32px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; border: 1px solid rgba(55, 191, 239, 0.45); color: #37BFEF; font-size: 14px; font-weight: 600">3</span>
-<div style="display: flex; flex-direction: column; gap: 6px"><span style="font-size: 18px; font-weight: 600">Courbe temporelle</span><span style="font-size: 15px; line-height: 1.55; color: #A3A6AF">Moyenne glissante sur 3 s, au-dessus d’un bruit de fond de 5 coups par seconde.</span></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><span style="font-size: 18px; font-weight: 600">Courbe du signal</span><span style="font-size: 15px; line-height: 1.55; color: #A3A6AF">L’évolution du comptage, lue au-dessus du bruit de fond.</span></div>
 </div>
 </div>
 </div>
 </section>
 
-<!-- PLATEFORME (bento) -->
+<!-- TECHNOLOGIE (bento) -->
 <section id="plateforme" style="position: relative">
 <div class="hline" aria-hidden="true" style="max-width: 1000px; height: 1px; margin: 0 auto; background: radial-gradient(50% 100% at 50% 50%, rgba(175, 125, 255, 0.7), transparent)"></div>
 <div style="max-width: 1240px; margin: 0 auto; padding: clamp(96px, 12vw, 176px) clamp(20px, 4vw, 40px); display: flex; flex-direction: column; gap: 56px">
@@ -286,18 +280,25 @@ triop-simulateur::part(window){--page:#0F1014;--card:#15161B;--line:rgba(255,255
 
 <div class="spot-grid" onMouseMove="{{spotMove}}" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px">
 
-<article class="spot reveal span2" style="min-height: 340px; border-radius: 24px; background: linear-gradient(180deg, #15161B, #111216); border: 1px solid rgba(255, 255, 255, 0.07); overflow: hidden; display: flex; flex-direction: column">
-<div aria-hidden="true" style="position: relative; z-index: 1; flex: 1 1 auto; min-height: 190px">
-<span style="position: absolute; left: 12%; right: 12%; top: 50%; height: 1px; background: linear-gradient(90deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.04))"></span>
-<div class="travel" style="position: absolute; left: 0; top: 50%; height: 24px; margin-top: -12px; display: flex; justify-content: flex-end">
-<svg viewBox="0 33.5 59.4 9.3" width="160" height="25" style="filter: drop-shadow(0 0 10px rgba(134, 197, 255, 0.95))"><path fill="#86C5FF" d="{{logoBeam}}"></path></svg>
-</div>
-<span class="node" style="position: absolute; left: 12%; top: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; animation-delay: 0.3s"></span>
-<span class="node" style="position: absolute; left: 50%; top: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; animation-delay: 1.85s"></span>
-<span class="node" style="position: absolute; left: 88%; top: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; animation-delay: 3.3s"></span>
-<span style="position: absolute; left: 12%; top: calc(50% + 24px); transform: translateX(-50%); font-size: 14px; color: #A3A6AF">Marquer</span>
-<span style="position: absolute; left: 50%; top: calc(50% + 24px); transform: translateX(-50%); font-size: 14px; color: #A3A6AF">Détecter</span>
-<span style="position: absolute; left: 88%; top: calc(50% + 24px); transform: translateX(-50%); font-size: 14px; color: #A3A6AF">Retirer</span>
+<article class="spot reveal span2" style="min-height: 360px; border-radius: 24px; background: linear-gradient(180deg, #15161B, #111216); border: 1px solid rgba(255, 255, 255, 0.07); overflow: hidden; display: flex; flex-direction: column">
+<div aria-hidden="true" style="position: relative; z-index: 1; flex: 1 1 auto; min-height: 220px">
+<svg viewBox="0 0 800 240" preserveAspectRatio="xMidYMid meet" style="position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible">
+<defs>
+<linearGradient id="trackG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#37BFEF"></stop><stop offset="0.5" stop-color="#86C5FF"></stop><stop offset="1" stop-color="#AF7DFF"></stop></linearGradient>
+<filter id="headGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"></feGaussianBlur></filter>
+</defs>
+<path d="{{trackPath}}" fill="none" stroke="#FFFFFF" stroke-opacity="0.12" stroke-width="1.2" stroke-dasharray="2 7" stroke-linecap="round"></path>
+<path class="trackfill" d="{{trackPath}}" pathLength="1000" fill="none" stroke="url(#trackG)" stroke-width="1.6" stroke-dasharray="1000 1000" stroke-linecap="round"></path>
+<sc-for list="{{nodes}}" as="n" hint-placeholder-count="3">
+<circle cx="{{n.x}}" cy="120" r="9" fill="#17181D" stroke="#FFFFFF" stroke-opacity="0.16"></circle>
+<circle class="node-ping" cx="{{n.x}}" cy="120" r="8" fill="none" stroke="#86C5FF" stroke-width="1" style="{{n.delay}}"></circle>
+<circle class="node-on" cx="{{n.x}}" cy="120" r="6" fill="#86C5FF" style="{{n.glowStyle}}"></circle>
+<text x="{{n.x}}" y="88" text-anchor="middle" font-family="Jost, sans-serif" font-size="13" fill="#6E717B" letter-spacing="1.5">{{n.num}}</text>
+<text x="{{n.x}}" y="166" text-anchor="middle" font-family="Jost, sans-serif" font-size="17" fill="#C9CBD1">{{n.label}}</text>
+</sc-for>
+<path class="run" d="{{trackPath}}" pathLength="1000" fill="none" stroke="#86C5FF" stroke-width="26" stroke-linecap="round" filter="url(#headGlow)" opacity="0.6" style="--l: 1; stroke-dasharray: 1 3000"></path>
+<sc-for list="{{trail}}" as="t" hint-placeholder-count="6"><path class="run" d="{{trackPath}}" pathLength="1000" fill="none" stroke-linecap="round" style="{{t}}"></path></sc-for>
+</svg>
 </div>
 <div style="position: relative; z-index: 1; padding: 0 32px 30px; display: flex; flex-direction: column; gap: 8px">
 <h3 style="margin: 0; font-size: 24px; font-weight: 600; letter-spacing: -0.015em">Un parcours en trois temps</h3>
@@ -305,8 +306,8 @@ triop-simulateur::part(window){--page:#0F1014;--card:#15161B;--line:rgba(255,255
 </div>
 </article>
 
-<article class="spot reveal" style="min-height: 340px; border-radius: 24px; background: linear-gradient(180deg, #15161B, #111216); border: 1px solid rgba(255, 255, 255, 0.07); overflow: hidden; display: flex; flex-direction: column">
-<div aria-hidden="true" style="position: relative; z-index: 1; flex: 1 1 auto; min-height: 190px; display: flex; align-items: center; justify-content: center">
+<article class="spot reveal" style="min-height: 360px; border-radius: 24px; background: linear-gradient(180deg, #15161B, #111216); border: 1px solid rgba(255, 255, 255, 0.07); overflow: hidden; display: flex; flex-direction: column">
+<div aria-hidden="true" style="position: relative; z-index: 1; flex: 1 1 auto; min-height: 210px; display: flex; align-items: center; justify-content: center">
 <span class="pingc" style="position: absolute; left: 50%; top: 50%; width: 128px; height: 128px; margin: -64px 0 0 -64px; border-radius: 50%; border: 1px solid rgba(134, 197, 255, 0.5)"></span>
 <svg viewBox="0 0 315 315" width="128" height="128" style="position: relative; overflow: visible">
 <circle cx="157.5" cy="157.5" r="157.5" fill="#1D1F25"></circle>
@@ -328,15 +329,26 @@ triop-simulateur::part(window){--page:#0F1014;--card:#15161B;--line:rgba(255,255
 </article>
 
 <article class="spot reveal" style="min-height: 340px; border-radius: 24px; background: linear-gradient(180deg, #15161B, #111216); border: 1px solid rgba(255, 255, 255, 0.07); overflow: hidden; display: flex; flex-direction: column">
-<div aria-hidden="true" style="position: relative; z-index: 1; flex: 1 1 auto; min-height: 190px; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 20%, #000 80%, transparent); mask-image: linear-gradient(90deg, transparent, #000 20%, #000 80%, transparent)">
-<div class="wave" style="position: absolute; left: 0; top: 50%; width: 200%; height: 120px; margin-top: -60px">
-<svg viewBox="0 0 800 120" preserveAspectRatio="none" width="100%" height="120" style="display: block; filter: drop-shadow(0 0 6px rgba(55, 191, 239, 0.85))"><path d="{{wavePath}}" fill="none" stroke="#37BFEF" stroke-width="2" stroke-linejoin="round"></path></svg>
+<div aria-hidden="true" style="position: relative; z-index: 1; flex: 1 1 auto; min-height: 200px; margin: 20px 20px 0; border-radius: 14px; background: #121317; border: 1px solid rgba(255, 255, 255, 0.05); overflow: hidden">
+<div style="position: absolute; left: 14px; top: 12px; z-index: 2; display: flex; align-items: center; gap: 8px"><span style="width: 6px; height: 6px; border-radius: 50%; background: #37BFEF; box-shadow: 0 0 8px #37BFEF"></span><span style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #A3A6AF">Signal β · coups / s</span></div>
+<svg viewBox="0 0 400 160" preserveAspectRatio="none" style="position: absolute; inset: 0; width: 100%; height: 100%">
+<g stroke="#FFFFFF" stroke-opacity="0.06" stroke-width="1" vector-effect="non-scaling-stroke"><line x1="0" y1="40" x2="400" y2="40"></line><line x1="0" y1="80" x2="400" y2="80"></line><line x1="0" y1="120" x2="400" y2="120"></line></g>
+<line x1="0" y1="{{noiseY}}" x2="400" y2="{{noiseY}}" stroke="#FFFFFF" stroke-opacity="0.28" stroke-dasharray="3 4" vector-effect="non-scaling-stroke"></line>
+</svg>
+<div style="position: absolute; inset: 0; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%); mask-image: linear-gradient(90deg, transparent, #000 12%)">
+<div class="scroll" style="position: absolute; left: 0; top: 0; width: 200%; height: 100%">
+<svg viewBox="0 0 1600 160" preserveAspectRatio="none" style="display: block; width: 100%; height: 100%">
+<defs><linearGradient id="areaG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#37BFEF" stop-opacity="0.55"></stop><stop offset="1" stop-color="#37BFEF" stop-opacity="0.03"></stop></linearGradient></defs>
+<path d="{{waveArea}}" fill="url(#areaG)"></path>
+<path d="{{waveLine}}" fill="none" stroke="#37BFEF" stroke-width="1.6" stroke-linejoin="round" vector-effect="non-scaling-stroke"></path>
+</svg>
 </div>
-<span style="position: absolute; left: 0; right: 0; top: calc(50% + 22px); height: 1px; border-top: 1px dashed rgba(255, 255, 255, 0.14)"></span>
 </div>
-<div style="position: relative; z-index: 1; padding: 0 30px 30px; display: flex; flex-direction: column; gap: 8px">
+<span class="nowdot" style="position: absolute; right: 10px; top: 50%; width: 7px; height: 7px; margin-top: -3.5px; border-radius: 50%; background: #37BFEF"></span>
+</div>
+<div style="position: relative; z-index: 1; padding: 18px 30px 30px; display: flex; flex-direction: column; gap: 8px">
 <h3 style="margin: 0; font-size: 24px; font-weight: 600; letter-spacing: -0.015em">En temps réel</h3>
-<p style="margin: 0; font-size: 16px; line-height: 1.6; color: #A3A6AF">Le signal est lu pendant le geste, au-dessus du bruit de fond.</p>
+<p style="margin: 0; font-size: 16px; line-height: 1.6; color: #A3A6AF">Le comptage se lit pendant le geste, au-dessus du bruit de fond.</p>
 </div>
 </article>
 
@@ -390,54 +402,6 @@ triop-simulateur::part(window){--page:#0F1014;--card:#15161B;--line:rgba(255,255
 </div>
 </section>
 
-<!-- INDICATIONS -->
-<section id="indications" style="position: relative">
-<div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px) clamp(96px, 12vw, 176px); display: flex; flex-direction: column; gap: 56px">
-<div class="reveal" style="display: flex; flex-direction: column; align-items: center; gap: 20px; text-align: center">
-<span style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #A3A6AF"><span style="width: 5px; height: 5px; border-radius: 50%; background: #37BFEF"></span>Indications</span>
-<h2 style="margin: 0; max-width: 860px; font-size: clamp(38px, 5vw, 72px); line-height: 1; letter-spacing: -0.035em; font-weight: 700"><span class="tg">Huit cibles,</span> <span class="tg2" style="font-weight: 200">un même principe.</span></h2>
-</div>
-<div class="spot-grid" onMouseMove="{{spotMove}}" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px">
-<sc-for list="{{indications}}" as="it" hint-placeholder-count="8">
-<article class="spot portal reveal lift" style="min-height: 280px; border-radius: 22px; background: #111216; border: 1px solid rgba(255, 255, 255, 0.07); overflow: hidden; display: flex; flex-direction: column; justify-content: space-between">
-<span aria-hidden="true" class="pglow" style="{{it.glow}}"></span>
-<span aria-hidden="true" style="{{it.arc}}"></span>
-<span style="position: relative; z-index: 1; padding: 22px 24px 0; font-size: 13px; font-weight: 600; color: {{it.col}}">{{it.idx}}</span>
-<div style="position: relative; z-index: 1; padding: 24px; display: flex; flex-direction: column; gap: 8px">
-<span style="font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8D97">{{it.tag}}</span>
-<h3 style="margin: 0; font-size: 24px; line-height: 1.12; font-weight: 600; letter-spacing: -0.02em">{{it.title}}</h3>
-</div>
-</article>
-</sc-for>
-</div>
-</div>
-</section>
-
-<!-- PARCOURS -->
-<section id="parcours" style="position: relative">
-<div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px) clamp(96px, 12vw, 176px); display: flex; flex-wrap: wrap; gap: 56px">
-<div class="reveal sticky-col" style="flex: 1 1 360px; display: flex; flex-direction: column; gap: 20px; align-self: flex-start">
-<span style="display: inline-flex; align-self: flex-start; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #A3A6AF"><span style="width: 5px; height: 5px; border-radius: 50%; background: #AF7DFF"></span>Parcours</span>
-<h2 style="margin: 0; font-size: clamp(38px, 4.6vw, 64px); line-height: 1; letter-spacing: -0.035em; font-weight: 700"><span class="tg">Du laboratoire</span> <span class="tg2" style="font-weight: 200">au bloc opératoire.</span></h2>
-<p style="margin: 0; max-width: 420px; font-size: 17px; line-height: 1.6; color: #A3A6AF">Une technologie née à IJCLab, validée en préclinique, aujourd’hui en essais cliniques.</p>
-</div>
-<div style="flex: 1 1 480px; position: relative; padding-left: 44px">
-<span aria-hidden="true" style="position: absolute; left: 11px; top: 8px; bottom: 8px; width: 2px; background: rgba(255, 255, 255, 0.07)"></span>
-<span aria-hidden="true" class="vdraw" style="position: absolute; left: 11px; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(#37BFEF, #773AED); box-shadow: 0 0 12px rgba(134, 197, 255, 0.6)"></span>
-<ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 20px">
-<sc-for list="{{steps}}" as="s" hint-placeholder-count="5">
-<li class="reveal" style="position: relative; padding: 24px 26px; border-radius: 20px; background: #111216; border: 1px solid rgba(255, 255, 255, 0.07); display: flex; flex-direction: column; gap: 6px">
-<span class="lit" style="position: absolute; left: -40px; top: 30px; width: 16px; height: 16px; border-radius: 50%; background: {{s.dot}}; box-shadow: 0 0 0 4px rgba(11, 12, 15, 1), 0 0 18px {{s.dot}}"></span>
-<span style="font-size: 14px; font-weight: 600; letter-spacing: 0.04em; color: {{s.dot}}">{{s.when}}</span>
-<span style="font-size: 21px; font-weight: 600; letter-spacing: -0.01em">{{s.title}}</span>
-<span style="font-size: 15px; line-height: 1.55; color: #A3A6AF">{{s.text}}</span>
-</li>
-</sc-for>
-</ol>
-</div>
-</div>
-</section>
-
 <!-- FONDATEURS -->
 <section id="equipe" style="position: relative">
 <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px) clamp(96px, 12vw, 160px); display: flex; flex-direction: column; gap: 48px">
@@ -470,7 +434,7 @@ triop-simulateur::part(window){--page:#0F1014;--card:#15161B;--line:rgba(255,255
 <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px) clamp(64px, 8vw, 120px)">
 <div class="spot-grid" onMouseMove="{{spotMove}}" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px">
 <sc-for list="{{news}}" as="n" hint-placeholder-count="3">
-<a class="spot reveal lift" href="#actualites" style="display: flex; flex-direction: column; gap: 16px; min-height: 220px; padding: 28px; border-radius: 22px; background: #111216; border: 1px solid rgba(255, 255, 255, 0.07); color: #FFFFFF; text-decoration: none">
+<a class="spot reveal lift" href="V3-Media.dc.html" style="display: flex; flex-direction: column; gap: 16px; min-height: 220px; padding: 28px; border-radius: 22px; background: #111216; border: 1px solid rgba(255, 255, 255, 0.07); color: #FFFFFF; text-decoration: none">
 <span style="position: relative; z-index: 1; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #86C5FF">{{n.tag}}</span>
 <span style="position: relative; z-index: 1; font-size: 22px; line-height: 1.25; font-weight: 600; letter-spacing: -0.015em">{{n.title}}</span>
 <span style="position: relative; z-index: 1; margin-top: auto; display: inline-flex; align-items: center; gap: 8px; font-size: 15px; color: #A3A6AF">Lire <svg class="arrow" width="14" height="14" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
@@ -501,9 +465,9 @@ triop-simulateur::part(window){--page:#0F1014;--card:#15161B;--line:rgba(255,255
 <div style="display: flex; flex-wrap: wrap; gap: 28px; font-size: 14px">
 <a class="navlink" href="#plateforme">Technologie</a>
 <a class="navlink" href="V3-Equipe.dc.html">Équipe</a>
+<a class="navlink" href="V3-Media.dc.html">Média</a>
 <a class="navlink" href="V3-Contact.dc.html">Contact</a>
 <a class="navlink" href="V3-Contact.dc.html">Recrutement</a>
-<a class="navlink" href="#top">LinkedIn</a>
 </div>
 <span style="font-size: 13px; color: #8A8D97">© 2026 Beams · Dispositif en cours d’investigation clinique</span>
 </div>
@@ -512,7 +476,7 @@ triop-simulateur::part(window){--page:#0F1014;--card:#15161B;--line:rgba(255,255
 
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"motion":{"editor":"boolean","default":true,"section":"Animation"},"$preview":{"width":1440,"height":9400}}'>
+<script type="text/x-dc" data-dc-script data-props='{"motion":{"editor":"boolean","default":true,"section":"Animation"},"$preview":{"width":1440,"height":7400}}'>
 var LOGO_BEAM = 'M55.2672 42.7476L0 37.3216L55.2672 33.5366C58.1369 33.5366 60.1407 36.6991 59.1728 39.6982C58.5841 41.5278 57.0218 42.7476 55.2672 42.7476Z';
 var LOGO_BETA = 'M84.2592 0H54.6106L54.4747 0.414964H54.4351L49.205 16.1836H58.9916L60.7407 10.6885H80.8064C87.361 10.6885 91.0629 15.7246 89.0591 21.9176C87.0554 28.1107 80.0989 33.1468 73.5442 33.1468L70.0915 43.8353C76.6461 43.8353 80.3479 48.8714 78.3442 55.0644C76.3404 61.2575 69.3839 66.2936 62.8293 66.2936H33.458L22.7544 99.9874H32.541L39.5881 76.9758H59.3709C72.1575 76.9758 85.7422 67.1424 89.6478 55.0582C91.7874 48.4439 90.5931 42.5024 86.9761 38.4847C93.1911 34.4609 98.2288 28.5256 100.368 21.9113C104.274 9.83338 97.0458 0 84.2592 0Z';
 var LOGO_LETTERS = 'M103.448 30.5313H136.509L133.458 40H112.759L110.489 47.0481H129.689L126.774 56.0956H107.574L104.761 64.835H126.055L122.823 74.8758H89.161L103.442 30.5313H103.448Z'
@@ -534,28 +498,33 @@ function buildStars(n, seed, maxTop) {
   }
   return out;
 }
-function buildWave() {
-  var pts = [];
-  for (var x = 0; x <= 800; x += 4) {
-    var p = x % 400;
-    var burst = Math.exp(-Math.pow((p - 250) / 26, 2));
-    var y = 60 + Math.sin(x / 400 * Math.PI * 2 * 6) * 5 + Math.sin(x / 400 * Math.PI * 2 * 23) * 2 - burst * 42 * Math.sin(x / 400 * Math.PI * 2 * 30);
-    pts.push((x === 0 ? 'M' : 'L') + x + ' ' + y.toFixed(1));
+// Courbe « temps réel » : bruit lissé circulairement + approche d’un résidu, périodique pour défiler sans couture.
+function buildSignal() {
+  var N = 200, r = rnd(5), raw = [], v = [];
+  for (var i = 0; i < N; i++) raw.push(r() + r() + r() - 1.5);
+  for (var i2 = 0; i2 < N; i2++) {
+    var s = 0;
+    for (var k = -3; k <= 3; k++) s += raw[(i2 + k + N) % N];
+    var bump = Math.exp(-Math.pow((i2 - 120) / 16, 2)) + 0.35 * Math.exp(-Math.pow((i2 - 48) / 9, 2));
+    v.push(0.2 + 0.07 * s / 7 * 2.4 + 0.58 * bump);
   }
-  return pts.join(' ');
+  var pts = [];
+  for (var c = 0; c < 2; c++) for (var j = 0; j < N; j++) pts.push([(c * N + j) * 8, 150 - v[j] * 130]);
+  pts.push([2 * N * 8, 150 - v[0] * 130]);
+  var line = pts.map(function (p, idx) { return (idx ? 'L' : 'M') + p[0] + ' ' + p[1].toFixed(1); }).join(' ');
+  return { line: line, area: line + ' L1600 160 L0 160 Z', noiseY: (150 - 0.2 * 130).toFixed(1) };
 }
 
 var TARGETS = ['Tumeurs cérébrales', 'Tumeurs du foie', 'ORL – cavité buccale antérieure', 'Pancréas', 'Sein', 'Voies biliaires périhilaires', 'Sarcome superficiel', 'Vulve'];
-var TAGS = ['Neurochirurgie', 'Chirurgie hépatique', 'Tête et cou', 'Chirurgie digestive', 'Sénologie', 'Chirurgie hépatobiliaire', 'Tissus mous', 'Gynécologie'];
-var COLS = ['55,191,239', '119,58,237', '134,197,255', '175,125,255'];
 var HEX = ['#37BFEF', '#AF7DFF', '#86C5FF', '#AF7DFF'];
+var TRACK = 'M60 120 C180 30 280 30 400 120 C520 210 620 210 740 120';
 
 class Component extends DCLogic {
   constructor(props) {
     super(props);
     this.stars = buildStars(120, 7, 75);
     this.stars2 = buildStars(70, 13, 60);
-    this.wavePath = buildWave();
+    this.signal = buildSignal();
   }
   renderVals() {
     var motion = this.props.motion ?? true;
@@ -565,6 +534,25 @@ class Component extends DCLogic {
     for (var q = 0; q < 8; q++) {
       suckDots.push('position:absolute;left:calc(50% + ' + sx[q] + 'px);top:' + (180 - (q % 3) * 12) + 'px;width:7px;height:7px;margin-left:-3.5px;border-radius:50%;background:' + (q % 2 ? '#86C5FF' : '#AF7DFF') + ';box-shadow:0 0 10px ' + (q % 2 ? '#37BFEF' : '#773AED') + ';--sx:' + (-sx[q]) + 'px;animation-delay:' + (q * 0.3).toFixed(1) + 's');
     }
+
+    // Traînée du faisceau : couches décalées dans le temps ; la queue s’étire en vitesse et se replie à chaque étape.
+    var layers = [
+      [0.6, 9, '#FFFFFF', 1, 0],
+      [5, 6.5, '#D6ECFF', 0.95, 0.035],
+      [9, 5, '#86C5FF', 0.85, 0.07],
+      [13, 3.8, '#5DB4F2', 0.65, 0.11],
+      [17, 2.8, '#8F6BF0', 0.45, 0.16],
+      [22, 1.8, '#AF7DFF', 0.28, 0.22],
+      [28, 1.1, '#AF7DFF', 0.14, 0.29]
+    ];
+    var trail = layers.map(function (l) {
+      return '--l:' + l[0] + ';stroke-dasharray:' + l[0] + ' 3000;stroke-width:' + l[1] + ';stroke:' + l[2] + ';opacity:' + l[3] + ';animation-delay:' + l[4] + 's';
+    });
+    var nodes = [
+      { x: 60, num: '01', label: 'Marquer', delay: 'animation-delay:0s', glowStyle: 'animation-delay:0s;filter:drop-shadow(0 0 8px #86C5FF)' },
+      { x: 400, num: '02', label: 'Détecter', delay: 'animation-delay:1.9s', glowStyle: 'animation-delay:1.9s;filter:drop-shadow(0 0 8px #86C5FF)' },
+      { x: 740, num: '03', label: 'Retirer', delay: 'animation-delay:4.3s', glowStyle: 'animation-delay:4.3s;filter:drop-shadow(0 0 8px #AF7DFF)' }
+    ];
 
     var targets = TARGETS.map(function (name, i) {
       return { name: name, style: 'padding:8px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);font-size:14px;color:#C9CBD1;animation-delay:' + (i * 1.2).toFixed(1) + 's' };
@@ -578,16 +566,6 @@ class Component extends DCLogic {
       };
     });
 
-    var indications = TARGETS.map(function (t, i) {
-      var c = COLS[i % 4];
-      return {
-        idx: '0' + (i + 1),
-        title: t, tag: TAGS[i], col: HEX[i % 4],
-        glow: 'position:absolute;left:-25%;right:-25%;top:-70%;height:120%;border-radius:50%;background:radial-gradient(closest-side,rgba(' + c + ',.5),rgba(' + c + ',.1) 55%,transparent);opacity:.6;filter:blur(12px)',
-        arc: 'position:absolute;left:50%;top:58px;width:460px;height:460px;margin-left:-230px;border-radius:50%;border:1px solid transparent;border-top-color:rgba(' + c + ',.9);box-shadow:0 -10px 30px -12px rgba(' + c + ',.9);background:#111216'
-      };
-    });
-
     var sentence = 'En chirurgie du cancer, tout se joue *à* *la* *marge.* Laisser des cellules tumorales expose à la récidive. Retirer trop de tissu sain expose aux séquelles. Beams donne au chirurgien *l’information* *qui* *manquait.*';
     var words = sentence.split(' ').map(function (w) {
       var h = w.charAt(0) === '*';
@@ -597,13 +575,6 @@ class Component extends DCLogic {
     var partners = ['CNRS', 'IJCLab', 'Université Paris-Saclay', 'Bpifrance', 'i-Lab', '3DEXPERIENCE Lab', 'INPI'];
     partners = partners.concat(partners);
 
-    var steps = [
-      { when: '2021', title: 'Création', text: 'Spin-off du CNRS issue d’IJCLab, Paris-Saclay.', dot: '#37BFEF' },
-      { when: '2023', title: 'Lauréat i-Lab', text: 'Catégorie Technologies médicales.', dot: '#37BFEF' },
-      { when: 'Préclinique', title: 'Résultats validés', text: 'Preuve de concept établie.', dot: '#86C5FF' },
-      { when: 'Vétérinaire', title: 'Premiers patients', text: 'Chiens atteints de cancers naturels.', dot: '#AF7DFF' },
-      { when: 'Aujourd’hui', title: 'Essais cliniques', text: 'Chez l’humain. Best Pitch INPI à VivaTech 2026.', dot: '#AF7DFF' }
-    ];
     var founders = [
       { ini: 'VS', name: 'Virginie Simon', role: 'CEO & co-fondatrice', tint: 'rgba(119,58,237,.42)' },
       { ini: 'EV', name: 'Estelle Villedieu de Torcy', role: 'COO & co-fondatrice', tint: 'rgba(55,191,239,.36)' },
@@ -619,7 +590,9 @@ class Component extends DCLogic {
     return {
       stillCls: motion ? '' : 'still',
       logoBeam: LOGO_BEAM, logoBeta: LOGO_BETA, logoLetters: LOGO_LETTERS,
-      stars: this.stars, stars2: this.stars2, wavePath: this.wavePath,
+      stars: this.stars, stars2: this.stars2,
+      waveLine: this.signal.line, waveArea: this.signal.area, noiseY: this.signal.noiseY,
+      trackPath: TRACK, trail: trail, nodes: nodes,
       heroMove: function (e) {
         var r = e.currentTarget.getBoundingClientRect();
         if (!r.width) return;
@@ -634,8 +607,8 @@ class Component extends DCLogic {
           cards[i].style.setProperty('--my', (e.clientY - r.top) + 'px');
         }
       },
-      suckDots: suckDots, targets: targets, orbits: orbits, indications: indications,
-      words: words, partners: partners, steps: steps, founders: founders, news: news
+      suckDots: suckDots, targets: targets, orbits: orbits,
+      words: words, partners: partners, founders: founders, news: news
     };
   }
 }

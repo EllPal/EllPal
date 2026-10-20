@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Beams — Kit média</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,200..800;1,200..800&amp;display=swap">
+<style>
+body{margin:0;background:#0B0C0F}
+a{color:#86C5FF}a:hover{color:#FFFFFF}
+@property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
+.v3{font-family:'Jost',system-ui,sans-serif;color:#FFFFFF;background:#0B0C0F;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.v3 *{box-sizing:border-box}
+.navlink{color:#A3A6AF;text-decoration:none;transition:color .25s}
+.navlink:hover,.navlink.on{color:#FFFFFF}
+.btn-v{box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 0 0 1px rgba(175,125,255,.55),0 10px 40px -10px rgba(119,58,237,.9);transition:box-shadow .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1),background-color .3s}
+.btn-v:hover{transform:translateY(-2px);background-color:#8649F5}
+.btn-g{box-shadow:inset 0 1px 0 rgba(255,255,255,.08);transition:background-color .3s,border-color .3s,color .3s}
+.btn-g:hover{background-color:rgba(255,255,255,.08);border-color:rgba(134,197,255,.5);color:#FFFFFF}
+.arrow{transition:transform .45s cubic-bezier(.16,1,.3,1)}
+a:hover .arrow{transform:translateY(2px)}
+.tg{background:linear-gradient(180deg,#FFFFFF 25%,#9A9DA7 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tg2{background:linear-gradient(90deg,#86C5FF 0%,#AF7DFF 70%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.blur-in{display:inline-block;animation:blurIn 1.5s cubic-bezier(.16,1,.3,1) both}
+@keyframes blurIn{from{opacity:0;filter:blur(16px);transform:translateY(22px)}}
+.twinkle{animation:twinkle 4s ease-in-out infinite both}
+@keyframes twinkle{0%,100%{opacity:.12}50%{opacity:.85}}
+@keyframes spin{to{--a:360deg}}
+.gborder{position:relative;isolation:isolate}
+.gborder::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:conic-gradient(from var(--a),rgba(255,255,255,.07) 0deg,rgba(255,255,255,.07) 200deg,#86C5FF 260deg,#AF7DFF 300deg,rgba(255,255,255,.07) 345deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 7s linear infinite;pointer-events:none;z-index:4}
+.eclipse{position:absolute;border-radius:50%;background:#0B0C0F;box-shadow:0 -50px 160px -40px rgba(55,191,239,.5),0 -20px 90px -30px rgba(119,58,237,.55),inset 0 60px 120px -60px rgba(55,191,239,.3)}
+.eclipse::before{content:"";position:absolute;inset:0;border-radius:50%;padding:1.5px;background:conic-gradient(from var(--a),rgba(134,197,255,.08) 0deg,rgba(134,197,255,.08) 300deg,#86C5FF 330deg,#FFFFFF 340deg,#AF7DFF 350deg,rgba(134,197,255,.08) 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 18s linear infinite}
+.eclipse::after{content:"";position:absolute;inset:0;border-radius:50%;padding:1.5px;background:linear-gradient(180deg,rgba(190,220,255,.95) 0%,rgba(175,125,255,.45) 5%,transparent 12%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.spot{position:relative;isolation:isolate;--mx:-999px;--my:-999px}
+.spot::before{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(560px circle at var(--mx) var(--my),rgba(134,197,255,.09),transparent 42%);opacity:0;transition:opacity .5s;pointer-events:none;z-index:0}
+.spot::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:radial-gradient(420px circle at var(--mx) var(--my),rgba(134,197,255,.8),rgba(175,125,255,.38) 25%,transparent 55%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .5s;pointer-events:none;z-index:3}
+.spot-grid:hover .spot::after{opacity:1}
+.spot:hover::before{opacity:1}
+.preview img{transition:transform .9s cubic-bezier(.16,1,.3,1)}
+.spot:hover .preview img{transform:scale(1.05)}
+.row{transition:background-color .35s,border-color .35s}
+.row:hover{background-color:rgba(255,255,255,.035);border-color:rgba(255,255,255,.12)}
+@supports (animation-timeline: view()){
+.reveal{animation:reveal linear both;animation-timeline:view();animation-range:entry 0% entry 80%}
+@keyframes reveal{from{opacity:0;filter:blur(10px);transform:translateY(44px)}}
+}
+@media (prefers-reduced-motion: reduce){.v3 *,.v3 *::before,.v3 *::after{animation:none!important;transition:none!important}}
+.nav-links{display:flex}
+@media (max-width: 960px){.nav-links{display:none}}
+</style>
+</helmet>
+<div class="v3">
+
+<header style="position: sticky; top: 0; z-index: 40; background: rgba(11, 12, 15, 0.62); backdrop-filter: saturate(1.6) blur(18px); border-bottom: 1px solid rgba(255, 255, 255, 0.06)">
+<nav aria-label="Navigation principale" style="max-width: 1240px; margin: 0 auto; padding: 14px clamp(20px, 4vw, 40px); display: flex; align-items: center; justify-content: space-between; gap: 24px">
+<a href="V3-Accueil.dc.html" aria-label="Beams — accueil" style="display: flex; align-items: center; padding: 4px 0">
+<svg viewBox="0 0 269 100" width="100" height="37" role="img" aria-label="Beams"><path fill="#37BFEF" d="{{logoBeam}}"></path><path fill="#FFFFFF" d="{{logoLetters}}"></path></svg>
+</a>
+<div class="nav-links" style="align-items: center; gap: 34px; font-size: 15px">
+<a class="navlink" href="V3-Accueil.dc.html">Technologie</a>
+<a class="navlink" href="V3-Accueil.dc.html">Démonstration</a>
+<a class="navlink" href="V3-Equipe.dc.html">Équipe</a>
+<a class="navlink on" href="V3-Media.dc.html" aria-current="page">Média</a>
+</div>
+<a class="btn-v" href="V3-Contact.dc.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 18px; border-radius: 999px; background: #773AED; color: #FFFFFF; font-size: 14px; font-weight: 500; text-decoration: none">Contact presse</a>
+</nav>
+</header>
+
+<!-- HERO -->
+<section style="position: relative; overflow: hidden">
+<div aria-hidden="true" style="position: absolute; inset: 0">
+<sc-for list="{{stars}}" as="s" hint-placeholder-count="30"><span class="twinkle" style="{{s}}"></span></sc-for>
+</div>
+<div aria-hidden="true" class="eclipse" style="left: 50%; top: 440px; width: 2400px; height: 2400px; margin-left: -1200px"></div>
+<div style="position: relative; z-index: 2; max-width: 1000px; margin: 0 auto; padding: clamp(80px, 10vw, 140px) clamp(20px, 4vw, 40px) clamp(110px, 13vw, 190px); display: flex; flex-direction: column; align-items: center; gap: 26px; text-align: center">
+<span class="blur-in" style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #A3A6AF"><span style="width: 5px; height: 5px; border-radius: 50%; background: #86C5FF"></span>Kit média</span>
+<h1 style="margin: 0; font-size: clamp(48px, 7vw, 104px); line-height: 0.96; letter-spacing: -0.04em; font-weight: 700"><span class="blur-in tg" style="animation-delay: 0.1s">Tout pour parler</span><br><span class="blur-in tg2" style="animation-delay: 0.3s; font-weight: 200">de Beams.</span></h1>
+<p class="blur-in" style="margin: 0; max-width: 560px; font-size: clamp(17px, 1.5vw, 20px); line-height: 1.6; color: #A3A6AF; animation-delay: 0.5s">Logos, règles d’usage, couleurs, typographie et documents de presse, prêts à télécharger.</p>
+<div class="blur-in" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; animation-delay: 0.65s">
+<a class="btn-v" href="/_blob/3dc8dad975c27dc37c26a4fa2240fa87" download="Beams-BrandGuidelines.pdf" style="display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 24px; border-radius: 999px; background: #773AED; color: #FFFFFF; font-size: 16px; font-weight: 500; text-decoration: none"><svg class="arrow" width="16" height="16" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 3v10M4.5 8.5L9 13l4.5-4.5M3 15.5h12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>Guidelines de marque · PDF</a>
+<a class="btn-g" href="#logos" style="display: inline-flex; align-items: center; min-height: 52px; padding: 0 24px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(255, 255, 255, 0.03); color: #FFFFFF; font-size: 16px; text-decoration: none">Logos</a>
+<a class="btn-g" href="#documents" style="display: inline-flex; align-items: center; min-height: 52px; padding: 0 24px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(255, 255, 255, 0.03); color: #FFFFFF; font-size: 16px; text-decoration: none">Documents</a>
+</div>
+</div>
+</section>
+
+<!-- LOGOS -->
+<section id="logos" style="position: relative">
+<div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px) clamp(96px, 11vw, 150px); display: flex; flex-direction: column; gap: 36px">
+<div class="reveal" style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+<h2 style="margin: 0; font-size: clamp(32px, 3.6vw, 52px); letter-spacing: -0.03em; font-weight: 700"><span class="tg">Logos</span></h2>
+<span style="font-size: 15px; color: #8A8D97">SVG vectoriel · PNG transparent 1600 px</span>
+</div>
+<div class="spot-grid" onMouseMove="{{spotMove}}" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px">
+<sc-for list="{{logos}}" as="l" hint-placeholder-count="6">
+<article class="spot reveal" style="border-radius: 22px; background: #111216; border: 1px solid rgba(255, 255, 255, 0.07); overflow: hidden; display: flex; flex-direction: column">
+<div class="preview" style="{{l.bg}}">
+<img src="{{l.svg}}" alt="{{l.alt}}" style="{{l.imgStyle}}">
+</div>
+<div style="position: relative; z-index: 1; padding: 18px 20px 20px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 3px">
+<span style="font-size: 17px; font-weight: 600">{{l.name}}</span>
+<span style="font-size: 13px; color: #8A8D97">{{l.use}}</span>
+</div>
+<div style="display: flex; gap: 6px">
+<a class="btn-g" href="{{l.svg}}" download="{{l.svgName}}" style="display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.12); color: #C9CBD1; font-size: 13px; font-weight: 500; text-decoration: none">SVG</a>
+<a class="btn-g" href="{{l.png}}" download="{{l.pngName}}" style="display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.12); color: #C9CBD1; font-size: 13px; font-weight: 500; text-decoration: none">PNG</a>
+</div>
+</div>
+</article>
+</sc-for>
+</div>
+</div>
+</section>
+
+<!-- USAGE -->
+<section id="usage" style="position: relative">
+<div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px) clamp(96px, 11vw, 150px); display: flex; flex-direction: column; gap: 36px">
+<div class="reveal" style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+<h2 style="margin: 0; font-size: clamp(32px, 3.6vw, 52px); letter-spacing: -0.03em; font-weight: 700"><span class="tg">Règles d’usage</span></h2>
+<a href="/_blob/3dc8dad975c27dc37c26a4fa2240fa87" download="Beams-BrandGuidelines.pdf" style="font-size: 15px; color: #86C5FF; text-decoration: none">Guidelines complètes (PDF, 2,2 Mo) ↓</a>
+</div>
+<div class="spot-grid" onMouseMove="{{spotMove}}" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px">
+
+<article class="spot reveal" style="border-radius: 22px; background: #111216; border: 1px solid rgba(255, 255, 255, 0.07); overflow: hidden; display: flex; flex-direction: column">
+<div style="position: relative; z-index: 1; height: 220px; margin: 8px; border-radius: 16px; background: #FFFFFF; display: flex; align-items: center; justify-content: center">
+<div style="position: relative; padding: 26px; outline: 1px dashed rgba(119, 58, 237, 0.7); background: repeating-linear-gradient(45deg, rgba(119, 58, 237, 0.08) 0 6px, transparent 6px 12px)">
+<div style="background: #FFFFFF"><svg viewBox="0 0 269 100" width="150" height="56" role="img" aria-label="Logo Beams avec sa zone de protection" style="display: block"><path fill="#37BFEF" d="{{logoBeam}}"></path><path fill="#42444C" d="{{logoLetters}}"></path></svg></div>
+<span style="position: absolute; left: 6px; top: 4px; font-size: 12px; font-weight: 600; color: #773AED">X</span>
+<span style="position: absolute; right: 6px; bottom: 4px; font-size: 12px; font-weight: 600; color: #773AED">X</span>
+</div>
+</div>
+<div style="position: relative; z-index: 1; padding: 16px 22px 24px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 18px; font-weight: 600">Zone de protection</span>
+<span style="font-size: 15px; line-height: 1.55; color: #A3A6AF">X = hauteur du logo ÷ 2, sur les quatre côtés. Rien n’entre dans cette zone.</span>
+</div>
+</article>
+
+<article class="spot reveal" style="border-radius: 22px; background: #111216; border: 1px solid rgba(255, 255, 255, 0.07); overflow: hidden; display: flex; flex-direction: column">
+<div style="position: relative; z-index: 1; height: 220px; margin: 8px; border-radius: 16px; background: #FFFFFF; display: flex; align-items: center; justify-content: center; gap: 18px; color: #42444C">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 8px">
+<svg viewBox="0 0 269 100" width="70" height="26" role="img" aria-label="Logo Beams à sa taille minimale" style="display: block"><path fill="#37BFEF" d="{{logoBeam}}"></path><path fill="#42444C" d="{{logoLetters}}"></path></svg>
+<span style="display: block; width: 70px; height: 1px; background: #773AED"></span>
+<span style="font-size: 12px; font-weight: 600; color: #773AED">70 × 24 px</span>
+</div>
+</div>
+<div style="position: relative; z-index: 1; padding: 16px 22px 24px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 18px; font-weight: 600">Taille minimale</span>
+<span style="font-size: 15px; line-height: 1.55; color: #A3A6AF">70 × 24 px à l’écran : en dessous, utilisez le symbole seul.</span>
+</div>
+</article>
+
+<article class="spot reveal" style="border-radius: 22px; background: #111216; border: 1px solid rgba(255, 255, 255, 0.07); overflow: hidden; display: flex; flex-direction: column">
+<div style="position: relative; z-index: 1; height: 220px; margin: 8px; border-radius: 16px; overflow: hidden; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr))">
+<div style="background: #37BFEF; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 269 100" width="104" height="39" role="img" aria-label="Logo blanc sur bleu"><path fill="#FFFFFF" d="{{logoBeam}}"></path><path fill="#FFFFFF" d="{{logoLetters}}"></path></svg></div>
+<div style="background: #773AED; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 269 100" width="104" height="39" role="img" aria-label="Logo blanc sur violet"><path fill="#FFFFFF" d="{{logoBeam}}"></path><path fill="#FFFFFF" d="{{logoLetters}}"></path></svg></div>
+<div style="background: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 269 100" width="104" height="39" role="img" aria-label="Logo gris sur blanc"><path fill="#42444C" d="{{logoBeam}}"></path><path fill="#42444C" d="{{logoLetters}}"></path></svg></div>
+<div style="background: #42444C; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 269 100" width="104" height="39" role="img" aria-label="Logo blanc et bleu sur gris"><path fill="#37BFEF" d="{{logoBeam}}"></path><path fill="#FFFFFF" d="{{logoLetters}}"></path></svg></div>
+</div>
+<div style="position: relative; z-index: 1; padding: 16px 22px 24px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 18px; font-weight: 600">Sur fond de couleur</span>
+<span style="font-size: 15px; line-height: 1.55; color: #A3A6AF">Logo blanc sur toutes les couleurs de la marque. Logo gris sur toutes, sauf le gris et le violet.</span>
+</div>
+</article>
+</div>
+
+<div class="reveal" style="display: flex; align-items: center; gap: 12px; padding-top: 24px">
+<span style="display: inline-flex; width: 26px; height: 26px; border-radius: 50%; align-items: center; justify-content: center; background: rgba(255, 107, 107, 0.12); color: #FF8A8A; font-size: 14px">✕</span>
+<h3 style="margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.015em">À ne pas faire</h3>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px">
+<sc-for list="{{donts}}" as="d" hint-placeholder-count="6">
+<figure class="reveal" style="margin: 0; border-radius: 18px; background: #111216; border: 1px solid rgba(255, 255, 255, 0.07); overflow: hidden">
+<div style="position: relative; height: 130px; margin: 6px; border-radius: 13px; background: #FFFFFF; overflow: hidden; display: flex; align-items: center; justify-content: center">
+<svg viewBox="0 0 269 100" width="120" height="45" aria-hidden="true" style="{{d.svgStyle}}"><path fill="{{d.c1}}" d="{{logoBeam}}"></path><path fill="{{d.c2}}" d="{{logoLetters}}"></path></svg>
+<span aria-hidden="true" style="position: absolute; left: -10%; right: -10%; top: 50%; height: 2px; background: #E5484D; transform: rotate(-18deg)"></span>
+</div>
+<figcaption style="padding: 12px 14px 14px; font-size: 14px; color: #C9CBD1">{{d.label}}</figcaption>
+</figure>
+</sc-for>
+</div>
+</div>
+</section>
+
+<!-- COULEURS + TYPO -->
+<section id="couleurs" style="position: relative">
+<div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px) clamp(96px, 11vw, 150px); display: flex; flex-direction: column; gap: 36px">
+<div class="reveal" style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+<h2 style="margin: 0; font-size: clamp(32px, 3.6vw, 52px); letter-spacing: -0.03em; font-weight: 700"><span class="tg">Couleurs</span></h2>
+<span style="font-size: 15px; color: #8A8D97">Cliquez pour copier le code HEX</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px">
+<sc-for list="{{colors}}" as="c" hint-placeholder-count="7">
+<button type="button" class="reveal row" onClick="{{c.copy}}" aria-label="{{c.aria}}" style="display: flex; flex-direction: column; padding: 0; border-radius: 18px; background: #111216; border: 1px solid rgba(255, 255, 255, 0.07); overflow: hidden; color: #FFFFFF; font-family: inherit; text-align: left; cursor: pointer">
+<span style="{{c.swatch}}"><span style="{{c.badge}}">{{c.badgeText}}</span></span>
+<span style="display: flex; flex-direction: column; gap: 4px; padding: 14px 16px 16px">
+<span style="font-size: 16px; font-weight: 600">{{c.name}}</span>
+<span style="font-size: 13px; color: #A3A6AF; font-variant-numeric: tabular-nums">{{c.hex}} · RGB {{c.rgb}}</span>
+<span style="font-size: 12px; color: #6E717B; font-variant-numeric: tabular-nums">CMJN {{c.cmyk}}</span>
+</span>
+</button>
+</sc-for>
+</div>
+
+<div class="reveal gborder" style="border-radius: 24px; background: #111216; padding: clamp(24px, 4vw, 44px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 32px">
+<div style="display: flex; flex-direction: column; gap: 10px; flex: 1 1 320px">
+<span style="font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8D97">Typographie</span>
+<span style="font-size: clamp(48px, 6vw, 84px); line-height: 0.95; font-weight: 800; letter-spacing: -0.03em">Jost</span>
+<span style="font-size: 15px; line-height: 1.55; color: #A3A6AF">Police officielle de la marque, disponible gratuitement sur Google Fonts.</span>
+<a href="https://fonts.google.com/specimen/Jost" style="font-size: 15px; color: #86C5FF; text-decoration: none">Google Fonts ↗</a>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px; flex: 1 1 320px; font-size: 30px; letter-spacing: -0.015em">
+<span style="font-weight: 800">Jost ExtraBold</span>
+<span style="font-weight: 500">Jost Medium</span>
+<span style="font-weight: 400">Jost Regular</span>
+<span style="font-weight: 200">Jost ExtraLight</span>
+</div>
+</div>
+</div>
+</section>
+
+<!-- DOCUMENTS -->
+<section id="documents" style="position: relative">
+<div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px) clamp(96px, 11vw, 150px); display: flex; flex-direction: column; gap: 28px">
+<div class="reveal" style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+<h2 style="margin: 0; font-size: clamp(32px, 3.6vw, 52px); letter-spacing: -0.03em; font-weight: 700"><span class="tg">Documents</span></h2>
+<span style="font-size: 15px; color: #8A8D97">Communiqués, dossiers, visuels</span>
+</div>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+<sc-for list="{{docs}}" as="d" hint-placeholder-count="5">
+<li class="reveal row" style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; padding: 18px 20px; border-radius: 18px; background: #111216; border: 1px solid rgba(255, 255, 255, 0.07)">
+<span style="{{d.iconStyle}}">{{d.type}}</span>
+<div style="flex: 1 1 300px; display: flex; flex-direction: column; gap: 4px; min-width: 0">
+<span style="font-size: 17px; font-weight: 600">{{d.title}}</span>
+<span style="font-size: 14px; color: #8A8D97">{{d.meta}}</span>
+</div>
+<sc-if value="{{d.ready}}" hint-placeholder-val="{{ true }}">
+<a class="btn-g" href="{{d.href}}" download="{{d.file}}" style="display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.14); color: #FFFFFF; font-size: 14px; text-decoration: none"><svg class="arrow" width="14" height="14" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 3v10M4.5 8.5L9 13l4.5-4.5M3 15.5h12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>Télécharger</a>
+</sc-if>
+<sc-if value="{{d.pending}}" hint-placeholder-val="{{ false }}">
+<span style="display: inline-flex; align-items: center; min-height: 42px; padding: 0 16px; border-radius: 999px; border: 1px dashed rgba(255, 255, 255, 0.16); color: #8A8D97; font-size: 14px">[Fichier à fournir]</span>
+</sc-if>
+</li>
+</sc-for>
+</ul>
+</div>
+</section>
+
+<!-- CONTACT PRESSE -->
+<section style="position: relative">
+<div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px) clamp(96px, 11vw, 150px)">
+<div class="gborder reveal" style="border-radius: 30px; background: radial-gradient(80% 120% at 50% 0%, rgba(119, 58, 237, 0.16), #111216 60%); padding: clamp(36px, 5vw, 64px) clamp(24px, 5vw, 64px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 28px">
+<div style="flex: 1 1 420px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: clamp(30px, 3.4vw, 48px); line-height: 1.04; letter-spacing: -0.03em; font-weight: 700"><span class="tg">Une demande presse ?</span> <span class="tg2" style="font-weight: 200">Parlons-en.</span></h2>
+<p style="margin: 0; max-width: 520px; font-size: 17px; line-height: 1.6; color: #A3A6AF">Interviews, visuels haute définition, informations sur TRIOP : écrivez-nous.</p>
+</div>
+<a class="btn-v" href="V3-Contact.dc.html" style="display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 26px; border-radius: 999px; background: #773AED; color: #FFFFFF; font-size: 16px; font-weight: 500; text-decoration: none">Contact presse</a>
+</div>
+</div>
+<footer style="border-top: 1px solid rgba(255, 255, 255, 0.06)">
+<div style="max-width: 1240px; margin: 0 auto; padding: 40px clamp(20px, 4vw, 40px); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 24px">
+<svg viewBox="0 0 269 100" width="92" height="34" role="img" aria-label="Beams"><path fill="#37BFEF" d="{{logoBeam}}"></path><path fill="#FFFFFF" d="{{logoLetters}}"></path></svg>
+<div style="display: flex; flex-wrap: wrap; gap: 28px; font-size: 14px">
+<a class="navlink" href="V3-Accueil.dc.html">Accueil</a>
+<a class="navlink" href="V3-Equipe.dc.html">Équipe</a>
+<a class="navlink" href="V3-Media.dc.html">Média</a>
+<a class="navlink" href="V3-Contact.dc.html">Contact</a>
+</div>
+<span style="font-size: 13px; color: #8A8D97">© 2026 Beams</span>
+</div>
+</footer>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3600}}'>
+var LOGO_BEAM = 'M55.2672 42.7476L0 37.3216L55.2672 33.5366C58.1369 33.5366 60.1407 36.6991 59.1728 39.6982C58.5841 41.5278 57.0218 42.7476 55.2672 42.7476Z';
+var LOGO_LETTERS = 'M103.448 30.5313H136.509L133.458 40H112.759L110.489 47.0481H129.689L126.774 56.0956H107.574L104.761 64.835H126.055L122.823 74.8758H89.161L103.442 30.5313H103.448Z'
++ 'M156.371 67.5574H142.368L138.066 74.8758H125.472L154.758 30.5313H168.213L168.932 74.8758H156.015L156.377 67.5574H156.371ZM156.898 57.9692L157.628 42.0245L148.136 57.9692H156.903H156.898Z'
++ 'M186.999 30.5313H203.222L200.788 57.5165L215.691 30.5313H231.908L217.627 74.8758H207.524L218.414 41.0563L199.735 74.8758H190.588L193.712 41.0563L182.822 74.8758H172.718L186.999 30.5313Z'
++ 'M228.065 60.2075L240.065 59.3901C239.634 61.509 239.634 63.1185 240.059 64.2314C240.749 66.0233 242.278 66.9224 244.638 66.9224C246.398 66.9224 247.904 66.4634 249.155 65.5454C250.406 64.6275 251.221 63.5649 251.612 62.3515C251.979 61.2009 251.861 60.176 251.244 59.2644C250.627 58.359 248.798 57.4976 245.753 56.6929C240.778 55.3411 237.495 53.5492 235.916 51.3109C234.314 49.0726 234.07 46.2182 235.185 42.7476C235.921 40.4715 237.206 38.315 239.051 36.2905C240.891 34.266 243.195 32.669 245.957 31.5121C248.719 30.3552 252.178 29.7705 256.332 29.7705C261.432 29.7705 264.981 30.8268 266.985 32.933C268.983 35.0393 269.498 38.3904 268.525 42.9928L256.655 43.7472C256.989 41.7479 256.808 40.2955 256.112 39.3901C255.415 38.4848 254.193 38.0258 252.449 38.0258C251.017 38.0258 249.829 38.3653 248.883 39.038C247.938 39.7171 247.31 40.5344 246.998 41.5027C246.772 42.2069 246.868 42.8419 247.281 43.4077C247.672 43.9925 248.878 44.5395 250.893 45.0424C255.868 46.3313 259.31 47.6391 261.217 48.9594C263.125 50.2798 264.296 51.9208 264.726 53.8761C265.157 55.8315 264.987 58.0195 264.206 60.4401C263.289 63.282 261.738 65.9038 259.547 68.3056C257.357 70.7073 254.793 72.5244 251.855 73.763C248.912 75.0016 245.51 75.624 241.644 75.624C234.851 75.624 230.618 74.1716 228.942 71.2669C227.261 68.3621 226.972 64.6715 228.07 60.1949L228.065 60.2075Z'
++ 'M84.2592 0H54.6106L54.4747 0.414964H54.4351L49.205 16.1836H58.9916L60.7407 10.6885H80.8064C87.361 10.6885 91.0629 15.7246 89.0591 21.9176C87.0554 28.1107 80.0989 33.1468 73.5442 33.1468L70.0915 43.8353C76.6461 43.8353 80.3479 48.8714 78.3442 55.0644C76.3404 61.2575 69.3839 66.2936 62.8293 66.2936H33.458L22.7544 99.9874H32.541L39.5881 76.9758H59.3709C72.1575 76.9758 85.7422 67.1424 89.6478 55.0582C91.7874 48.4439 90.5931 42.5024 86.9761 38.4847C93.1911 34.4609 98.2288 28.5256 100.368 21.9113C104.274 9.83338 97.0458 0 84.2592 0Z';
+
+var PDF = '/_blob/3dc8dad975c27dc37c26a4fa2240fa87';
+var LOGOS = [
+  { name: 'Logo couleur', use: 'Sur fond clair', svg: '/_blob/d0e3f30a38d0e8f1a4182c42c6960ad4', png: '/_blob/47a25e0354b2fd9de7fb10aa8a7645a5', file: 'beams-logo-couleur', bg: '#FFFFFF', w: 190 },
+  { name: 'Logo couleur négatif', use: 'Sur fond sombre', svg: '/_blob/3c443250d420b0ecc3b903e729743f71', png: '/_blob/f9507ca1db9f01f4ebad57c738eb5231', file: 'beams-logo-couleur-negatif', bg: '#42444C', w: 190 },
+  { name: 'Logo gris', use: 'Monochrome, fond clair', svg: '/_blob/eecd5c4831d4da799911629a6de5562b', png: '/_blob/ce3add772ff08d21b7f0258ad4acf3c1', file: 'beams-logo-gris', bg: '#F4F6F9', w: 190 },
+  { name: 'Logo blanc', use: 'Sur les couleurs de la marque', svg: '/_blob/da5f86bb3ac9f23be983da383f17bdd8', png: '/_blob/3ce4ffc7376dd6de5f2b360ac1e02c32', file: 'beams-logo-blanc', bg: 'linear-gradient(120deg,#37BFEF 0%,#37BFEF 50%,#773AED 50%,#773AED 100%)', w: 190 },
+  { name: 'Symbole couleur', use: 'Petits formats, avatars', svg: '/_blob/d3a88f41f568cfb88a1ab6c21354a061', png: '/_blob/8c612b8cbd62c37521800163331f5ef9', file: 'beams-symbole-couleur', bg: '#FFFFFF', w: 86 },
+  { name: 'Symbole blanc', use: 'Sur couleur ou fond sombre', svg: '/_blob/33a650c615ac95445061376ead51937c', png: '/_blob/ff96835d5e7fa936531bf0a7869f3b78', file: 'beams-symbole-blanc', bg: '#773AED', w: 86 }
+];
+var COLORS = [
+  ['Beams blue', '#37BFEF', '55, 191, 239', '66, 0, 1, 0', true],
+  ['Beams blue light', '#86C5FF', '134, 197, 255', '48, 13, 0, 0', true],
+  ['Beams violet', '#773AED', '119, 58, 237', '78, 77, 0, 0', false],
+  ['Beams violet light', '#AF7DFF', '175, 125, 255', '51, 54, 0, 0', true],
+  ['Deep grey', '#42444C', '66, 68, 76', '70, 59, 48, 48', false],
+  ['Light grey', '#96979D', '150, 151, 157', '43, 33, 29, 10', true],
+  ['White', '#FFFFFF', '255, 255, 255', '0, 0, 0, 0', true]
+];
+var DONTS = [
+  ['Retourner le logo', '#37BFEF', '#42444C', 'transform: scaleX(-1)'],
+  ['Changer ses couleurs', '#E5484D', '#30A46C', ''],
+  ['Le faire pivoter', '#37BFEF', '#42444C', 'transform: rotate(-16deg)'],
+  ['Le déformer', '#37BFEF', '#42444C', 'transform: scale(1.35, 0.7)'],
+  ['L’incliner', '#37BFEF', '#42444C', 'transform: skewX(-18deg)'],
+  ['Ajouter ombres ou effets', '#37BFEF', '#42444C', 'filter: drop-shadow(4px 6px 2px rgba(0,0,0,.45)) blur(0.6px)']
+];
+var DOCS = [
+  { type: 'PDF', title: 'Guidelines de marque Beams', meta: 'Version 1.0 · 2024 · 15 pages · 2,2 Mo', href: PDF, file: 'Beams-BrandGuidelines.pdf', ready: true },
+  { type: 'PDF', title: '[Communiqué — Beams remporte le Best Pitch INPI à VivaTech 2026]', meta: '[Date] · [Taille]', ready: false },
+  { type: 'PDF', title: '[Dossier de presse 2026]', meta: '[Date] · [Taille]', ready: false },
+  { type: 'PDF', title: '[Fiche technologie TRIOP]', meta: '[Date] · [Taille]', ready: false },
+  { type: 'ZIP', title: '[Photos haute définition — équipe et produit]', meta: '[Date] · [Taille]', ready: false }
+];
+
+function rnd(seed) {
+  var s = seed;
+  return function () { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; };
+}
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { copied: null };
+    var r = rnd(44), stars = [];
+    for (var i = 0; i < 80; i++) {
+      stars.push('position:absolute;left:' + (r() * 100).toFixed(2) + '%;top:' + (r() * 65).toFixed(2) + '%;width:1px;height:1px;border-radius:50%;background:' + (r() < 0.22 ? '#86C5FF' : '#FFFFFF') + ';animation-duration:' + (3 + r() * 5).toFixed(1) + 's;animation-delay:-' + (r() * 6).toFixed(1) + 's');
+    }
+    this.stars = stars;
+  }
+  componentWillUnmount() { clearTimeout(this.timer); }
+  renderVals() {
+    var self = this;
+    var logos = LOGOS.map(function (l) {
+      return {
+        name: l.name, use: l.use, svg: l.svg, png: l.png, alt: l.name + ' Beams',
+        svgName: l.file + '.svg', pngName: l.file + '.png',
+        bg: 'position:relative;z-index:1;height:190px;margin:8px;border-radius:16px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:' + l.bg,
+        imgStyle: 'width:' + l.w + 'px;height:auto;display:block'
+      };
+    });
+    var colors = COLORS.map(function (c) {
+      var on = self.state.copied === c[1];
+      return {
+        name: c[0], hex: c[1], rgb: c[2], cmyk: c[3], aria: 'Copier ' + c[1],
+        badgeText: on ? 'Copié ✓' : 'Copier',
+        swatch: 'position:relative;display:block;height:110px;background:' + c[1] + (c[1] === '#FFFFFF' ? ';box-shadow:inset 0 -1px 0 rgba(0,0,0,.08)' : ''),
+        badge: 'position:absolute;right:10px;top:10px;padding:4px 9px;border-radius:999px;font-size:12px;font-weight:500;background:' + (c[4] ? 'rgba(66,68,76,.14)' : 'rgba(255,255,255,.18)') + ';color:' + (c[4] ? '#42444C' : '#FFFFFF') + ';opacity:' + (on ? 1 : 0.85),
+        copy: function () {
+          try { if (navigator.clipboard) navigator.clipboard.writeText(c[1]); } catch (e) { /* presse-papiers indisponible */ }
+          self.setState({ copied: c[1] });
+          clearTimeout(self.timer);
+          self.timer = setTimeout(function () { self.setState({ copied: null }); }, 1600);
+        }
+      };
+    });
+    var donts = DONTS.map(function (d) { return { label: d[0], c1: d[1], c2: d[2], svgStyle: d[3] }; });
+    var docs = DOCS.map(function (d) {
+      return {
+        type: d.type, title: d.title, meta: d.meta, href: d.href || '#', file: d.file || '', ready: d.ready, pending: !d.ready,
+        iconStyle: 'flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;width:48px;height:56px;border-radius:10px;font-size:12px;font-weight:700;letter-spacing:.06em;' + (d.type === 'ZIP' ? 'background:rgba(175,125,255,.12);color:#AF7DFF;border:1px solid rgba(175,125,255,.3)' : 'background:rgba(134,197,255,.1);color:#86C5FF;border:1px solid rgba(134,197,255,.28)')
+      };
+    });
+    return {
+      logoBeam: LOGO_BEAM, logoLetters: LOGO_LETTERS, stars: this.stars,
+      logos: logos, colors: colors, donts: donts, docs: docs,
+      spotMove: function (e) {
+        var cards = e.currentTarget.querySelectorAll('.spot');
+        for (var i = 0; i < cards.length; i++) {
+          var b = cards[i].getBoundingClientRect();
+          cards[i].style.setProperty('--mx', (e.clientX - b.left) + 'px');
+          cards[i].style.setProperty('--my', (e.clientY - b.top) + 'px');
+        }
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

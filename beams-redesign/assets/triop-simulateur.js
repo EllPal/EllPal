@@ -155,10 +155,10 @@ const THEMES = {
 
 const TEXTES = {
   fr: { sim: 'Simulation illustrative', bed: 'Lit tumoral', hint: 'Survolez le lit tumoral : la sonde suit la souris', hintTouch: 'Touchez le lit tumoral pour déplacer la sonde',
-    graph: 'Graphe', unit: 'coups / s', petals: 'Vue pétales', avg: `Moyenne glissante ${CFG.moyenne} s`, average: 'Moyenne', max: 'Max', now: 'maintenant',
+    graph: 'Graphe', unit: 'coups / s', petals: 'Vue pétales', avg: 'Six détecteurs · coups par seconde', average: 'Moyenne', max: 'Max', now: 'maintenant',
     demo: 'Démo', live: 'Au contact', lifted: 'Sonde levée', toLight: 'Passer en mode clair', toDark: 'Passer en mode sombre', canvas: 'Lit tumoral simulé : survolez-le pour déplacer la sonde' },
   en: { sim: 'Illustrative simulation', bed: 'Tumor bed', hint: 'Hover the tumor bed: the probe follows the mouse', hintTouch: 'Touch the tumor bed to move the probe',
-    graph: 'Graph', unit: 'counts / s', petals: 'Petals view', avg: `Moving average ${CFG.moyenne} s`, average: 'Average', max: 'Max', now: 'now',
+    graph: 'Graph', unit: 'counts / s', petals: 'Petals view', avg: 'Six detectors · counts per second', average: 'Average', max: 'Max', now: 'now',
     demo: 'Demo', live: 'In contact', lifted: 'Probe lifted', toLight: 'Switch to light mode', toDark: 'Switch to dark mode', canvas: 'Simulated tumor bed: hover it to move the probe' },
 };
 
@@ -476,10 +476,12 @@ class TriopSimulateur extends HTMLElement {
     g.fillStyle = halo; g.beginPath(); g.arc(x, y, R * 2.2, 0, 7); g.fill();
     g.globalAlpha = alpha;
     g.fillStyle = T.head; g.beginPath(); g.arc(x, y, R, 0, 7); g.fill();
-    BEARINGS.forEach((b, k) => {                                                               // tête : les 6 pétales
-      const a0 = (b - 90 - 27) * Math.PI / 180, a1 = (b - 90 + 27) * Math.PI / 180;
-      g.fillStyle = rgba(couleurCps(v[k]), .95); g.beginPath(); g.arc(x, y, R * .9, a0, a1); g.arc(x, y, R * .38, a1, a0, true); g.closePath(); g.fill();
-    });
+    if (!this.petalPaths) this.petalPaths = PETALS.map(p => new Path2D(p));
+    g.save();                                                                                  // tête : les 6 pétales de Sonde2D.svg, comme la vue pétales
+    g.translate(x, y); g.scale(R / 157.5, R / 157.5); g.rotate(-30 * Math.PI / 180); g.translate(-157.5, -157.5);
+    PATH_BEARING.forEach((b, i) => { g.fillStyle = rgba(couleurCps(v[BEARINGS.indexOf(b)]), .95); g.fill(this.petalPaths[i]); });
+    g.restore();
+    g.fillStyle = this.pal.center; g.beginPath(); g.arc(x, y, R * 21 / 157.5, 0, 7); g.fill();
     g.lineWidth = 1.25 * d; g.strokeStyle = T.ring; g.beginPath(); g.arc(x, y, R, 0, 7); g.stroke();
     g.beginPath(); g.moveTo(x, y - R); g.lineTo(x, y - R - 7 * d); g.stroke();                       // repère 12 h
     g.fillStyle = T.dot; g.beginPath(); g.arc(x, y, 2.2 * d, 0, 7); g.fill();
@@ -497,9 +499,9 @@ class TriopSimulateur extends HTMLElement {
     g.strokeStyle = P.grid; g.lineWidth = 1;
     for (let i = 0; i <= 5; i++) { const v = ymax * i / 5, y = Math.round(Y(v)) + .5; g.beginPath(); g.moveTo(L, y); g.lineTo(L + Wp, y); g.stroke(); g.fillText(v.toFixed(1), L - 6 * d, y); }
     g.textBaseline = 'bottom';
-    for (let i = 0; i <= 3; i++) { const x = L + Wp * i / 3, xr = Math.round(x) + .5;
-      g.beginPath(); g.moveTo(xr, T); g.lineTo(xr, T + Hp); g.stroke();
-      g.textAlign = i === 0 ? 'left' : i === 3 ? 'right' : 'center'; g.fillText(i === 3 ? this.t('now') : `-${CFG.historique * (3 - i) / 3}s`, x, H); }
+    for (let i = 0; i <= 3; i++) { const x = L + Wp * i / 3, xr = Math.round(x) + .5;            // pas de durée affichée sur l'axe
+      g.beginPath(); g.moveTo(xr, T); g.lineTo(xr, T + Hp); g.stroke(); }
+    g.textAlign = 'right'; g.fillText(this.t('now'), L + Wp, H);
     g.setLineDash([3 * d, 4 * d]); g.strokeStyle = P.ref;                                       // niveau du bruit de fond
     const yf = Math.round(Y(CFG.fond)) + .5; g.beginPath(); g.moveTo(L, yf); g.lineTo(L + Wp, yf); g.stroke(); g.setLineDash([]);
     const path = new Path2D(); for (let i = 0; i < n; i++) i ? path.lineTo(X(i), Y(h[i])) : path.moveTo(X(i), Y(h[i]));

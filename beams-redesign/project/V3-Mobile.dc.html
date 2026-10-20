@@ -14,6 +14,7 @@ body{margin:0}
 a{color:#86C5FF}a:hover{color:#FFFFFF}
 @property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
 @keyframes spin{to{--a:360deg}}
+@keyframes spinT{to{transform:rotate(360deg)}}
 .tg{background:linear-gradient(180deg,#FFFFFF 25%,#9A9DA7 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .tg2{background:linear-gradient(90deg,#86C5FF 0%,#AF7DFF 70%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .shimmer{background:linear-gradient(90deg,#A3A6AF 0%,#A3A6AF 35%,#FFFFFF 50%,#A3A6AF 65%,#A3A6AF 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 3.6s linear infinite}
@@ -26,16 +27,14 @@ a{color:#86C5FF}a:hover{color:#FFFFFF}
 @keyframes breathe{50%{opacity:.62;transform:scale(1.06)}}
 .gborder{position:relative;isolation:isolate}
 .gborder::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:conic-gradient(from var(--a),rgba(255,255,255,.07) 0deg,rgba(255,255,255,.07) 200deg,#86C5FF 260deg,#AF7DFF 300deg,rgba(255,255,255,.07) 345deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 7s linear infinite;pointer-events:none;z-index:2}
-.eclipse{position:absolute;border-radius:50%;background:#0B0C0F;box-shadow:0 -40px 120px -30px rgba(55,191,239,.6),0 -16px 70px -24px rgba(119,58,237,.65),inset 0 50px 100px -50px rgba(55,191,239,.35)}
-.eclipse::before{content:"";position:absolute;inset:0;border-radius:50%;padding:1.5px;background:conic-gradient(from var(--a),rgba(134,197,255,.08) 0deg,rgba(134,197,255,.08) 300deg,#86C5FF 330deg,#FFFFFF 340deg,#AF7DFF 350deg,rgba(134,197,255,.08) 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 12s linear infinite}
-.eclipse::after{content:"";position:absolute;inset:0;border-radius:50%;padding:1.5px;background:linear-gradient(180deg,rgba(190,220,255,.95) 0%,rgba(175,125,255,.45) 5%,transparent 14%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
-.halo-ring{position:absolute;border-radius:50%;padding:1.5px;background:conic-gradient(from var(--a),transparent 0deg,transparent 150deg,rgba(134,197,255,.95) 220deg,rgba(175,125,255,.95) 270deg,transparent 330deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 9s linear infinite}
-.petal{animation:petal 4.8s cubic-bezier(.4,0,.2,1) infinite both}
-@keyframes petal{0%,100%{opacity:.26}9%{opacity:1}34%{opacity:.5}}
-.sunrise{animation:sunrise 2.6s cubic-bezier(.16,1,.3,1) .25s both}
-@keyframes sunrise{from{transform:translateY(42%);opacity:0;filter:blur(10px)}}
-.pingc{animation:pingc 4.8s cubic-bezier(0,0,.2,1) infinite both}
-@keyframes pingc{0%{transform:scale(.92);opacity:.6}100%{transform:scale(1.85);opacity:0}}
+.planet{position:absolute;border-radius:50%;overflow:hidden;background:#0C0D11;box-shadow:0 -40px 120px -30px rgba(55,191,239,.6),0 -16px 70px -24px rgba(119,58,237,.65)}
+.planet::before{content:"";position:absolute;inset:0;border-radius:50%;padding:1.5px;background:conic-gradient(from var(--a),rgba(134,197,255,.08) 0deg,rgba(134,197,255,.08) 300deg,#86C5FF 330deg,#FFFFFF 340deg,#AF7DFF 350deg,rgba(134,197,255,.08) 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 12s linear infinite;z-index:3}
+.planet::after{content:"";position:absolute;inset:0;border-radius:50%;padding:1.5px;background:linear-gradient(180deg,rgba(190,220,255,.95) 0%,rgba(175,125,255,.45) 5%,transparent 12%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;z-index:3}
+.planet-spin{animation:spinT 200s linear infinite}
+.rise-planet{animation:risePlanet 2.8s cubic-bezier(.16,1,.3,1) .2s both}
+@keyframes risePlanet{from{transform:translateY(18%);opacity:0}}
+.petal-d{animation:petalD 7.2s cubic-bezier(.4,0,.2,1) infinite both}
+@keyframes petalD{0%,100%{opacity:.16}9%{opacity:.62}34%{opacity:.28}}
 @media (prefers-reduced-motion: reduce){.m3 *,.m3 *::before,.m3 *::after{animation:none!important}}
 </style>
 </helmet>
@@ -61,32 +60,34 @@ a{color:#86C5FF}a:hover{color:#FFFFFF}
 <span class="blur-in tg2" style="animation-delay: 0.36s; font-weight: 200; padding-bottom: 0.08em">Rien de plus.</span>
 </h1>
 <p class="blur-in" style="margin: 0; font-size: 16px; line-height: 1.55; color: #A3A6AF; animation-delay: 0.5s">TRIOP détecte en temps réel les cellules tumorales que l’œil ne voit pas.</p>
-<a class="blur-in" href="#produit" style="display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 26px; border-radius: 999px; background: #773AED; color: #FFFFFF; font-size: 16px; font-weight: 500; text-decoration: none; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), 0 0 0 1px rgba(175, 125, 255, 0.55), 0 10px 40px -10px rgba(119, 58, 237, 0.9); animation-delay: 0.62s">Essayer le simulateur</a>
+<a class="blur-in" href="#produit" style="display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 26px; border-radius: 999px; background: #773AED; color: #FFFFFF; font-size: 16px; font-weight: 500; text-decoration: none; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), 0 0 0 1px rgba(175, 125, 255, 0.55), 0 10px 40px -10px rgba(119, 58, 237, 0.9); animation-delay: 0.62s">Essayer la détection</a>
 </div>
 
-<div style="position: relative; flex: 1 1 auto; margin-top: 30px">
-<div style="position: absolute; left: 50%; top: 10px; width: 210px; height: 210px; margin-left: -105px">
-<div class="sunrise" style="position: absolute; inset: 0">
-<span aria-hidden="true" class="breathe" style="position: absolute; inset: -60%; border-radius: 50%; background: radial-gradient(closest-side, rgba(55, 191, 239, 0.32), rgba(119, 58, 237, 0.16) 55%, transparent)"></span>
-<span aria-hidden="true" class="pingc" style="position: absolute; inset: 0; border-radius: 50%; border: 1px solid rgba(134, 197, 255, 0.6)"></span>
-<span aria-hidden="true" class="halo-ring" style="inset: -12px"></span>
-<svg viewBox="0 0 315 315" role="img" aria-label="Face de détection de la sonde TRIOP" style="position: absolute; inset: 0; width: 100%; height: 100%">
-<circle cx="157.5" cy="157.5" r="157.5" fill="#F7F8FA"></circle>
+<div style="position: relative; flex: 1 1 auto">
+<div class="rise-planet" style="position: absolute; z-index: 3; left: 50%; top: 90px; width: 900px; height: 900px; margin-left: -450px">
+<div class="planet" role="img" aria-label="La face de détection de la sonde TRIOP forme l’horizon" style="inset: 0">
+<div class="planet-spin" style="position: absolute; inset: 0">
+<svg viewBox="0 0 315 315" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block">
+<defs>
+<radialGradient id="mShade" cx="50%" cy="0%" r="75%"><stop offset="0" stop-color="#FFFFFF" stop-opacity="0.07"></stop><stop offset="0.5" stop-color="#FFFFFF" stop-opacity="0.015"></stop><stop offset="1" stop-color="#000000" stop-opacity="0.35"></stop></radialGradient>
+<filter id="mBlur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3"></feGaussianBlur></filter>
+</defs>
+<circle cx="157.5" cy="157.5" r="157.5" fill="#0C0D11"></circle>
 <g transform="rotate(-30 157.5 157.5)">
-<path class="petal" fill="#45C0F5" style="animation-delay: 0s" d="M166.379 41.3693V120.025C166.379 129.847 177.009 135.979 185.509 131.066L253.633 91.7448C263.147 86.2512 264.92 73.3927 257.474 65.3132C238.943 45.2416 214.448 30.7707 186.8 24.701C176.29 22.3919 166.379 30.601 166.379 41.3693Z"></path>
-<path class="petal" fill="#4478FB" style="animation-delay: 1.6s" d="M186.8 290.291C214.444 284.221 238.943 269.754 257.47 249.678C264.92 241.599 263.147 228.749 253.633 223.251L185.509 183.925C177.009 179.021 166.379 185.149 166.379 194.966V273.627C166.379 284.395 176.286 292.595 186.8 290.291Z"></path>
-<path class="petal" fill="#773AED" style="animation-delay: 3.2s" d="M52.4594 107.109C42.959 101.62 30.9351 106.484 27.6566 116.971C23.6635 129.767 21.4883 143.384 21.4883 157.498C21.4883 171.616 23.6635 185.22 27.6566 198.021C30.9351 208.503 42.959 213.372 52.4594 207.878L120.61 168.539C129.106 163.626 129.106 151.357 120.61 146.453L52.4594 107.109Z"></path>
-<path class="petal" fill="#45C0F5" style="animation-delay: 0.8s" d="M287.353 116.978C284.07 106.491 272.051 101.631 262.541 107.116L194.391 146.46C185.891 151.364 185.891 163.633 194.391 168.55L262.541 207.889C272.051 213.378 284.07 208.51 287.34 198.028C291.346 185.227 293.512 171.623 293.512 157.505C293.512 143.391 291.346 129.774 287.353 116.978Z"></path>
-<path class="petal" fill="#4478FB" style="animation-delay: 4s" d="M61.3669 91.739L129.495 131.069C137.986 135.978 148.621 129.846 148.621 120.024V41.3635C148.621 30.6041 138.705 22.395 128.196 24.6996C100.548 30.7738 76.0441 45.2402 57.5302 65.3118C50.071 73.3914 51.8532 86.2499 61.3669 91.739Z"></path>
-<path class="petal" fill="#773AED" style="animation-delay: 2.4s" d="M129.491 183.929L61.3669 223.255C51.8532 228.753 50.071 241.603 57.5302 249.682C76.0441 269.758 100.543 284.225 128.196 290.295C138.705 292.599 148.621 284.399 148.621 273.626V194.97C148.621 185.153 138 179.025 129.491 183.929Z"></path>
+<path class="petal-d" filter="url(#mBlur)" fill="#45C0F5" style="animation-delay: 0s" d="M166.379 41.3693V120.025C166.379 129.847 177.009 135.979 185.509 131.066L253.633 91.7448C263.147 86.2512 264.92 73.3927 257.474 65.3132C238.943 45.2416 214.448 30.7707 186.8 24.701C176.29 22.3919 166.379 30.601 166.379 41.3693Z"></path>
+<path class="petal-d" filter="url(#mBlur)" fill="#4478FB" style="animation-delay: 2.4s" d="M186.8 290.291C214.444 284.221 238.943 269.754 257.47 249.678C264.92 241.599 263.147 228.749 253.633 223.251L185.509 183.925C177.009 179.021 166.379 185.149 166.379 194.966V273.627C166.379 284.395 176.286 292.595 186.8 290.291Z"></path>
+<path class="petal-d" filter="url(#mBlur)" fill="#773AED" style="animation-delay: 4.8s" d="M52.4594 107.109C42.959 101.62 30.9351 106.484 27.6566 116.971C23.6635 129.767 21.4883 143.384 21.4883 157.498C21.4883 171.616 23.6635 185.22 27.6566 198.021C30.9351 208.503 42.959 213.372 52.4594 207.878L120.61 168.539C129.106 163.626 129.106 151.357 120.61 146.453L52.4594 107.109Z"></path>
+<path class="petal-d" filter="url(#mBlur)" fill="#45C0F5" style="animation-delay: 1.2s" d="M287.353 116.978C284.07 106.491 272.051 101.631 262.541 107.116L194.391 146.46C185.891 151.364 185.891 163.633 194.391 168.55L262.541 207.889C272.051 213.378 284.07 208.51 287.34 198.028C291.346 185.227 293.512 171.623 293.512 157.505C293.512 143.391 291.346 129.774 287.353 116.978Z"></path>
+<path class="petal-d" filter="url(#mBlur)" fill="#4478FB" style="animation-delay: 6s" d="M61.3669 91.739L129.495 131.069C137.986 135.978 148.621 129.846 148.621 120.024V41.3635C148.621 30.6041 138.705 22.395 128.196 24.6996C100.548 30.7738 76.0441 45.2402 57.5302 65.3118C50.071 73.3914 51.8532 86.2499 61.3669 91.739Z"></path>
+<path class="petal-d" filter="url(#mBlur)" fill="#773AED" style="animation-delay: 3.6s" d="M129.491 183.929L61.3669 223.255C51.8532 228.753 50.071 241.603 57.5302 249.682C76.0441 269.758 100.543 284.225 128.196 290.295C138.705 292.599 148.621 284.399 148.621 273.626V194.97C148.621 185.153 138 179.025 129.491 183.929Z"></path>
 </g>
-<circle cx="157.5" cy="157.5" r="21" fill="#ECEDEF"></circle>
-<circle cx="157.5" cy="157.5" r="4" fill="#42444C"></circle>
+<circle cx="157.5" cy="157.5" r="21" fill="#121318"></circle>
+<circle cx="157.5" cy="157.5" r="157.5" fill="url(#mShade)"></circle>
 </svg>
 </div>
 </div>
-<div aria-hidden="true" class="eclipse" style="left: 50%; top: 150px; width: 1100px; height: 1100px; margin-left: -550px; z-index: 3"></div>
-<span style="position: absolute; z-index: 5; left: 0; right: 0; bottom: 28px; text-align: center; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8D97">Face de détection · 6 pétales β</span>
+</div>
+<span style="position: absolute; z-index: 5; left: 0; right: 0; top: 140px; text-align: center; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #8A8D97">Face de détection TRIOP · 6 pétales β</span>
 </div>
 
 </div>
