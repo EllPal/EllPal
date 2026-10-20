@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Beams V2 — Système et motion</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,200..800;1,200..800&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#773AED}a:hover{color:#42444C}
+.shoot{animation:shoot 3.6s cubic-bezier(.55,0,.25,1) infinite both}
+@keyframes shoot{0%{transform:translateX(-100%);opacity:0}12%{opacity:1}55%{transform:translateX(0);opacity:1}63%,100%{transform:translateX(0);opacity:0}}
+.cellpulse{animation:cellpulse 3.6s ease-in-out infinite both}
+@keyframes cellpulse{0%,48%{background:#D5D7DD;transform:scale(1)}60%{background:#37BFEF;transform:scale(1.7);box-shadow:0 0 18px rgba(55,191,239,.85)}85%,100%{background:#86C5FF;transform:scale(1.1)}}
+.ping{animation:ping 3.6s cubic-bezier(0,0,.2,1) infinite both}
+@keyframes ping{0%,52%{transform:translate(-50%,-50%) scale(.15);opacity:0}58%{opacity:.9}100%{transform:translate(-50%,-50%) scale(1);opacity:0}}
+.rise{animation:rise 2.6s cubic-bezier(.16,1,.3,1) infinite both}
+@keyframes rise{0%{transform:translateY(110%)}45%,100%{transform:translateY(0)}}
+.marquee{display:flex;width:max-content;animation:marquee 14s linear infinite}
+@keyframes marquee{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion: reduce){.sys *{animation:none!important}}
+</style>
+</helmet>
+<div class="sys" style="width: 1440px; height: 1080px; box-sizing: border-box; padding: 60px 64px; background: #FFFFFF; color: #42444C; font-family: Jost, system-ui, sans-serif; display: flex; flex-direction: column; gap: 32px">
+
+<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 48px">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #773AED">Proposition 2 · Système &amp; motion</span>
+<h1 style="margin: 0; font-size: 64px; line-height: 0.95; letter-spacing: -0.035em; font-weight: 800">Le faisceau en mouvement. <span style="font-weight: 200; color: #773AED">Fidèle à la charte.</span></h1>
+</div>
+<p style="margin: 0; max-width: 400px; font-size: 15px; line-height: 1.6; color: #5A5C66">Tout part du logo : le faisceau horizontal qui atteint le β. Il devient le motif animé du site — sans jamais toucher au logo lui-même.</p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 14px; padding: 24px; border-radius: 24px; background: #F4F6F9">
+<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #6B6D75">Logo — usages</span>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+<div style="height: 92px; border-radius: 14px; background: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 473 162" width="120" height="41" role="img" aria-label="Logo sur blanc"><path fill="#37BFEF" d="{{beam}}"></path><path fill="#42444C" d="{{letters}}"></path></svg></div>
+<div style="height: 92px; border-radius: 14px; background: #42444C; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 473 162" width="120" height="41" role="img" aria-label="Logo sur gris profond"><path fill="#37BFEF" d="{{beam}}"></path><path fill="#FFFFFF" d="{{letters}}"></path></svg></div>
+<div style="height: 92px; border-radius: 14px; background: #37BFEF; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 473 162" width="120" height="41" role="img" aria-label="Logo blanc sur bleu"><path fill="#FFFFFF" d="{{beam}}"></path><path fill="#FFFFFF" d="{{letters}}"></path></svg></div>
+<div style="height: 92px; border-radius: 14px; background: #773AED; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 473 162" width="120" height="41" role="img" aria-label="Logo blanc sur violet"><path fill="#FFFFFF" d="{{beam}}"></path><path fill="#FFFFFF" d="{{letters}}"></path></svg></div>
+</div>
+<span style="font-size: 13px; line-height: 1.5; color: #5A5C66">Vectoriel extrait des guidelines. Jamais animé, déformé ni recoloré. Largeur web ≥ 100 px, zone de protection = hauteur/2.</span>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 14px; padding: 24px; border-radius: 24px; background: #F4F6F9">
+<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #6B6D75">Couleurs — rôles web</span>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 12px"><span style="width: 44px; height: 30px; border-radius: 8px; background: #37BFEF"></span><span style="flex: 1; font-size: 14px; font-weight: 600">Beams blue</span><span style="font-size: 13px; color: #5A5C66">#37BFEF · signal, bandeaux</span></div>
+<div style="display: flex; align-items: center; gap: 12px"><span style="width: 44px; height: 30px; border-radius: 8px; background: #86C5FF"></span><span style="flex: 1; font-size: 14px; font-weight: 600">Blue light</span><span style="font-size: 13px; color: #5A5C66">#86C5FF · accents sur nuit</span></div>
+<div style="display: flex; align-items: center; gap: 12px"><span style="width: 44px; height: 30px; border-radius: 8px; background: #773AED"></span><span style="flex: 1; font-size: 14px; font-weight: 600">Beams violet</span><span style="font-size: 13px; color: #5A5C66">#773AED · CTA, mots clés</span></div>
+<div style="display: flex; align-items: center; gap: 12px"><span style="width: 44px; height: 30px; border-radius: 8px; background: #AF7DFF"></span><span style="flex: 1; font-size: 14px; font-weight: 600">Violet light</span><span style="font-size: 13px; color: #5A5C66">#AF7DFF · états intermédiaires</span></div>
+<div style="display: flex; align-items: center; gap: 12px"><span style="width: 44px; height: 30px; border-radius: 8px; background: #42444C"></span><span style="flex: 1; font-size: 14px; font-weight: 600">Deep grey</span><span style="font-size: 13px; color: #5A5C66">#42444C · texte, logo</span></div>
+<div style="display: flex; align-items: center; gap: 12px"><span style="width: 44px; height: 30px; border-radius: 8px; background: #1B1C21"></span><span style="flex: 1; font-size: 14px; font-weight: 600">Nuit (dérivé)</span><span style="font-size: 13px; color: #5A5C66">#1B1C21 · section démo</span></div>
+</div>
+<span style="font-size: 13px; line-height: 1.5; color: #5A5C66">Jamais de texte blanc sur Beams blue (contraste 2,1:1). Texte gris profond sur bleu, blanc sur violet.</span>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 12px; padding: 24px; border-radius: 24px; background: #F4F6F9">
+<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #6B6D75">Typographie — Jost seule</span>
+<span style="font-size: 54px; line-height: 0.95; font-weight: 800; letter-spacing: -0.035em">Retirer toute la tumeur.</span>
+<span style="font-size: 54px; line-height: 0.95; font-weight: 200; letter-spacing: -0.03em; color: #773AED">Rien de plus.</span>
+<span style="font-size: 18px; line-height: 1.5; font-weight: 400; color: #5A5C66">Corps 400 · 17–21 px · interligne 1,55</span>
+<span style="font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #6B6D75">Labels 600 · capitales +14 %</span>
+<span style="margin-top: auto; font-size: 13px; line-height: 1.5; color: #5A5C66">Le contraste ExtraBold / ExtraLight remplace tout autre effet typographique.</span>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 14px">
+<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #6B6D75">Motion — quatre gestes, une courbe : cubic-bezier(.16, 1, .3, 1)</span>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px">
+
+<div style="display: flex; flex-direction: column; border-radius: 24px; background: #F4F6F9; overflow: hidden">
+<div aria-hidden="true" style="position: relative; height: 150px; overflow: hidden">
+<span class="cellpulse" style="position: absolute; left: 70%; top: 50%; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: #86C5FF"></span>
+<span class="ping" style="position: absolute; left: 70%; top: 50%; width: 120px; height: 120px; border-radius: 50%; border: 1.5px solid #37BFEF; transform: translate(-50%, -50%)"></span>
+<div class="shoot" style="position: absolute; left: 0; top: 50%; width: 68%; height: 20px; margin-top: -10px; display: flex; justify-content: flex-end"><svg viewBox="0 54.33 105.6 14.92" width="130" height="18"><path fill="#37BFEF" d="{{beam}}"></path></svg></div>
+</div>
+<div style="padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 17px; font-weight: 700">Le tir</span><span style="font-size: 13px; line-height: 1.45; color: #5A5C66">Faisceau gauche → droite, toujours horizontal, 3,6 s. Impact = pulsation + onde.</span></div>
+</div>
+
+<div style="display: flex; flex-direction: column; border-radius: 24px; background: #F4F6F9; overflow: hidden">
+<div aria-hidden="true" style="height: 150px; display: flex; align-items: center; padding: 0 24px">
+<span style="display: block; overflow: hidden; font-size: 40px; line-height: 1.05; font-weight: 800; letter-spacing: -0.03em"><span class="rise" style="display: block">Rien de plus.</span></span>
+</div>
+<div style="padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 17px; font-weight: 700">La montée</span><span style="font-size: 13px; line-height: 1.45; color: #5A5C66">Titres révélés ligne à ligne derrière un masque, décalage 110 ms.</span></div>
+</div>
+
+<div style="display: flex; flex-direction: column; border-radius: 24px; background: #F4F6F9; overflow: hidden">
+<div aria-hidden="true" style="height: 150px; display: flex; align-items: center; padding: 0 24px; font-size: 28px; line-height: 1.2; font-weight: 500; letter-spacing: -0.02em">
+<span><span style="color: #42444C">tout se joue</span> <span style="color: #D3D5DB">à la</span> <span style="color: #D3D5DB">marge.</span></span>
+</div>
+<div style="padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 17px; font-weight: 700">L’encrage</span><span style="font-size: 13px; line-height: 1.45; color: #5A5C66">Au scroll, chaque mot passe du gris clair au gris profond (ou au violet).</span></div>
+</div>
+
+<div style="display: flex; flex-direction: column; border-radius: 24px; background: #F4F6F9; overflow: hidden">
+<div aria-hidden="true" style="height: 150px; display: flex; align-items: center; overflow: hidden; background: #37BFEF">
+<div class="marquee">
+<span style="padding-right: 28px; font-size: 32px; font-weight: 800; letter-spacing: -0.02em; color: #42444C; white-space: nowrap">Sarcomes · Foie · Cerveau · Particules β ·</span>
+<span style="padding-right: 28px; font-size: 32px; font-weight: 800; letter-spacing: -0.02em; color: #42444C; white-space: nowrap">Sarcomes · Foie · Cerveau · Particules β ·</span>
+</div>
+</div>
+<div style="padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 17px; font-weight: 700">Le défilement</span><span style="font-size: 13px; line-height: 1.45; color: #5A5C66">Bandeaux continus, 40–70 s par boucle : du rythme sans agitation.</span></div>
+</div>
+
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1080}}'>
+var BEAM = 'M96.97 69.25L0 60.46L96.97 54.33C102.01 54.33 105.53 59.45 103.83 64.31C102.79 67.27 100.05 69.25 96.97 69.25Z';
+var LETTERS = 'M181.52 49.46L239.53 49.46L234.17 64.8L197.85 64.8L193.87 76.22L227.56 76.22L222.44 90.88L188.75 90.88L183.82 105.03L221.18 105.03L215.51 121.3L156.45 121.3L181.5 49.46Z'
++ 'M274.38 109.44L249.8 109.44L242.26 121.3L220.16 121.3L271.55 49.46L295.15 49.46L296.41 121.3L273.75 121.3L274.39 109.44ZM275.3 93.91L276.58 68.08L259.93 93.91L275.31 93.91Z'
++ 'M328.12 49.46L356.58 49.46L352.31 93.18L378.46 49.46L406.92 49.46L381.86 121.3L364.13 121.3L383.24 66.51L350.46 121.3L334.41 121.3L339.9 66.51L320.79 121.3L303.06 121.3Z'
++ 'M400.17 97.54L421.23 96.21C420.47 99.64 420.47 102.25 421.22 104.05C422.43 106.96 425.11 108.41 429.25 108.41C432.34 108.41 434.98 107.67 437.18 106.18C439.38 104.7 440.8 102.98 441.49 101.01C442.14 99.14 441.93 97.48 440.84 96.01C439.76 94.54 436.55 93.14 431.21 91.84C422.48 89.65 416.72 86.75 413.95 83.12C411.14 79.5 410.71 74.88 412.67 69.25C413.96 65.56 416.21 62.07 419.45 58.79C422.68 55.51 426.72 52.92 431.57 51.05C436.41 49.18 442.48 48.23 449.77 48.23C458.72 48.23 464.95 49.94 468.46 53.35C471.97 56.77 472.88 62.19 471.16 69.65L450.34 70.87C450.93 67.63 450.61 65.28 449.39 63.81C448.16 62.34 446.02 61.6 442.96 61.6C440.45 61.6 438.36 62.15 436.7 63.24C435.04 64.34 433.94 65.66 433.39 67.23C433 68.38 433.17 69.4 433.89 70.32C434.58 71.27 436.69 72.15 440.23 72.97C448.96 75.06 455 77.18 458.34 79.31C461.69 81.45 463.75 84.11 464.5 87.28C465.26 90.45 464.96 93.99 463.59 97.91C461.98 102.52 459.26 106.77 455.41 110.66C451.57 114.55 447.07 117.49 441.92 119.5C436.75 121.5 430.78 122.51 424 122.51C412.08 122.51 404.65 120.16 401.71 115.45C398.76 110.75 398.26 104.77 400.18 97.52Z'
++ 'M147.84 0L95.82 0L95.58 0.67L95.52 0.67L86.34 26.22L103.51 26.22L106.58 17.32L141.79 17.32C153.29 17.32 159.78 25.47 156.27 35.51C152.75 45.54 140.55 53.7 129.04 53.7L122.98 71.01C134.49 71.01 140.98 79.17 137.46 89.2C133.95 99.24 121.75 107.39 110.24 107.39L58.71 107.39L39.93 161.98L57.1 161.98L69.46 124.7L104.18 124.7C126.61 124.7 150.45 108.77 157.3 89.2C161.05 78.48 158.96 68.86 152.61 62.34C163.52 55.83 172.36 46.21 176.11 35.5C182.96 15.93 170.28 0 147.84 0Z';
+class Component extends DCLogic {
+  renderVals() {
+    return { beam: BEAM, letters: LETTERS };
+  }
+}
+</script>
+</body>
+</html>

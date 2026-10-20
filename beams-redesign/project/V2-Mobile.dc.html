@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Beams V2 — Accueil mobile</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,200..800;1,200..800&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#773AED}a:hover{color:#42444C}
+.line{display:block;overflow:hidden;padding-bottom:.08em;margin-bottom:-.08em}
+.rise{display:block;animation:rise 1.2s cubic-bezier(.16,1,.3,1) both}
+@keyframes rise{from{transform:translateY(110%)}}
+.fade{animation:fade 1.2s cubic-bezier(.16,1,.3,1) both}
+@keyframes fade{from{opacity:0;transform:translateY(14px)}}
+.shoot{animation:shoot 3.6s cubic-bezier(.55,0,.25,1) infinite both}
+@keyframes shoot{0%{transform:translateX(-100%);opacity:0}12%{opacity:1}55%{transform:translateX(0);opacity:1}63%,100%{transform:translateX(0);opacity:0}}
+.cellpulse{animation:cellpulse 3.6s ease-in-out infinite both}
+@keyframes cellpulse{0%,48%{background:#D5D7DD;transform:scale(1)}60%{background:#37BFEF;transform:scale(1.7);box-shadow:0 0 14px rgba(55,191,239,.85)}85%,100%{background:#86C5FF;transform:scale(1.1)}}
+.ping{animation:ping 3.6s cubic-bezier(0,0,.2,1) infinite both}
+@keyframes ping{0%,52%{transform:translate(-50%,-50%) scale(.15);opacity:0}58%{opacity:.9}100%{transform:translate(-50%,-50%) scale(1);opacity:0}}
+@media (prefers-reduced-motion: reduce){.mob *{animation:none!important}}
+</style>
+</helmet>
+<div class="mob" style="width: 390px; height: 844px; box-sizing: border-box; overflow: hidden; background: #FFFFFF; color: #42444C; font-family: Jost, system-ui, sans-serif; display: flex; flex-direction: column">
+
+<nav aria-label="Navigation principale" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; border-bottom: 1px solid #ECEEF2">
+<a href="#top" aria-label="Beams — accueil" style="display: flex; padding: 6px 0"><svg viewBox="0 0 473 162" width="100" height="34" role="img" aria-label="Beams"><path fill="#37BFEF" d="{{beam}}"></path><path fill="#42444C" d="{{letters}}"></path></svg></a>
+<button type="button" aria-label="Ouvrir le menu" style="width: 44px; height: 44px; border-radius: 999px; border: 1px solid #E1E3E8; background: #FFFFFF; color: #42444C; display: flex; align-items: center; justify-content: center; cursor: pointer">
+<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 6h12M3 12h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+</button>
+</nav>
+
+<div style="padding: 26px 20px 0; display: flex; flex-direction: column; gap: 18px">
+<div class="fade" style="display: inline-flex; align-self: flex-start; align-items: center; gap: 10px; padding: 6px 14px 6px 8px; border-radius: 999px; background: #F4F6F9; border: 1px solid #E6E8EE; font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase">
+<span style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: #37BFEF; font-size: 13px; font-weight: 700; text-transform: none">β</span>TRIOP · sonde peropératoire
+</div>
+<h1 style="margin: 0; font-size: 50px; line-height: 0.92; letter-spacing: -0.035em; font-weight: 800">
+<span class="line"><span class="rise" style="animation-delay: 0.05s">Retirer toute</span></span>
+<span class="line"><span class="rise" style="animation-delay: 0.16s">la tumeur.</span></span>
+<span class="line"><span class="rise" style="animation-delay: 0.27s; font-weight: 200; color: #773AED">Rien de plus.</span></span>
+</h1>
+<p class="fade" style="margin: 0; font-size: 16px; line-height: 1.55; color: #5A5C66; animation-delay: 0.45s">TRIOP détecte en temps réel les cellules tumorales que l’œil ne voit pas.</p>
+</div>
+
+<div style="flex: 1 1 auto; min-height: 0; padding: 20px 20px 0">
+<div class="fade" role="img" aria-label="Animation : des faisceaux convergent vers un amas de cellules" style="position: relative; height: 100%; border-radius: 28px; background: #F4F6F9; border: 1px solid #E6E8EE; overflow: hidden; animation-delay: 0.3s">
+<sc-for list="{{dots}}" as="d" hint-placeholder-count="12"><span class="{{d.cls}}" style="{{d.style}}"></span></sc-for>
+<span class="ping" style="position: absolute; left: 66%; top: 50%; width: 180px; height: 180px; border-radius: 50%; border: 1.5px solid #37BFEF; transform: translate(-50%, -50%)"></span>
+<div class="shoot" style="position: absolute; left: 0; top: 50%; width: 60%; height: 20px; margin-top: -10px; display: flex; justify-content: flex-end"><svg viewBox="0 54.33 105.6 14.92" width="140" height="20" aria-hidden="true" style="filter: drop-shadow(0 0 8px rgba(55, 191, 239, 0.8))"><path fill="#37BFEF" d="{{beam}}"></path></svg></div>
+<div class="shoot" style="position: absolute; left: 0; top: 38%; width: 62%; height: 20px; margin-top: -10px; display: flex; justify-content: flex-end; animation-delay: 0.15s"><svg viewBox="0 54.33 105.6 14.92" width="96" height="14" aria-hidden="true"><path fill="#773AED" d="{{beam}}"></path></svg></div>
+</div>
+</div>
+
+<div style="padding: 18px 20px 26px; display: flex; flex-direction: column; gap: 10px">
+<a href="#demo" style="display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 54px; border-radius: 999px; background: #773AED; color: #FFFFFF; font-size: 16px; font-weight: 500; text-decoration: none">Essayer la détection
+<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
+<a href="#contact" style="display: flex; align-items: center; justify-content: center; min-height: 54px; border-radius: 999px; border: 1px solid #D5D7DD; color: #42444C; font-size: 16px; font-weight: 500; text-decoration: none">Partenariats cliniques</a>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+var BEAM = 'M96.97 69.25L0 60.46L96.97 54.33C102.01 54.33 105.53 59.45 103.83 64.31C102.79 67.27 100.05 69.25 96.97 69.25Z';
+var LETTERS = 'M181.52 49.46L239.53 49.46L234.17 64.8L197.85 64.8L193.87 76.22L227.56 76.22L222.44 90.88L188.75 90.88L183.82 105.03L221.18 105.03L215.51 121.3L156.45 121.3L181.5 49.46Z'
++ 'M274.38 109.44L249.8 109.44L242.26 121.3L220.16 121.3L271.55 49.46L295.15 49.46L296.41 121.3L273.75 121.3L274.39 109.44ZM275.3 93.91L276.58 68.08L259.93 93.91L275.31 93.91Z'
++ 'M328.12 49.46L356.58 49.46L352.31 93.18L378.46 49.46L406.92 49.46L381.86 121.3L364.13 121.3L383.24 66.51L350.46 121.3L334.41 121.3L339.9 66.51L320.79 121.3L303.06 121.3Z'
++ 'M400.17 97.54L421.23 96.21C420.47 99.64 420.47 102.25 421.22 104.05C422.43 106.96 425.11 108.41 429.25 108.41C432.34 108.41 434.98 107.67 437.18 106.18C439.38 104.7 440.8 102.98 441.49 101.01C442.14 99.14 441.93 97.48 440.84 96.01C439.76 94.54 436.55 93.14 431.21 91.84C422.48 89.65 416.72 86.75 413.95 83.12C411.14 79.5 410.71 74.88 412.67 69.25C413.96 65.56 416.21 62.07 419.45 58.79C422.68 55.51 426.72 52.92 431.57 51.05C436.41 49.18 442.48 48.23 449.77 48.23C458.72 48.23 464.95 49.94 468.46 53.35C471.97 56.77 472.88 62.19 471.16 69.65L450.34 70.87C450.93 67.63 450.61 65.28 449.39 63.81C448.16 62.34 446.02 61.6 442.96 61.6C440.45 61.6 438.36 62.15 436.7 63.24C435.04 64.34 433.94 65.66 433.39 67.23C433 68.38 433.17 69.4 433.89 70.32C434.58 71.27 436.69 72.15 440.23 72.97C448.96 75.06 455 77.18 458.34 79.31C461.69 81.45 463.75 84.11 464.5 87.28C465.26 90.45 464.96 93.99 463.59 97.91C461.98 102.52 459.26 106.77 455.41 110.66C451.57 114.55 447.07 117.49 441.92 119.5C436.75 121.5 430.78 122.51 424 122.51C412.08 122.51 404.65 120.16 401.71 115.45C398.76 110.75 398.26 104.77 400.18 97.52Z'
++ 'M147.84 0L95.82 0L95.58 0.67L95.52 0.67L86.34 26.22L103.51 26.22L106.58 17.32L141.79 17.32C153.29 17.32 159.78 25.47 156.27 35.51C152.75 45.54 140.55 53.7 129.04 53.7L122.98 71.01C134.49 71.01 140.98 79.17 137.46 89.2C133.95 99.24 121.75 107.39 110.24 107.39L58.71 107.39L39.93 161.98L57.1 161.98L69.46 124.7L104.18 124.7C126.61 124.7 150.45 108.77 157.3 89.2C161.05 78.48 158.96 68.86 152.61 62.34C163.52 55.83 172.36 46.21 176.11 35.5C182.96 15.93 170.28 0 147.84 0Z';
+class Component extends DCLogic {
+  renderVals() {
+    var dots = [];
+    for (var r = 0; r < 9; r++) {
+      for (var c = 0; c < 9; c++) {
+        var x = 6 + c * 11, y = 6 + r * 11;
+        var d = Math.hypot(c - 5.5, r - 4);
+        var t = d < 1.8;
+        var s = t ? 9 : 5;
+        dots.push({ cls: t ? 'cellpulse' : '', style: 'position:absolute;left:' + x + '%;top:' + y + '%;width:' + s + 'px;height:' + s + 'px;margin:-' + s / 2 + 'px 0 0 -' + s / 2 + 'px;border-radius:50%;background:' + (t ? '#86C5FF' : '#D5D7DD') + ';animation-delay:' + (d * 0.12).toFixed(2) + 's' });
+      }
+    }
+    return { beam: BEAM, letters: LETTERS, dots: dots };
+  }
+}
+</script>
+</body>
+</html>
