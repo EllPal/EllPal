@@ -1,0 +1,41 @@
+body{margin:0;background:#0B0C0F}
+a{color:#86C5FF}a:hover{color:#FFFFFF}
+@property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
+.v3{font-family:'Jost',system-ui,sans-serif;color:#FFFFFF;background:#0B0C0F;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.v3 *{box-sizing:border-box}
+.navlink{color:#A3A6AF;text-decoration:none;transition:color .25s}
+.navlink:hover,.navlink.on{color:#FFFFFF}
+.btn-v{box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 0 0 1px rgba(175,125,255,.55),0 10px 40px -10px rgba(119,58,237,.9);transition:box-shadow .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1),background-color .3s}
+.btn-v:hover{transform:translateY(-2px);background-color:#8649F5}
+.btn-g{box-shadow:inset 0 1px 0 rgba(255,255,255,.08);transition:background-color .3s,border-color .3s,color .3s}
+.btn-g:hover{background-color:rgba(255,255,255,.08);border-color:rgba(134,197,255,.5);color:#FFFFFF}
+.arrow{transition:transform .45s cubic-bezier(.16,1,.3,1)}
+a:hover .arrow{transform:translateY(2px)}
+.tg{background:linear-gradient(180deg,#FFFFFF 25%,#9A9DA7 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tg2{background:linear-gradient(90deg,#86C5FF 0%,#AF7DFF 70%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.blur-in{display:inline-block;animation:blurIn 1.5s cubic-bezier(.16,1,.3,1) both}
+@keyframes blurIn{from{opacity:0;filter:blur(16px);transform:translateY(22px)}}
+.twinkle{animation:twinkle 4s ease-in-out infinite both}
+@keyframes twinkle{0%,100%{opacity:.12}50%{opacity:.85}}
+@keyframes spin{to{--a:360deg}}
+.gborder{position:relative;isolation:isolate}
+.gborder::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:conic-gradient(from var(--a),rgba(255,255,255,.07) 0deg,rgba(255,255,255,.07) 200deg,#86C5FF 260deg,#AF7DFF 300deg,rgba(255,255,255,.07) 345deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 7s linear infinite;pointer-events:none;z-index:4}
+.eclipse{position:absolute;border-radius:50%;background:#0B0C0F;box-shadow:0 -50px 160px -40px rgba(55,191,239,.5),0 -20px 90px -30px rgba(119,58,237,.55),inset 0 60px 120px -60px rgba(55,191,239,.3)}
+.eclipse::before{content:"";position:absolute;inset:0;border-radius:50%;padding:1.5px;background:conic-gradient(from var(--a),rgba(134,197,255,.08) 0deg,rgba(134,197,255,.08) 300deg,#86C5FF 330deg,#FFFFFF 340deg,#AF7DFF 350deg,rgba(134,197,255,.08) 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 18s linear infinite}
+.eclipse::after{content:"";position:absolute;inset:0;border-radius:50%;padding:1.5px;background:linear-gradient(180deg,rgba(190,220,255,.95) 0%,rgba(175,125,255,.45) 5%,transparent 12%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.spot{position:relative;isolation:isolate;--mx:-999px;--my:-999px}
+.spot::before{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(560px circle at var(--mx) var(--my),rgba(134,197,255,.09),transparent 42%);opacity:0;transition:opacity .5s;pointer-events:none;z-index:0}
+.spot::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:radial-gradient(420px circle at var(--mx) var(--my),rgba(134,197,255,.8),rgba(175,125,255,.38) 25%,transparent 55%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .5s;pointer-events:none;z-index:3}
+.spot-grid:hover .spot::after{opacity:1}
+.spot:hover::before{opacity:1}
+.preview img{transition:transform .9s cubic-bezier(.16,1,.3,1)}
+.spot:hover .preview img{transform:scale(1.05)}
+.row{transition:background-color .35s,border-color .35s}
+.row:hover{background-color:rgba(255,255,255,.035);border-color:rgba(255,255,255,.12)}
+@supports (animation-timeline: view()){
+.reveal{animation:reveal linear both;animation-timeline:view();animation-range:entry 0% entry 80%}
+@keyframes reveal{from{opacity:0;filter:blur(10px);transform:translateY(44px)}}
+}
+@media (prefers-reduced-motion: reduce){.v3 *,.v3 *::before,.v3 *::after{animation:none!important;transition:none!important}}
+.nav-links{display:flex}
+@media (max-width: 960px){.nav-links{display:none}}
