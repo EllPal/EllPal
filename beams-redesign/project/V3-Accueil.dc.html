@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Beams V3 — Accueil</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,200..800;1,200..800&amp;display=swap">
+<style>
+body{margin:0;background:#0B0C0F}
+a{color:#86C5FF}a:hover{color:#FFFFFF}
+@property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
+.v3{font-family:'Jost',system-ui,sans-serif;color:#FFFFFF;background:#0B0C0F;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.v3 *{box-sizing:border-box}
+.navlink{color:#A3A6AF;text-decoration:none;transition:color .25s}
+.navlink:hover{color:#FFFFFF}
+.btn-v{position:relative;box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 0 0 1px rgba(175,125,255,.55),0 10px 40px -10px rgba(119,58,237,.9);transition:box-shadow .4s,transform .4s,background-color .3s}
+.btn-v:hover{transform:translateY(-1px);background-color:#8649F5;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 0 0 1px rgba(175,125,255,.8),0 14px 50px -8px rgba(119,58,237,1)}
+.btn-g{box-shadow:inset 0 1px 0 rgba(255,255,255,.08);transition:background-color .3s,border-color .3s}
+.btn-g:hover{background-color:rgba(255,255,255,.07);border-color:rgba(255,255,255,.22)}
+.arrow{transition:transform .35s cubic-bezier(.2,.7,.1,1)}
+a:hover .arrow{transform:translateX(4px)}
+.tg{background:linear-gradient(180deg,#FFFFFF 25%,#9A9DA7 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tg2{background:linear-gradient(90deg,#86C5FF 0%,#AF7DFF 70%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.shimmer{background:linear-gradient(90deg,#A3A6AF 0%,#A3A6AF 35%,#FFFFFF 50%,#A3A6AF 65%,#A3A6AF 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 3.2s linear infinite}
+@keyframes shimmer{from{background-position:125% 0}to{background-position:-125% 0}}
+.blur-in{display:inline-block;animation:blurIn 1.4s cubic-bezier(.16,1,.3,1) both}
+@keyframes blurIn{from{opacity:0;filter:blur(14px);transform:translateY(18px)}}
+.twinkle{animation:twinkle 4s ease-in-out infinite both}
+@keyframes twinkle{0%,100%{opacity:.15}50%{opacity:.9}}
+.breathe{animation:breathe 7s ease-in-out infinite}
+@keyframes breathe{50%{opacity:.6;transform:scale(1.06)}}
+@keyframes spin{to{--a:360deg}}
+@keyframes spinT{to{transform:rotate(360deg)}}
+.gborder{position:relative;isolation:isolate}
+.gborder::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:conic-gradient(from var(--a),rgba(255,255,255,.07) 0deg,rgba(255,255,255,.07) 200deg,#86C5FF 260deg,#AF7DFF 300deg,rgba(255,255,255,.07) 345deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 6s linear infinite;pointer-events:none;z-index:2}
+.eclipse{position:absolute;border-radius:50%;background:#0B0C0F;box-shadow:0 -50px 160px -40px rgba(55,191,239,.55),0 -20px 90px -30px rgba(119,58,237,.6),inset 0 60px 120px -60px rgba(55,191,239,.35)}
+.eclipse::before{content:"";position:absolute;inset:0;border-radius:50%;padding:1.5px;background:conic-gradient(from var(--a),rgba(134,197,255,.08) 0deg,rgba(134,197,255,.08) 300deg,#86C5FF 330deg,#FFFFFF 340deg,#AF7DFF 350deg,rgba(134,197,255,.08) 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 16s linear infinite}
+.eclipse::after{content:"";position:absolute;inset:0;border-radius:50%;padding:1.5px;background:linear-gradient(180deg,rgba(180,215,255,.95) 0%,rgba(175,125,255,.45) 6%,transparent 16%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.spot{position:relative;isolation:isolate;--mx:-999px;--my:-999px}
+.spot::before{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(560px circle at var(--mx) var(--my),rgba(134,197,255,.09),transparent 42%);opacity:0;transition:opacity .5s;pointer-events:none;z-index:0}
+.spot::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:radial-gradient(420px circle at var(--mx) var(--my),rgba(134,197,255,.75),rgba(175,125,255,.35) 25%,transparent 55%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .5s;pointer-events:none;z-index:3}
+.spot-grid:hover .spot::after{opacity:1}
+.spot:hover::before{opacity:1}
+.travel{animation:travel 4.2s cubic-bezier(.65,0,.35,1) infinite both}
+@keyframes travel{0%{width:12%;opacity:0}8%{opacity:1}78%{width:88%;opacity:1}88%,100%{width:88%;opacity:0}}
+.node{animation:node 4.2s ease-out infinite both}
+@keyframes node{0%{background:#22242B;box-shadow:0 0 0 1px rgba(255,255,255,.12)}6%{background:#86C5FF;box-shadow:0 0 0 6px rgba(134,197,255,.15),0 0 28px rgba(134,197,255,.9)}50%{background:#86C5FF;box-shadow:0 0 0 1px rgba(134,197,255,.5),0 0 14px rgba(134,197,255,.5)}75%,100%{background:#22242B;box-shadow:0 0 0 1px rgba(255,255,255,.12)}}
+.wave{animation:wave 4s linear infinite}
+@keyframes wave{to{transform:translateX(-50%)}}
+.suck{animation:suck 2.4s cubic-bezier(.55,0,.8,.2) infinite both}
+@keyframes suck{0%{transform:translate(0,0) scale(1);opacity:0}15%{opacity:1}100%{transform:translate(var(--sx),-104px) scale(.3);opacity:0}}
+.orbit{animation:spinT 24s linear infinite}
+.counter{animation:spinT 24s linear infinite reverse}
+.marquee{display:flex;width:max-content;animation:marquee 50s linear infinite}
+@keyframes marquee{to{transform:translateX(-50%)}}
+.fade-edges{-webkit-mask-image:linear-gradient(90deg,transparent,#000 15%,#000 85%,transparent);mask-image:linear-gradient(90deg,transparent,#000 15%,#000 85%,transparent)}
+.portal .pglow{transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.portal:hover .pglow{opacity:1;transform:scale(1.08)}
+.reticle{transition:left .12s linear,top .12s linear}
+.probe-line{transition:left .12s linear,height .12s linear}
+.scan{animation:scan 5s cubic-bezier(.45,0,.55,1) infinite}
+@keyframes scan{0%{transform:translateY(-10%);opacity:0}15%,85%{opacity:1}100%{transform:translateY(1000%);opacity:0}}
+@supports (animation-timeline: view()){
+.reveal{animation:reveal linear both;animation-timeline:view();animation-range:entry 0% entry 80%}
+@keyframes reveal{from{opacity:0;filter:blur(10px);transform:translateY(40px)}}
+.tilt{transform-origin:50% 0;animation:tilt linear both;animation-timeline:view();animation-range:entry 0% cover 42%}
+@keyframes tilt{from{transform:perspective(1600px) rotateX(26deg) scale(.9);opacity:.35}}
+.ink{animation:ink linear both;animation-timeline:view();animation-range:cover 20% cover 42%}
+@keyframes ink{from{color:#34363E}}
+.vdraw{transform-origin:top center;animation:vdraw linear both;animation-timeline:view();animation-range:entry 30% exit 60%}
+@keyframes vdraw{from{transform:scaleY(0)}}
+.lit{animation:lit linear both;animation-timeline:view();animation-range:entry 70% cover 45%}
+@keyframes lit{from{background-color:#22242B;box-shadow:0 0 0 1px rgba(255,255,255,.12)}}
+}
+.still *,.still *::before,.still *::after{animation:none!important;transition:none!important}
+@media (prefers-reduced-motion: reduce){.v3 *,.v3 *::before,.v3 *::after{animation:none!important;transition:none!important}}
+.nav-links{display:flex}
+.span2{grid-column:span 2}
+.sticky-col{position:sticky;top:120px}
+@media (max-width: 720px){.span2{grid-column:auto}}
+@media (max-width: 960px){.sticky-col{position:static}}
+@media (max-width: 900px){.nav-links{display:none}}
+</style>
+</helmet>
+<div class="v3 {{stillCls}}">
+
+<!-- NAV -->
+<header style="position: sticky; top: 0; z-index: 40; background: rgba(11, 12, 15, 0.6); backdrop-filter: saturate(1.6) blur(18px); border-bottom: 1px solid rgba(255, 255, 255, 0.06)">
+<nav aria-label="Navigation principale" style="max-width: 1240px; margin: 0 auto; padding: 14px clamp(20px, 4vw, 40px); display: flex; align-items: center; justify-content: space-between; gap: 24px">
+<a href="#top" aria-label="Beams — accueil" style="display: flex; align-items: center; padding: 6px 0">
+<svg viewBox="0 0 473 162" width="104" height="36" role="img" aria-label="Beams"><path fill="#37BFEF" d="{{beam}}"></path><path fill="#FFFFFF" d="{{letters}}"></path></svg>
+</a>
+<div class="nav-links" style="align-items: center; gap: 36px; font-size: 15px">
+<a class="navlink" href="#produit">Technologie</a>
+<a class="navlink" href="#plateforme">Plateforme</a>
+<a class="navlink" href="#indications">Indications</a>
+<a class="navlink" href="#parcours">Clinique</a>
+<a class="navlink" href="#equipe">Équipe</a>
+</div>
+<div style="display: flex; align-items: center; gap: 12px">
+<a class="btn-g" href="#lang" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.12); color: #A3A6AF; font-size: 13px; letter-spacing: 0.06em; text-decoration: none">FR</a>
+<a class="btn-v" href="#contact" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 18px; border-radius: 999px; background: #773AED; color: #FFFFFF; font-size: 14px; font-weight: 500; text-decoration: none">Nous contacter</a>
+</div>
+</nav>
+</header>
+
+<!-- HERO -->
+<section id="top" style="position: relative; overflow: hidden">
+<div aria-hidden="true" style="position: absolute; inset: 0">
+<sc-for list="{{stars}}" as="s" hint-placeholder-count="30"><span class="twinkle" style="{{s}}"></span></sc-for>
+</div>
+<div aria-hidden="true" class="breathe" style="position: absolute; left: 50%; top: -420px; width: 1100px; height: 800px; margin-left: -550px; border-radius: 50%; background: radial-gradient(closest-side, rgba(119, 58, 237, 0.28), rgba(55, 191, 239, 0.08) 60%, transparent)"></div>
+
+<div style="position: relative; max-width: 1240px; margin: 0 auto; padding: clamp(72px, 10vw, 140px) clamp(20px, 4vw, 40px) 0; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 28px">
+<a href="#actualites" class="gborder blur-in" style="display: inline-flex; align-items: center; gap: 10px; padding: 7px 8px 7px 14px; border-radius: 999px; background: rgba(255, 255, 255, 0.03); text-decoration: none; font-size: 14px">
+<span style="width: 6px; height: 6px; border-radius: 50%; background: #86C5FF; box-shadow: 0 0 10px #86C5FF"></span>
+<span class="shimmer">Best Pitch INPI · VivaTech 2026</span>
+<span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: rgba(255, 255, 255, 0.08); color: #FFFFFF"><svg class="arrow" width="12" height="12" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+</a>
+<h1 style="margin: 0; font-size: clamp(50px, 8vw, 116px); line-height: 0.95; letter-spacing: -0.04em; font-weight: 700">
+<span class="blur-in tg" style="animation-delay: 0.08s">Retirer</span> <span class="blur-in tg" style="animation-delay: 0.16s">toute</span> <span class="blur-in tg" style="animation-delay: 0.24s">la</span> <span class="blur-in tg" style="animation-delay: 0.32s">tumeur.</span><br>
+<span class="blur-in tg2" style="animation-delay: 0.48s; font-weight: 200; letter-spacing: -0.035em; padding-bottom: 0.08em">Rien de plus.</span>
+</h1>
+<p class="blur-in" style="margin: 0; max-width: 560px; font-size: clamp(17px, 1.5vw, 20px); line-height: 1.6; color: #A3A6AF; animation-delay: 0.65s">TRIOP détecte en temps réel, au contact du tissu, les cellules tumorales que l’œil ne voit pas. Le chirurgien ne change pas de geste : il gagne un sens.</p>
+<div class="blur-in" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; animation-delay: 0.8s">
+<a class="btn-v" href="#produit" style="display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 26px; border-radius: 999px; background: #773AED; color: #FFFFFF; font-size: 16px; font-weight: 500; text-decoration: none">Essayer la détection <svg class="arrow" width="16" height="16" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
+<a class="btn-g" href="#contact" style="display: inline-flex; align-items: center; min-height: 52px; padding: 0 26px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(255, 255, 255, 0.03); color: #FFFFFF; font-size: 16px; text-decoration: none">Partenariats cliniques</a>
+</div>
+</div>
+
+<!-- PRODUIT : fenêtre de démo sur l’horizon -->
+<div id="produit" style="position: relative; max-width: 1180px; margin: clamp(72px, 9vw, 120px) auto 0; padding: 0 clamp(16px, 3vw, 32px)">
+<div aria-hidden="true" class="eclipse" style="left: 50%; top: -150px; width: 1900px; height: 1900px; margin-left: -950px"></div>
+<div aria-hidden="true" class="breathe" style="position: absolute; left: 15%; right: 15%; top: -40px; height: 260px; border-radius: 50%; background: radial-gradient(closest-side, rgba(55, 191, 239, 0.35), transparent); filter: blur(30px)"></div>
+
+<div class="tilt" style="position: relative; z-index: 2">
+<div class="gborder" style="border-radius: 22px; background: rgba(19, 20, 25, 0.82); backdrop-filter: blur(20px); box-shadow: 0 40px 120px -30px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.06); overflow: hidden">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 18px; border-bottom: 1px solid rgba(255, 255, 255, 0.06)">
+<div style="display: flex; align-items: center; gap: 12px">
+<svg viewBox="0 0 183 162" width="26" height="23" role="img" aria-label="Symbole Beams"><path fill="#37BFEF" d="{{beam}}"></path><path fill="#FFFFFF" d="{{beta}}"></path></svg>
+<span style="font-size: 14px; font-weight: 500; color: #E4E5E9">TRIOP · Console de détection</span>
+</div>
+<span style="padding: 5px 10px; border-radius: 999px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8D97">Simulation illustrative</span>
+<span style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: #A3A6AF"><span style="width: 7px; height: 7px; border-radius: 50%; background: {{statusColor}}; box-shadow: 0 0 10px {{statusColor}}"></span>En direct</span>
+</div>
+
+<div style="display: flex; flex-wrap: wrap">
+<div onMouseMove="{{onMove}}" onTouchMove="{{onTouch}}" style="flex: 999 1 520px; min-width: 0; position: relative; height: clamp(380px, 42vw, 540px); background: radial-gradient(90% 80% at 62% 50%, #17181E, #0F1014 75%); overflow: hidden; cursor: crosshair; touch-action: none">
+<div aria-hidden="true" style="position: absolute; inset: 0; background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px); background-size: 48px 48px"></div>
+<div aria-hidden="true" class="scan" style="position: absolute; left: 0; right: 0; top: 0; height: 10%; background: linear-gradient(transparent, rgba(134, 197, 255, 0.06), transparent); border-bottom: 1px solid rgba(134, 197, 255, 0.12)"></div>
+<sc-for list="{{healthy}}" as="h" hint-placeholder-count="40"><span style="{{h}}"></span></sc-for>
+<sc-for list="{{tumor}}" as="c" hint-placeholder-count="12"><span style="{{c.base}}"></span><span style="{{c.glow}}"></span></sc-for>
+<span aria-hidden="true" style="position: absolute; width: 260px; height: 260px; margin: -130px 0 0 -130px; border-radius: 50%; background: radial-gradient(closest-side, rgba(134, 197, 255, 0.10), transparent); pointer-events: none; {{reticlePos}}" class="reticle"></span>
+<span class="probe-line" style="position: absolute; top: 0; width: 2px; margin-left: -1px; background: linear-gradient(rgba(134, 197, 255, 0), rgba(134, 197, 255, 0.9)); {{probeLine}}"></span>
+<span class="reticle" style="position: absolute; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%; border: 1.5px solid {{statusColor}}; box-shadow: 0 0 {{glowPx}}px {{statusColor}}, inset 0 0 {{glowPx}}px rgba(134, 197, 255, 0.15); {{reticlePos}}">
+<span style="position: absolute; left: 50%; top: 50%; width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: #FFFFFF"></span>
+</span>
+<span style="position: absolute; left: 18px; bottom: 16px; font-size: 13px; color: #8A8D97">Déplacez la sonde sur le tissu</span>
+</div>
+
+<div style="flex: 1 1 280px; min-width: 0; display: flex; flex-direction: column; gap: 18px; padding: 24px; border-left: 1px solid rgba(255, 255, 255, 0.06); background: rgba(255, 255, 255, 0.015)">
+<span style="font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8D97">Intensité du signal β</span>
+<span style="font-size: 64px; line-height: 0.9; font-weight: 700; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; color: {{statusColor}}; text-shadow: 0 0 {{glowPx}}px {{statusGlow}}">{{pct}}<span style="font-size: 26px; font-weight: 300">%</span></span>
+<div style="display: flex; align-items: flex-end; gap: 3px; height: 80px">
+<sc-for list="{{bars}}" as="b" hint-placeholder-count="20"><span style="{{b.style}}"></span></sc-for>
+</div>
+<div style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 12px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.07); font-size: 15px; font-weight: 500; color: {{statusColor}}">
+<span style="width: 8px; height: 8px; border-radius: 50%; background: {{statusColor}}; box-shadow: 0 0 12px {{statusColor}}"></span>{{statusText}}
+</div>
+<div style="margin-top: auto; display: flex; flex-direction: column; gap: 8px">
+<button type="button" class="btn-g" onClick="{{goSuspect}}" style="min-height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03); color: #FFFFFF; font-family: inherit; font-size: 14px; text-align: left; cursor: pointer">Placer sur la zone suspecte</button>
+<button type="button" class="btn-g" onClick="{{goHealthy}}" style="min-height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03); color: #FFFFFF; font-family: inherit; font-size: 14px; text-align: left; cursor: pointer">Placer sur tissu sain</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- SOUTIENS -->
+<div style="position: relative; z-index: 2; max-width: 1240px; margin: 0 auto; padding: clamp(64px, 8vw, 104px) clamp(20px, 4vw, 40px) clamp(40px, 5vw, 64px); display: flex; flex-direction: column; align-items: center; gap: 28px">
+<span style="font-size: 14px; color: #8A8D97">Issue de la recherche publique française, soutenue par</span>
+<div class="fade-edges" style="width: 100%; overflow: hidden">
+<div class="marquee" aria-label="CNRS, IJCLab, Université Paris-Saclay, Bpifrance, i-Lab, 3DEXPERIENCE Lab, INPI">
+<sc-for list="{{partners}}" as="t" hint-placeholder-count="8"><span style="padding: 0 36px; font-size: 24px; font-weight: 600; letter-spacing: -0.01em; color: #6E717B; white-space: nowrap">{{t}}</span></sc-for>
+</div>
+</div>
+</div>
+</section>
+
+<!-- LE CONSTAT -->
+<section style="position: relative">
+<div style="max-width: 980px; margin: 0 auto; padding: clamp(96px, 12vw, 180px) clamp(20px, 4vw, 40px); display: flex; flex-direction: column; align-items: center; gap: 36px; text-align: center">
+<span style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #A3A6AF"><span style="width: 5px; height: 5px; border-radius: 50%; background: #AF7DFF"></span>Le constat</span>
+<p style="margin: 0; font-size: clamp(30px, 4vw, 56px); line-height: 1.16; letter-spacing: -0.025em; font-weight: 500">
+<sc-for list="{{words}}" as="w" hint-placeholder-count="20"><span class="ink" style="{{w.style}}">{{w.t}}</span></sc-for>
+</p>
+</div>
+</section>
+
+<!-- PLATEFORME (bento) -->
+<section id="plateforme" style="position: relative">
+<div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px) clamp(96px, 12vw, 180px); display: flex; flex-direction: column; gap: 56px">
+<div class="reveal" style="display: flex; flex-direction: column; align-items: center; gap: 20px; text-align: center">
+<span style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #A3A6AF"><span style="width: 5px; height: 5px; border-radius: 50%; background: #86C5FF"></span>La technologie</span>
+<h2 style="margin: 0; max-width: 860px; font-size: clamp(38px, 5vw, 72px); line-height: 1; letter-spacing: -0.035em; font-weight: 700"><span class="tg">Un détecteur de particules,</span> <span class="tg2" style="font-weight: 200">au bout de l’aspirateur.</span></h2>
+<p style="margin: 0; max-width: 560px; font-size: 18px; line-height: 1.6; color: #A3A6AF">TRIOP associe détection β et aspiration chirurgicale dans un seul instrument, pensé pour s’effacer dans le geste.</p>
+</div>
+
+<div class="spot-grid" onMouseMove="{{spotMove}}" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px">
+
+<article class="spot reveal span2" style="min-height: 340px; border-radius: 24px; background: linear-gradient(180deg, #15161B, #111216); border: 1px solid rgba(255, 255, 255, 0.07); overflow: hidden; display: flex; flex-direction: column">
+<div aria-hidden="true" style="position: relative; z-index: 1; flex: 1 1 auto; min-height: 190px">
+<span style="position: absolute; left: 12%; right: 12%; top: 50%; height: 1px; background: linear-gradient(90deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.04))"></span>
+<div class="travel" style="position: absolute; left: 0; top: 50%; height: 22px; margin-top: -11px; display: flex; justify-content: flex-end">
+<svg viewBox="0 54.33 105.6 14.92" width="170" height="24" style="filter: drop-shadow(0 0 10px rgba(134, 197, 255, 0.9))"><path fill="#86C5FF" d="{{beam}}"></path></svg>
+</div>
+<span class="node" style="position: absolute; left: 12%; top: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; animation-delay: 0.3s"></span>
+<span class="node" style="position: absolute; left: 50%; top: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; animation-delay: 1.85s"></span>
+<span class="node" style="position: absolute; left: 88%; top: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; animation-delay: 3.3s"></span>
+<span style="position: absolute; left: 12%; top: calc(50% + 24px); transform: translateX(-50%); font-size: 14px; color: #A3A6AF">Marquer</span>
+<span style="position: absolute; left: 50%; top: calc(50% + 24px); transform: translateX(-50%); font-size: 14px; color: #A3A6AF">Détecter</span>
+<span style="position: absolute; left: 88%; top: calc(50% + 24px); transform: translateX(-50%); font-size: 14px; color: #A3A6AF">Retirer</span>
+</div>
+<div style="position: relative; z-index: 1; padding: 0 32px 30px; display: flex; flex-direction: column; gap: 8px">
+<h3 style="margin: 0; font-size: 24px; font-weight: 600; letter-spacing: -0.015em">Un parcours en trois temps</h3>
+<p style="margin: 0; max-width: 560px; font-size: 16px; line-height: 1.6; color: #A3A6AF">Un radiotraceur marque les cellules tumorales avant l’opération. Au bloc, la sonde capte leurs particules β ; l’aspiration retire ce qui est signalé.</p>
+</div>
+</article>
+
+<article class="spot reveal" style="min-height: 340px; border-radius: 24px; background: linear-gradient(180deg, #15161B, #111216); border: 1px solid rgba(255, 255, 255, 0.07); overflow: hidden; display: flex; flex-direction: column">
+<div aria-hidden="true" style="position: relative; z-index: 1; flex: 1 1 auto; min-height: 190px; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 20%, #000 80%, transparent); mask-image: linear-gradient(90deg, transparent, #000 20%, #000 80%, transparent)">
+<div class="wave" style="position: absolute; left: 0; top: 50%; width: 200%; height: 120px; margin-top: -60px">
+<svg viewBox="0 0 800 120" preserveAspectRatio="none" width="100%" height="120" style="display: block; filter: drop-shadow(0 0 6px rgba(55, 191, 239, 0.8))"><path d="{{wavePath}}" fill="none" stroke="#37BFEF" stroke-width="2" stroke-linejoin="round"></path></svg>
+</div>
+</div>
+<div style="position: relative; z-index: 1; padding: 0 30px 30px; display: flex; flex-direction: column; gap: 8px">
+<h3 style="margin: 0; font-size: 24px; font-weight: 600; letter-spacing: -0.015em">En temps réel</h3>
+<p style="margin: 0; font-size: 16px; line-height: 1.6; color: #A3A6AF">Le signal est lu pendant le geste, au contact du tissu.</p>
+</div>
+</article>
+
+<article class="spot reveal" style="min-height: 340px; border-radius: 24px; background: linear-gradient(180deg, #15161B, #111216); border: 1px solid rgba(255, 255, 255, 0.07); overflow: hidden; display: flex; flex-direction: column">
+<div aria-hidden="true" style="position: relative; z-index: 1; flex: 1 1 auto; min-height: 190px">
+<span style="position: absolute; left: 50%; top: 0; width: 30px; height: 84px; margin-left: -15px; border-radius: 0 0 15px 15px; background: linear-gradient(90deg, #2A2C33, #3A3D46 50%, #24262C); box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.15)"></span>
+<span style="position: absolute; left: 50%; top: 84px; width: 12px; height: 3px; margin-left: -6px; border-radius: 2px; background: #86C5FF; box-shadow: 0 0 14px 2px rgba(134, 197, 255, 0.9)"></span>
+<sc-for list="{{suckDots}}" as="s" hint-placeholder-count="8"><span class="suck" style="{{s}}"></span></sc-for>
+</div>
+<div style="position: relative; z-index: 1; padding: 0 30px 30px; display: flex; flex-direction: column; gap: 8px">
+<h3 style="margin: 0; font-size: 24px; font-weight: 600; letter-spacing: -0.015em">Un seul instrument</h3>
+<p style="margin: 0; font-size: 16px; line-height: 1.6; color: #A3A6AF">Détecter et retirer, sans changer d’outil ni interrompre l’intervention.</p>
+</div>
+</article>
+
+<article class="spot reveal span2" style="min-height: 340px; border-radius: 24px; background: linear-gradient(180deg, #15161B, #111216); border: 1px solid rgba(255, 255, 255, 0.07); overflow: hidden; display: flex; flex-wrap: wrap; align-items: center">
+<div style="position: relative; z-index: 1; flex: 1 1 280px; padding: 32px; display: flex; flex-direction: column; gap: 8px">
+<h3 style="margin: 0; font-size: 24px; font-weight: 600; letter-spacing: -0.015em">Conçue pour tous les cancers</h3>
+<p style="margin: 0; font-size: 16px; line-height: 1.6; color: #A3A6AF">La détection repose sur le marquage des cellules tumorales, pas sur un organe. Trois indications ouvrent la voie.</p>
+</div>
+<div aria-hidden="true" style="position: relative; z-index: 1; flex: 1 1 300px; height: 320px">
+<span style="position: absolute; left: 50%; top: 50%; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.08)"></span>
+<span style="position: absolute; left: 50%; top: 50%; width: 200px; height: 200px; margin: -100px 0 0 -100px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.07)"></span>
+<span style="position: absolute; left: 50%; top: 50%; width: 284px; height: 284px; margin: -142px 0 0 -142px; border-radius: 50%; border: 1px dashed rgba(255, 255, 255, 0.07)"></span>
+<span style="position: absolute; left: 50%; top: 50%; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%; background: radial-gradient(closest-side, rgba(55, 191, 239, 0.35), transparent)"></span>
+<svg viewBox="0 0 183 162" width="36" height="32" style="position: absolute; left: 50%; top: 50%; margin: -16px 0 0 -18px"><path fill="#37BFEF" d="{{beam}}"></path><path fill="#FFFFFF" d="{{beta}}"></path></svg>
+<sc-for list="{{orbits}}" as="o" hint-placeholder-count="3">
+<div class="orbit" style="{{o.ring}}">
+<span style="{{o.planet}}"></span>
+<span class="counter" style="{{o.label}}">{{o.name}}</span>
+</div>
+</sc-for>
+</div>
+</article>
+
+</div>
+</div>
+</section>
+
+<!-- INDICATIONS (portails) -->
+<section id="indications" style="position: relative">
+<div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px) clamp(96px, 12vw, 180px); display: flex; flex-direction: column; gap: 56px">
+<div class="reveal" style="display: flex; flex-direction: column; align-items: center; gap: 20px; text-align: center">
+<span style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #A3A6AF"><span style="width: 5px; height: 5px; border-radius: 50%; background: #37BFEF"></span>Indications</span>
+<h2 style="margin: 0; max-width: 860px; font-size: clamp(38px, 5vw, 72px); line-height: 1; letter-spacing: -0.035em; font-weight: 700"><span class="tg">Pensée d’abord</span> <span class="tg2" style="font-weight: 200">pour trois.</span></h2>
+</div>
+<div class="spot-grid" onMouseMove="{{spotMove}}" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px">
+<sc-for list="{{indications}}" as="it" hint-placeholder-count="3">
+<article class="spot portal reveal" style="min-height: 420px; border-radius: 24px; background: #111216; border: 1px solid rgba(255, 255, 255, 0.07); overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end">
+<span aria-hidden="true" class="pglow" style="{{it.glow}}"></span>
+<span aria-hidden="true" style="{{it.arc}}"></span>
+<div style="position: relative; z-index: 1; padding: 32px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8D97">{{it.tag}}</span>
+<h3 style="margin: 0; font-size: 32px; line-height: 1.05; font-weight: 700; letter-spacing: -0.025em">{{it.title}}</h3>
+<p style="margin: 0; font-size: 16px; line-height: 1.6; color: #A3A6AF">{{it.text}}</p>
+</div>
+</article>
+</sc-for>
+</div>
+</div>
+</section>
+
+<!-- PARCOURS -->
+<section id="parcours" style="position: relative">
+<div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px) clamp(96px, 12vw, 180px); display: flex; flex-wrap: wrap; gap: 56px">
+<div class="reveal sticky-col" style="flex: 1 1 360px; display: flex; flex-direction: column; gap: 20px; align-self: flex-start">
+<span style="display: inline-flex; align-self: flex-start; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #A3A6AF"><span style="width: 5px; height: 5px; border-radius: 50%; background: #AF7DFF"></span>Parcours</span>
+<h2 style="margin: 0; font-size: clamp(38px, 4.6vw, 64px); line-height: 1; letter-spacing: -0.035em; font-weight: 700"><span class="tg">Du laboratoire</span> <span class="tg2" style="font-weight: 200">au bloc opératoire.</span></h2>
+<p style="margin: 0; max-width: 420px; font-size: 17px; line-height: 1.6; color: #A3A6AF">Une technologie née à IJCLab, validée en préclinique, aujourd’hui en essais cliniques.</p>
+</div>
+<div style="flex: 1 1 480px; position: relative; padding-left: 44px">
+<span aria-hidden="true" style="position: absolute; left: 11px; top: 8px; bottom: 8px; width: 2px; background: rgba(255, 255, 255, 0.07)"></span>
+<span aria-hidden="true" class="vdraw" style="position: absolute; left: 11px; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(#37BFEF, #773AED); box-shadow: 0 0 12px rgba(134, 197, 255, 0.6)"></span>
+<ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 20px">
+<sc-for list="{{steps}}" as="s" hint-placeholder-count="5">
+<li class="reveal" style="position: relative; padding: 24px 26px; border-radius: 20px; background: #111216; border: 1px solid rgba(255, 255, 255, 0.07); display: flex; flex-direction: column; gap: 6px">
+<span class="lit" style="position: absolute; left: -40px; top: 30px; width: 16px; height: 16px; border-radius: 50%; background: {{s.dot}}; box-shadow: 0 0 0 4px rgba(11, 12, 15, 1), 0 0 18px {{s.dot}}"></span>
+<span style="font-size: 14px; font-weight: 600; letter-spacing: 0.04em; color: {{s.dot}}">{{s.when}}</span>
+<span style="font-size: 21px; font-weight: 600; letter-spacing: -0.01em">{{s.title}}</span>
+<span style="font-size: 15px; line-height: 1.55; color: #A3A6AF">{{s.text}}</span>
+</li>
+</sc-for>
+</ol>
+</div>
+</div>
+</section>
+
+<!-- EQUIPE + ACTUALITES -->
+<section id="equipe" style="position: relative">
+<div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px) clamp(96px, 12vw, 160px); display: flex; flex-direction: column; gap: 56px">
+<div class="reveal" style="display: flex; flex-direction: column; align-items: center; gap: 20px; text-align: center">
+<span style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #A3A6AF"><span style="width: 5px; height: 5px; border-radius: 50%; background: #86C5FF"></span>Équipe</span>
+<h2 style="margin: 0; max-width: 900px; font-size: clamp(34px, 4.4vw, 60px); line-height: 1.04; letter-spacing: -0.03em; font-weight: 700"><span class="tg">Physique des particules, neurochirurgie, entrepreneuriat.</span> <span class="tg2" style="font-weight: 200">Une rencontre.</span></h2>
+</div>
+<div class="spot-grid" onMouseMove="{{spotMove}}" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px">
+<sc-for list="{{team}}" as="p" hint-placeholder-count="3">
+<figure class="spot reveal" style="margin: 0; border-radius: 24px; background: #111216; border: 1px solid rgba(255, 255, 255, 0.07); overflow: hidden">
+<div style="position: relative; z-index: 1; aspect-ratio: 4 / 4; margin: 8px; border-radius: 18px; background: radial-gradient(80% 70% at 50% 0%, {{p.tint}}, #17181D 70%); display: flex; align-items: flex-end; padding: 18px">
+<span style="font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8D97">[Portrait N&amp;B]</span>
+</div>
+<figcaption style="position: relative; z-index: 1; padding: 14px 24px 24px; display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 20px; font-weight: 600; letter-spacing: -0.01em">{{p.name}}</span>
+<span style="font-size: 15px; color: #A3A6AF">{{p.role}}</span>
+</figcaption>
+</figure>
+</sc-for>
+</div>
+
+<div id="actualites" class="spot-grid" onMouseMove="{{spotMove}}" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; padding-top: 40px">
+<sc-for list="{{news}}" as="n" hint-placeholder-count="3">
+<a class="spot reveal" href="#actualites" style="display: flex; flex-direction: column; gap: 16px; min-height: 230px; padding: 28px; border-radius: 24px; background: #111216; border: 1px solid rgba(255, 255, 255, 0.07); color: #FFFFFF; text-decoration: none">
+<span style="position: relative; z-index: 1; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #86C5FF">{{n.tag}}</span>
+<span style="position: relative; z-index: 1; font-size: 22px; line-height: 1.25; font-weight: 600; letter-spacing: -0.015em">{{n.title}}</span>
+<span style="position: relative; z-index: 1; margin-top: auto; display: inline-flex; align-items: center; gap: 8px; font-size: 15px; color: #A3A6AF">Lire <svg class="arrow" width="14" height="14" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+</a>
+</sc-for>
+</div>
+</div>
+</section>
+
+<!-- CTA FINAL -->
+<section id="contact" style="position: relative; overflow: hidden; padding-top: 40px">
+<div aria-hidden="true" style="position: absolute; inset: 0">
+<sc-for list="{{stars2}}" as="s" hint-placeholder-count="20"><span class="twinkle" style="{{s}}"></span></sc-for>
+</div>
+<div aria-hidden="true" class="eclipse" style="left: 50%; top: 420px; width: 1500px; height: 1500px; margin-left: -750px"></div>
+<div style="position: relative; z-index: 2; max-width: 980px; margin: 0 auto; padding: clamp(80px, 10vw, 140px) clamp(20px, 4vw, 40px) clamp(240px, 26vw, 360px); display: flex; flex-direction: column; align-items: center; gap: 28px; text-align: center">
+<svg class="reveal" viewBox="0 0 183 162" width="64" height="57" role="img" aria-label="Symbole Beams"><path fill="#37BFEF" d="{{beam}}"></path><path fill="#FFFFFF" d="{{beta}}"></path></svg>
+<h2 class="reveal" style="margin: 0; font-size: clamp(44px, 6.4vw, 96px); line-height: 0.96; letter-spacing: -0.04em; font-weight: 700"><span class="tg">Construisons la chirurgie</span> <span class="tg2" style="font-weight: 200">de précision.</span></h2>
+<p class="reveal" style="margin: 0; max-width: 520px; font-size: 18px; line-height: 1.6; color: #A3A6AF">Chirurgiens, centres hospitaliers, partenaires industriels, investisseurs : parlons de TRIOP.</p>
+<div class="reveal" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px">
+<a class="btn-v" href="#contact" style="display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 26px; border-radius: 999px; background: #773AED; color: #FFFFFF; font-size: 16px; font-weight: 500; text-decoration: none">Nous contacter <svg class="arrow" width="16" height="16" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
+<a class="btn-g" href="#contact" style="display: inline-flex; align-items: center; min-height: 52px; padding: 0 26px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(255, 255, 255, 0.03); color: #FFFFFF; font-size: 16px; text-decoration: none">Espace presse</a>
+</div>
+</div>
+<footer style="position: relative; z-index: 2; border-top: 1px solid rgba(255, 255, 255, 0.06); background: rgba(11, 12, 15, 0.7); backdrop-filter: blur(10px)">
+<div style="max-width: 1240px; margin: 0 auto; padding: 40px clamp(20px, 4vw, 40px); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 24px">
+<svg viewBox="0 0 473 162" width="96" height="33" role="img" aria-label="Beams"><path fill="#37BFEF" d="{{beam}}"></path><path fill="#FFFFFF" d="{{letters}}"></path></svg>
+<div style="display: flex; flex-wrap: wrap; gap: 28px; font-size: 14px">
+<a class="navlink" href="#produit">Technologie</a>
+<a class="navlink" href="#equipe">Équipe</a>
+<a class="navlink" href="#actualites">Actualités</a>
+<a class="navlink" href="#contact">Recrutement</a>
+<a class="navlink" href="#contact">LinkedIn</a>
+</div>
+<span style="font-size: 13px; color: #8A8D97">© 2026 Beams · Dispositif en cours d’investigation clinique</span>
+</div>
+</footer>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"motion":{"editor":"boolean","default":true,"section":"Animation"},"$preview":{"width":1440,"height":8200}}'>
+var BEAM = 'M96.97 69.25L0 60.46L96.97 54.33C102.01 54.33 105.53 59.45 103.83 64.31C102.79 67.27 100.05 69.25 96.97 69.25Z';
+var BETA = 'M147.84 0L95.82 0L95.58 0.67L95.52 0.67L86.34 26.22L103.51 26.22L106.58 17.32L141.79 17.32C153.29 17.32 159.78 25.47 156.27 35.51C152.75 45.54 140.55 53.7 129.04 53.7L122.98 71.01C134.49 71.01 140.98 79.17 137.46 89.2C133.95 99.24 121.75 107.39 110.24 107.39L58.71 107.39L39.93 161.98L57.1 161.98L69.46 124.7L104.18 124.7C126.61 124.7 150.45 108.77 157.3 89.2C161.05 78.48 158.96 68.86 152.61 62.34C163.52 55.83 172.36 46.21 176.11 35.5C182.96 15.93 170.28 0 147.84 0Z';
+var LETTERS = 'M181.52 49.46L239.53 49.46L234.17 64.8L197.85 64.8L193.87 76.22L227.56 76.22L222.44 90.88L188.75 90.88L183.82 105.03L221.18 105.03L215.51 121.3L156.45 121.3L181.5 49.46Z'
++ 'M274.38 109.44L249.8 109.44L242.26 121.3L220.16 121.3L271.55 49.46L295.15 49.46L296.41 121.3L273.75 121.3L274.39 109.44ZM275.3 93.91L276.58 68.08L259.93 93.91L275.31 93.91Z'
++ 'M328.12 49.46L356.58 49.46L352.31 93.18L378.46 49.46L406.92 49.46L381.86 121.3L364.13 121.3L383.24 66.51L350.46 121.3L334.41 121.3L339.9 66.51L320.79 121.3L303.06 121.3Z'
++ 'M400.17 97.54L421.23 96.21C420.47 99.64 420.47 102.25 421.22 104.05C422.43 106.96 425.11 108.41 429.25 108.41C432.34 108.41 434.98 107.67 437.18 106.18C439.38 104.7 440.8 102.98 441.49 101.01C442.14 99.14 441.93 97.48 440.84 96.01C439.76 94.54 436.55 93.14 431.21 91.84C422.48 89.65 416.72 86.75 413.95 83.12C411.14 79.5 410.71 74.88 412.67 69.25C413.96 65.56 416.21 62.07 419.45 58.79C422.68 55.51 426.72 52.92 431.57 51.05C436.41 49.18 442.48 48.23 449.77 48.23C458.72 48.23 464.95 49.94 468.46 53.35C471.97 56.77 472.88 62.19 471.16 69.65L450.34 70.87C450.93 67.63 450.61 65.28 449.39 63.81C448.16 62.34 446.02 61.6 442.96 61.6C440.45 61.6 438.36 62.15 436.7 63.24C435.04 64.34 433.94 65.66 433.39 67.23C433 68.38 433.17 69.4 433.89 70.32C434.58 71.27 436.69 72.15 440.23 72.97C448.96 75.06 455 77.18 458.34 79.31C461.69 81.45 463.75 84.11 464.5 87.28C465.26 90.45 464.96 93.99 463.59 97.91C461.98 102.52 459.26 106.77 455.41 110.66C451.57 114.55 447.07 117.49 441.92 119.5C436.75 121.5 430.78 122.51 424 122.51C412.08 122.51 404.65 120.16 401.71 115.45C398.76 110.75 398.26 104.77 400.18 97.52Z'
++ BETA;
+
+var TUMOR = [[64,40],[68,44],[61,46],[66,50],[71,49],[63,55],[69,56],[59,52],[74,53],[66,61],[61,60],[72,42]];
+
+function rnd(seed) {
+  var s = seed;
+  return function () { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; };
+}
+
+function buildStars(n, seed, maxTop) {
+  var r = rnd(seed), out = [];
+  for (var i = 0; i < n; i++) {
+    var size = r() < 0.85 ? 1 : 2;
+    var col = r() < 0.2 ? '#86C5FF' : (r() < 0.15 ? '#AF7DFF' : '#FFFFFF');
+    out.push('position:absolute;left:' + (r() * 100).toFixed(2) + '%;top:' + (r() * maxTop).toFixed(2) + '%;width:' + size + 'px;height:' + size + 'px;border-radius:50%;background:' + col + ';animation-duration:' + (3 + r() * 5).toFixed(1) + 's;animation-delay:-' + (r() * 6).toFixed(1) + 's');
+  }
+  return out;
+}
+
+function buildHealthy() {
+  var out = [];
+  for (var r = 0; r < 11; r++) {
+    for (var c = 0; c < 27; c++) {
+      var x = 2.5 + c * 3.65 + Math.sin(r * 3.1 + c * 1.7) * 0.9;
+      var y = 6 + r * 8.8 + Math.cos(r * 1.3 + c * 2.3) * 2;
+      var near = false;
+      for (var i = 0; i < TUMOR.length; i++) {
+        if (Math.hypot((TUMOR[i][0] - x) * 1.8, TUMOR[i][1] - y) < 5) { near = true; break; }
+      }
+      if (near) continue;
+      var s = 3 + ((r * 7 + c * 3) % 3);
+      out.push('position:absolute;left:' + x.toFixed(2) + '%;top:' + y.toFixed(2) + '%;width:' + s + 'px;height:' + s + 'px;margin:-' + s / 2 + 'px 0 0 -' + s / 2 + 'px;border-radius:50%;background:#2C2E36');
+    }
+  }
+  return out;
+}
+
+function buildWave() {
+  var pts = [];
+  for (var x = 0; x <= 800; x += 4) {
+    var p = x % 400;
+    var burst = Math.exp(-Math.pow((p - 250) / 26, 2));
+    var y = 60 + Math.sin(x / 400 * Math.PI * 2 * 6) * 5 + Math.sin(x / 400 * Math.PI * 2 * 23) * 2 - burst * 42 * Math.sin(x / 400 * Math.PI * 2 * 30);
+    pts.push((x === 0 ? 'M' : 'L') + x + ' ' + y.toFixed(1));
+  }
+  return pts.join(' ');
+}
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { px: 26, py: 62, ar: 1.6 };
+    this.healthy = buildHealthy();
+    this.stars = buildStars(110, 7, 70);
+    this.stars2 = buildStars(70, 13, 60);
+    this.wavePath = buildWave();
+  }
+  move(clientX, clientY, el) {
+    var r = el.getBoundingClientRect();
+    if (!r.width || !r.height) return;
+    var px = Math.max(1, Math.min(99, ((clientX - r.left) / r.width) * 100));
+    var py = Math.max(1, Math.min(99, ((clientY - r.top) / r.height) * 100));
+    this.setState({ px: px, py: py, ar: r.width / r.height });
+  }
+  renderVals() {
+    var self = this;
+    var motion = this.props.motion ?? true;
+    var px = this.state.px, py = this.state.py, ar = this.state.ar;
+    var sig = 0;
+    var tumor = TUMOR.map(function (p) {
+      var dd = Math.hypot((p[0] - px) * ar, p[1] - py);
+      sig = Math.max(sig, Math.exp(-Math.pow(dd / 13, 2)));
+      var rv = Math.max(0, Math.min(1, 1 - dd / 26));
+      return {
+        base: 'position:absolute;left:' + p[0] + '%;top:' + p[1] + '%;width:5px;height:5px;margin:-2.5px 0 0 -2.5px;border-radius:50%;background:#2C2E36',
+        glow: 'position:absolute;left:' + p[0] + '%;top:' + p[1] + '%;width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;background:radial-gradient(circle,#FFFFFF 0,#86C5FF 45%,#37BFEF 100%);opacity:' + rv.toFixed(2) + ';transform:scale(' + (0.5 + 0.9 * rv).toFixed(2) + ');box-shadow:0 0 ' + Math.round(30 * rv) + 'px rgba(55,191,239,' + (0.9 * rv).toFixed(2) + ');transition:opacity .2s,transform .2s'
+      };
+    });
+    var pct = Math.round(sig * 100);
+    var hi = pct >= 60, mid = pct >= 25;
+    var statusText = hi ? 'Signal tumoral détecté' : (mid ? 'Signal faible — poursuivre' : 'Tissu sain');
+    var statusColor = hi ? '#86C5FF' : (mid ? '#AF7DFF' : '#8A8D97');
+    var statusGlow = hi ? 'rgba(134,197,255,.7)' : (mid ? 'rgba(175,125,255,.5)' : 'rgba(0,0,0,0)');
+    var bars = [];
+    for (var j = 0; j < 30; j++) {
+      var n1 = (Math.sin(j * 1.7) + 1) / 2, n2 = (Math.sin(j * 0.63 + 1) + 1) / 2;
+      var h = 4 + sig * 66 * (0.45 + 0.55 * n1) + 6 * n2;
+      bars.push({ style: 'flex:1 1 0;min-width:2px;height:' + h.toFixed(1) + 'px;border-radius:2px;background:' + (hi ? 'linear-gradient(#FFFFFF,#86C5FF)' : (mid ? '#AF7DFF' : '#30323A')) + ';transition:height .18s' });
+    }
+
+    var suckDots = [];
+    var sx = [-54, -26, 0, 24, 52, -40, 12, 40];
+    for (var q = 0; q < 8; q++) {
+      suckDots.push('position:absolute;left:calc(50% + ' + sx[q] + 'px);top:' + (180 - (q % 3) * 12) + 'px;width:7px;height:7px;margin-left:-3.5px;border-radius:50%;background:' + (q % 2 ? '#86C5FF' : '#AF7DFF') + ';box-shadow:0 0 10px ' + (q % 2 ? '#37BFEF' : '#773AED') + ';--sx:' + (-sx[q]) + 'px;animation-delay:' + (q * 0.3).toFixed(1) + 's');
+    }
+
+    var orbits = [
+      { size: 120, dur: 16, name: 'Cerveau', col: '#86C5FF', start: 30 },
+      { size: 200, dur: 26, name: 'Sarcomes', col: '#AF7DFF', start: 160 },
+      { size: 284, dur: 38, name: 'Foie', col: '#37BFEF', start: 260 }
+    ].map(function (o) {
+      return {
+        name: o.name,
+        ring: 'position:absolute;left:50%;top:50%;width:' + o.size + 'px;height:' + o.size + 'px;margin:-' + o.size / 2 + 'px 0 0 -' + o.size / 2 + 'px;animation-duration:' + o.dur + 's;animation-delay:-' + (o.dur * o.start / 360).toFixed(1) + 's',
+        planet: 'position:absolute;left:50%;top:-5px;width:10px;height:10px;margin-left:-5px;border-radius:50%;background:' + o.col + ';box-shadow:0 0 14px ' + o.col,
+        label: 'position:absolute;left:50%;top:-34px;margin-left:-40px;width:80px;text-align:center;font-size:13px;color:#C9CBD1;animation-duration:' + o.dur + 's;animation-delay:-' + (o.dur * o.start / 360).toFixed(1) + 's'
+      };
+    });
+
+    var sentence = 'En chirurgie du cancer, tout se joue *à* *la* *marge.* Laisser des cellules tumorales expose à la récidive. Retirer trop de tissu sain expose aux séquelles. Beams donne au chirurgien *l’information* *qui* *manquait.*';
+    var words = sentence.split(' ').map(function (w) {
+      var h2 = w.charAt(0) === '*';
+      return { t: w.replace(/\*/g, ''), style: 'display:inline-block;margin-right:.24em;color:' + (h2 ? '#86C5FF' : '#FFFFFF') };
+    });
+
+    var partners = ['CNRS', 'IJCLab', 'Université Paris-Saclay', 'Bpifrance', 'i-Lab', '3DEXPERIENCE Lab', 'INPI'];
+    partners = partners.concat(partners);
+
+    var indications = [
+      { tag: 'Neurochirurgie', title: 'Tumeurs cérébrales', text: 'Là où chaque millimètre de tissu fonctionnel compte.', c: '55,191,239' },
+      { tag: 'Tissus mous', title: 'Sarcomes', text: 'Des tumeurs aux contours irréguliers, difficiles à délimiter.', c: '119,58,237' },
+      { tag: 'Chirurgie hépatique', title: 'Tumeurs du foie', text: 'Des résections étendues, où la précision préserve l’organe.', c: '134,197,255' }
+    ].map(function (it) {
+      return {
+        tag: it.tag, title: it.title, text: it.text,
+        glow: 'position:absolute;left:-20%;right:-20%;top:-55%;height:110%;border-radius:50%;background:radial-gradient(closest-side,rgba(' + it.c + ',.55),rgba(' + it.c + ',.12) 55%,transparent);opacity:.7;filter:blur(10px)',
+        arc: 'position:absolute;left:50%;top:70px;width:520px;height:520px;margin-left:-260px;border-radius:50%;border:1px solid transparent;border-top-color:rgba(' + it.c + ',.9);box-shadow:0 -10px 30px -12px rgba(' + it.c + ',.9);background:#111216'
+      };
+    });
+
+    var steps = [
+      { when: '2021', title: 'Création', text: 'Spin-off du CNRS issue d’IJCLab, Paris-Saclay.', dot: '#37BFEF' },
+      { when: '2023', title: 'Lauréat i-Lab', text: 'Catégorie Technologies médicales.', dot: '#37BFEF' },
+      { when: 'Préclinique', title: 'Résultats validés', text: 'Preuve de concept établie.', dot: '#86C5FF' },
+      { when: 'Vétérinaire', title: 'Premiers patients', text: 'Chiens atteints de cancers naturels.', dot: '#AF7DFF' },
+      { when: 'Aujourd’hui', title: 'Essais cliniques', text: 'Chez l’humain. Best Pitch INPI à VivaTech 2026.', dot: '#AF7DFF' }
+    ];
+    var team = [
+      { name: 'Virginie Simon', role: 'Co-fondatrice & CEO', tint: 'rgba(119,58,237,.35)' },
+      { name: 'Stéphane Palfi', role: 'Co-fondateur, neurochirurgien', tint: 'rgba(55,191,239,.3)' },
+      { name: 'Laurent Ménard', role: 'Physicien, IJCLab — à l’origine de TRIOP', tint: 'rgba(134,197,255,.28)' }
+    ];
+    var news = [
+      { tag: 'Distinction · 2026', title: 'Beams remporte le Best Pitch du concours INPI à VivaTech' },
+      { tag: 'Portrait', title: 'Les Deeptech : portrait de leadership de Virginie Simon' },
+      { tag: 'Événement', title: 'Invités par le 3DEXPERIENCE Lab à partager notre vision' }
+    ];
+
+    return {
+      stillCls: motion ? '' : 'still',
+      beam: BEAM, beta: BETA, letters: LETTERS,
+      stars: this.stars, stars2: this.stars2,
+      healthy: this.healthy, tumor: tumor,
+      pct: pct, statusText: statusText, statusColor: statusColor, statusGlow: statusGlow,
+      glowPx: Math.round(6 + sig * 30),
+      bars: bars,
+      reticlePos: 'left:' + px + '%;top:' + py + '%',
+      probeLine: 'left:' + px + '%;height:calc(' + py + '% - 32px)',
+      onMove: function (e) { self.move(e.clientX, e.clientY, e.currentTarget); },
+      onTouch: function (e) { if (e.touches && e.touches[0]) self.move(e.touches[0].clientX, e.touches[0].clientY, e.currentTarget); },
+      goHealthy: function () { self.setState({ px: 26, py: 62 }); },
+      goSuspect: function () { self.setState({ px: 66, py: 50 }); },
+      spotMove: function (e) {
+        var cards = e.currentTarget.querySelectorAll('.spot');
+        for (var i = 0; i < cards.length; i++) {
+          var r = cards[i].getBoundingClientRect();
+          cards[i].style.setProperty('--mx', (e.clientX - r.left) + 'px');
+          cards[i].style.setProperty('--my', (e.clientY - r.top) + 'px');
+        }
+      },
+      wavePath: this.wavePath,
+      suckDots: suckDots,
+      orbits: orbits,
+      words: words,
+      partners: partners,
+      indications: indications,
+      steps: steps, team: team, news: news
+    };
+  }
+}
+</script>
+</body>
+</html>
