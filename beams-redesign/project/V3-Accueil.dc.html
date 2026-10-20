@@ -47,7 +47,7 @@ a:hover .arrow{transform:translateX(4px)}
 .planet::before{content:"";position:absolute;inset:0;border-radius:50%;padding:1.5px;background:conic-gradient(from var(--a),rgba(134,197,255,.08) 0deg,rgba(134,197,255,.08) 300deg,#86C5FF 330deg,#FFFFFF 340deg,#AF7DFF 350deg,rgba(134,197,255,.08) 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 18s linear infinite;z-index:3;pointer-events:none}
 .planet::after{content:"";position:absolute;inset:0;border-radius:50%;padding:1.5px;background:linear-gradient(180deg,rgba(190,220,255,.95) 0%,rgba(175,125,255,.45) 4%,transparent 10%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;z-index:3;pointer-events:none}
 .planet-par{transform:translate(calc(var(--hx,0) * -14px),calc(var(--hy,0) * -6px));transition:transform 1.6s cubic-bezier(.16,1,.3,1)}
-.scint{opacity:0;cursor:crosshair;pointer-events:all;transition:opacity 1.6s cubic-bezier(.16,1,.3,1)}
+.scint{opacity:0;pointer-events:all;transition:opacity 1.6s cubic-bezier(.16,1,.3,1)}
 .scint:hover{opacity:.92;transition:opacity .18s ease-out}
 .rise-planet{animation:risePlanet 2.8s cubic-bezier(.16,1,.3,1) .2s both}
 @keyframes risePlanet{from{transform:translateY(18%);opacity:0}}
