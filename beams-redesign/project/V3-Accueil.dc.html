@@ -2,7 +2,8 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<title>Beams — Accueil</title>
+<title>TRIOP, sonde peropératoire de détection des résidus tumoraux | Beams</title>
+<meta name="description" content="Beams développe TRIOP, une sonde chirurgicale qui détecte en temps réel les résidus tumoraux grâce aux particules bêta, pour viser une résection complète (R0) en chirurgie oncologique.">
 <script src="./support.js"></script>
 <script src="/_blob/eb7fe07021c52a4bf73c9e3d424dfde1"></script>
 </head>
@@ -43,10 +44,11 @@ a:hover .arrow{transform:translateX(4px)}
 .eclipse::before{content:"";position:absolute;inset:0;border-radius:50%;padding:1.5px;background:conic-gradient(from var(--a),rgba(134,197,255,.08) 0deg,rgba(134,197,255,.08) 300deg,#86C5FF 330deg,#FFFFFF 340deg,#AF7DFF 350deg,rgba(134,197,255,.08) 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 18s linear infinite}
 .eclipse::after{content:"";position:absolute;inset:0;border-radius:50%;padding:1.5px;background:linear-gradient(180deg,rgba(190,220,255,.95) 0%,rgba(175,125,255,.45) 5%,transparent 12%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
 .planet{position:absolute;border-radius:50%;overflow:hidden;background:#0C0D11;box-shadow:0 -60px 180px -40px rgba(55,191,239,.6),0 -24px 100px -30px rgba(119,58,237,.65)}
-.planet::before{content:"";position:absolute;inset:0;border-radius:50%;padding:1.5px;background:conic-gradient(from var(--a),rgba(134,197,255,.08) 0deg,rgba(134,197,255,.08) 300deg,#86C5FF 330deg,#FFFFFF 340deg,#AF7DFF 350deg,rgba(134,197,255,.08) 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 18s linear infinite;z-index:3}
-.planet::after{content:"";position:absolute;inset:0;border-radius:50%;padding:1.5px;background:linear-gradient(180deg,rgba(190,220,255,.95) 0%,rgba(175,125,255,.45) 4%,transparent 10%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;z-index:3}
-.planet-par{transform:translate(calc(var(--hx,0) * -14px),calc(var(--hy,0) * -6px)) rotate(calc(var(--hx,0) * 2.5deg));transition:transform 1.6s cubic-bezier(.16,1,.3,1)}
-.planet-spin{animation:spinT 260s linear infinite}
+.planet::before{content:"";position:absolute;inset:0;border-radius:50%;padding:1.5px;background:conic-gradient(from var(--a),rgba(134,197,255,.08) 0deg,rgba(134,197,255,.08) 300deg,#86C5FF 330deg,#FFFFFF 340deg,#AF7DFF 350deg,rgba(134,197,255,.08) 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 18s linear infinite;z-index:3;pointer-events:none}
+.planet::after{content:"";position:absolute;inset:0;border-radius:50%;padding:1.5px;background:linear-gradient(180deg,rgba(190,220,255,.95) 0%,rgba(175,125,255,.45) 4%,transparent 10%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;z-index:3;pointer-events:none}
+.planet-par{transform:translate(calc(var(--hx,0) * -14px),calc(var(--hy,0) * -6px));transition:transform 1.6s cubic-bezier(.16,1,.3,1)}
+.scint{opacity:0;cursor:crosshair;pointer-events:all;transition:opacity 1.6s cubic-bezier(.16,1,.3,1)}
+.scint:hover{opacity:.92;transition:opacity .18s ease-out}
 .rise-planet{animation:risePlanet 2.8s cubic-bezier(.16,1,.3,1) .2s both}
 @keyframes risePlanet{from{transform:translateY(18%);opacity:0}}
 .petal-d{animation:petalD 7.2s cubic-bezier(.4,0,.2,1) infinite both}
@@ -94,6 +96,12 @@ a:hover .arrow{transform:translateX(4px)}
 .marquee{display:flex;width:max-content;animation:marquee 50s linear infinite}
 @keyframes marquee{to{transform:translateX(-50%)}}
 .fade-edges{-webkit-mask-image:linear-gradient(90deg,transparent,#000 15%,#000 85%,transparent);mask-image:linear-gradient(90deg,transparent,#000 15%,#000 85%,transparent)}
+.faq summary::-webkit-details-marker{display:none}
+.faq{transition:border-color .4s,background-color .4s}
+.faq:hover{border-color:rgba(255,255,255,.14)}
+.faq[open]{border-color:rgba(134,197,255,.3);background:linear-gradient(180deg,rgba(134,197,255,.05),#111216 60%)}
+.faq .faq-icon{transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.faq[open] .faq-icon{transform:rotate(45deg)}
 .portrait .ini{transition:transform 1s cubic-bezier(.16,1,.3,1),letter-spacing 1s cubic-bezier(.16,1,.3,1)}
 .portrait:hover .ini{transform:scale(1.06);letter-spacing:.02em}
 triop-simulateur{display:block;--triop-font:'Jost',system-ui,sans-serif;--triop-height:560px}
@@ -154,10 +162,11 @@ triop-simulateur::part(window){--page:#0F1014;--card:#15161B;--line:rgba(255,255
 <span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: rgba(255, 255, 255, 0.08); color: #FFFFFF"><svg class="arrow" width="12" height="12" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
 </a>
 <h1 style="margin: 0; font-size: clamp(50px, 8vw, 116px); line-height: 0.95; letter-spacing: -0.04em; font-weight: 700">
+<span class="blur-in" style="display: block; margin-bottom: 22px; font-size: clamp(13px, 1.1vw, 15px); line-height: 1.4; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500; color: #A3A6AF; animation-delay: 0.04s">Sonde peropératoire de détection des résidus tumoraux</span>
 <span class="blur-in tg" style="animation-delay: 0.08s">Retirer</span> <span class="blur-in tg" style="animation-delay: 0.16s">toute</span> <span class="blur-in tg" style="animation-delay: 0.24s">la</span> <span class="blur-in tg" style="animation-delay: 0.32s">tumeur.</span><br>
 <span class="blur-in tg2" style="animation-delay: 0.5s; font-weight: 200; letter-spacing: -0.035em; padding-bottom: 0.08em">Rien de plus.</span>
 </h1>
-<p class="blur-in" style="margin: 0; max-width: 560px; font-size: clamp(17px, 1.5vw, 20px); line-height: 1.6; color: #A3A6AF; animation-delay: 0.68s">TRIOP détecte en temps réel, au contact du tissu, les cellules tumorales que l’œil ne voit pas. Le chirurgien ne change pas de geste : il gagne un sens.</p>
+<p class="blur-in" style="margin: 0; max-width: 560px; font-size: clamp(17px, 1.5vw, 20px); line-height: 1.6; color: #A3A6AF; animation-delay: 0.68s">En chirurgie oncologique, TRIOP détecte en temps réel, au contact du tissu, les cellules tumorales que l’œil ne voit pas. Objectif : une résection complète, sans sacrifier le tissu sain.</p>
 <div class="blur-in" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; animation-delay: 0.82s">
 <a class="btn-v" href="#produit" style="display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 26px; border-radius: 999px; background: #773AED; color: #FFFFFF; font-size: 16px; font-weight: 500; text-decoration: none">Essayer la détection <svg class="arrow" width="16" height="16" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
 <a class="btn-g" href="V3-Contact.dc.html" style="display: inline-flex; align-items: center; min-height: 52px; padding: 0 26px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(255, 255, 255, 0.03); color: #FFFFFF; font-size: 16px; text-decoration: none">Partenariats cliniques</a>
@@ -168,12 +177,13 @@ triop-simulateur::part(window){--page:#0F1014;--card:#15161B;--line:rgba(255,255
 
 <div class="rise-planet" style="position: absolute; z-index: 3; left: 50%; top: clamp(110px, 11vw, 160px); width: 1800px; height: 1800px; margin-left: -900px">
 <div class="planet-par" style="position: absolute; inset: 0">
-<div class="planet" role="img" aria-label="La face de détection de la sonde TRIOP, agrandie, forme l’horizon : ses six pétales s’allument tour à tour" style="inset: 0">
-<div class="planet-spin" style="position: absolute; inset: 0">
+<div class="planet" role="img" aria-label="La face de détection de la sonde TRIOP, agrandie, forme l’horizon : ses six scintillateurs s’illuminent au survol" style="inset: 0">
+<div style="position: absolute; inset: 0">
 <svg viewBox="0 0 315 315" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block">
 <defs>
 <radialGradient id="planetShade" cx="50%" cy="0%" r="75%"><stop offset="0" stop-color="#FFFFFF" stop-opacity="0.07"></stop><stop offset="0.5" stop-color="#FFFFFF" stop-opacity="0.015"></stop><stop offset="1" stop-color="#000000" stop-opacity="0.35"></stop></radialGradient>
 <filter id="pBlur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3"></feGaussianBlur></filter>
+<filter id="scGlow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur in="SourceGraphic" stdDeviation="4" result="b"></feGaussianBlur><feMerge><feMergeNode in="b"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter>
 </defs>
 <circle cx="157.5" cy="157.5" r="157.5" fill="#0C0D11"></circle>
 <g transform="rotate(-30 157.5 157.5)">
@@ -193,16 +203,21 @@ triop-simulateur::part(window){--page:#0F1014;--card:#15161B;--line:rgba(255,255
 </g>
 </g>
 <circle cx="157.5" cy="157.5" r="21" fill="#121318" stroke="#FFFFFF" stroke-opacity="0.06" stroke-width="0.35"></circle>
-<circle cx="157.5" cy="157.5" r="157.5" fill="url(#planetShade)"></circle>
+<circle cx="157.5" cy="157.5" r="157.5" fill="url(#planetShade)" pointer-events="none"></circle>
+<g transform="rotate(-30 157.5 157.5)" fill="#37BFEF" filter="url(#scGlow)">
+<path class="scint" d="M166.379 41.3693V120.025C166.379 129.847 177.009 135.979 185.509 131.066L253.633 91.7448C263.147 86.2512 264.92 73.3927 257.474 65.3132C238.943 45.2416 214.448 30.7707 186.8 24.701C176.29 22.3919 166.379 30.601 166.379 41.3693Z"></path>
+<path class="scint" d="M186.8 290.291C214.444 284.221 238.943 269.754 257.47 249.678C264.92 241.599 263.147 228.749 253.633 223.251L185.509 183.925C177.009 179.021 166.379 185.149 166.379 194.966V273.627C166.379 284.395 176.286 292.595 186.8 290.291Z"></path>
+<path class="scint" d="M52.4594 107.109C42.959 101.62 30.9351 106.484 27.6566 116.971C23.6635 129.767 21.4883 143.384 21.4883 157.498C21.4883 171.616 23.6635 185.22 27.6566 198.021C30.9351 208.503 42.959 213.372 52.4594 207.878L120.61 168.539C129.106 163.626 129.106 151.357 120.61 146.453L52.4594 107.109Z"></path>
+<path class="scint" d="M287.353 116.978C284.07 106.491 272.051 101.631 262.541 107.116L194.391 146.46C185.891 151.364 185.891 163.633 194.391 168.55L262.541 207.889C272.051 213.378 284.07 208.51 287.34 198.028C291.346 185.227 293.512 171.623 293.512 157.505C293.512 143.391 291.346 129.774 287.353 116.978Z"></path>
+<path class="scint" d="M61.3669 91.739L129.495 131.069C137.986 135.978 148.621 129.846 148.621 120.024V41.3635C148.621 30.6041 138.705 22.395 128.196 24.6996C100.548 30.7738 76.0441 45.2402 57.5302 65.3118C50.071 73.3914 51.8532 86.2499 61.3669 91.739Z"></path>
+<path class="scint" d="M129.491 183.929L61.3669 223.255C51.8532 228.753 50.071 241.603 57.5302 249.682C76.0441 269.758 100.543 284.225 128.196 290.295C138.705 292.599 148.621 284.399 148.621 273.626V194.97C148.621 185.153 138 179.025 129.491 183.929Z"></path>
+</g>
 </svg>
 </div>
 </div>
 </div>
 </div>
 
-<div style="position: absolute; z-index: 5; left: 0; right: 0; top: calc(clamp(110px, 11vw, 160px) + clamp(40px, 5vw, 70px)); display: flex; justify-content: center">
-<span style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #8A8D97">Face de détection TRIOP · 6 pétales β</span>
-</div>
 
 <div aria-hidden="true" style="position: absolute; z-index: 4; left: 0; right: 0; bottom: 0; height: 62%; background: linear-gradient(180deg, rgba(11, 12, 15, 0) 0%, rgba(11, 12, 15, 0.55) 40%, #0B0C0F 88%); pointer-events: none"></div>
 <div style="position: absolute; z-index: 5; left: 0; right: 0; bottom: clamp(24px, 4vw, 56px); display: flex; flex-direction: column; align-items: center; gap: 22px">
@@ -221,11 +236,48 @@ triop-simulateur::part(window){--page:#0F1014;--card:#15161B;--line:rgba(255,255
 <div class="hline" aria-hidden="true" style="max-width: 1000px; height: 1px; margin: 0 auto; background: radial-gradient(50% 100% at 50% 50%, rgba(134, 197, 255, 0.7), transparent)"></div>
 <div style="max-width: 980px; margin: 0 auto; padding: clamp(96px, 12vw, 176px) clamp(20px, 4vw, 40px); display: flex; flex-direction: column; align-items: center; gap: 36px; text-align: center">
 <span style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #A3A6AF"><span style="width: 5px; height: 5px; border-radius: 50%; background: #AF7DFF"></span>Le constat</span>
-<p style="margin: 0; font-size: clamp(30px, 4vw, 56px); line-height: 1.16; letter-spacing: -0.025em; font-weight: 500">
+<h2 style="margin: 0; font-size: clamp(30px, 4vw, 56px); line-height: 1.16; letter-spacing: -0.025em; font-weight: 500">
 <sc-for list="{{words}}" as="w" hint-placeholder-count="20"><span class="ink" style="{{w.style}}">{{w.t}}</span></sc-for>
-</p>
+</h2>
+</div>
+
+<div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px) clamp(96px, 12vw, 176px); display: flex; flex-direction: column; gap: 56px">
+<div class="reveal" style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px">
+<h3 style="margin: 0; max-width: 720px; font-size: clamp(28px, 3vw, 42px); line-height: 1.08; letter-spacing: -0.03em; font-weight: 700"><span class="tg">R0, R1, R2 :</span> <span class="tg2" style="font-weight: 200">ce que dit la marge.</span></h3>
+<p style="margin: 0; max-width: 460px; font-size: 16px; line-height: 1.6; color: #A3A6AF">La classification R de l’UICC décrit le tissu tumoral laissé en place après l’exérèse. La résection R0 reste l’un des principaux facteurs pronostiques en chirurgie du cancer.</p>
+</div>
+<div class="spot-grid" onMouseMove="{{spotMove}}" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px">
+<sc-for list="{{rClasses}}" as="rc" hint-placeholder-count="3">
+<article class="spot reveal" style="border-radius: 22px; background: #111216; border: 1px solid rgba(255, 255, 255, 0.07); overflow: hidden; display: flex; flex-direction: column">
+<div aria-hidden="true" style="position: relative; z-index: 1; height: 180px; margin: 8px; border-radius: 16px; background: radial-gradient(70% 80% at 50% 50%, #17181E, #111216); display: flex; align-items: center; justify-content: center">
+<svg viewBox="0 0 200 140" width="220" height="154">
+<ellipse cx="100" cy="70" rx="78" ry="52" fill="none" stroke="{{rc.margin}}" stroke-width="1.5" stroke-dasharray="3 5"></ellipse>
+<ellipse cx="100" cy="70" rx="58" ry="38" fill="rgba(255,255,255,0.025)" stroke="rgba(255,255,255,0.22)" stroke-width="1"></ellipse>
+<sc-for list="{{rc.dots}}" as="d" hint-placeholder-count="4"><circle cx="{{d.x}}" cy="{{d.y}}" r="{{d.r}}" fill="{{d.c}}"></circle></sc-for>
+</svg>
+<span style="position: absolute; left: 16px; top: 14px; font-size: 26px; font-weight: 700; letter-spacing: -0.02em; color: {{rc.col}}">{{rc.code}}</span>
+</div>
+<div style="position: relative; z-index: 1; padding: 14px 22px 24px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 18px; font-weight: 600">{{rc.title}}</span>
+<span style="font-size: 15px; line-height: 1.55; color: #A3A6AF">{{rc.text}}</span>
+</div>
+</article>
+</sc-for>
+</div>
+
+<div class="spot-grid" onMouseMove="{{spotMove}}" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px">
+<sc-for list="{{facts}}" as="f" hint-placeholder-count="4">
+<article class="spot reveal" style="border-radius: 22px; background: linear-gradient(180deg, #15161B, #111216); border: 1px solid rgba(255, 255, 255, 0.07); padding: 28px 26px; display: flex; flex-direction: column; gap: 14px">
+<span class="tg2" style="position: relative; z-index: 1; font-size: clamp(40px, 4vw, 56px); line-height: 1; font-weight: 200; letter-spacing: -0.04em">{{f.value}}</span>
+<span style="position: relative; z-index: 1; font-size: 16px; line-height: 1.55; color: #E4E5E9">{{f.text}}</span>
+<span style="position: relative; z-index: 1; margin-top: auto; font-size: 13px; line-height: 1.5; color: #8A8D97">{{f.ref}}</span>
+</article>
+</sc-for>
+</div>
+<p class="reveal" style="margin: 0; font-size: 13px; line-height: 1.7; color: #8A8D97">Sources : <a href="https://www.nature.com/articles/s41598-018-23403-5" style="color: #A3A6AF">[1] Orosco et al., Scientific Reports, 2018</a> · <a href="https://mdedge.com/hematology-oncology/article/47273/oncology/re-excision-rates-after-breast-conserving-surgery-vary" style="color: #A3A6AF">[2] McCahill et al., JAMA, 2012</a> · <a href="https://pubmed.ncbi.nlm.nih.gov/40400374/" style="color: #A3A6AF">[3] Méta-analyse, cancers de la cavité buccale, 2025</a> · <a href="https://www.cancernetwork.com/view/soft-tissue-sarcoma-margin-classifying-systems-can-differ-determining-recurrence-risk" style="color: #A3A6AF">[4] Sarcomes des tissus mous, CancerNetwork</a>. Les définitions d’une marge positive varient selon les organes et les référentiels.</p>
 </div>
 </section>
+
 
 <!-- DEMONSTRATION -->
 <section id="produit" style="position: relative">
@@ -274,7 +326,7 @@ triop-simulateur::part(window){--page:#0F1014;--card:#15161B;--line:rgba(255,255
 <div class="hline" aria-hidden="true" style="max-width: 1000px; height: 1px; margin: 0 auto; background: radial-gradient(50% 100% at 50% 50%, rgba(175, 125, 255, 0.7), transparent)"></div>
 <div style="max-width: 1240px; margin: 0 auto; padding: clamp(96px, 12vw, 176px) clamp(20px, 4vw, 40px); display: flex; flex-direction: column; gap: 56px">
 <div class="reveal" style="display: flex; flex-direction: column; align-items: center; gap: 20px; text-align: center">
-<span style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #A3A6AF"><span style="width: 5px; height: 5px; border-radius: 50%; background: #86C5FF"></span>La technologie</span>
+<span style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #A3A6AF"><span style="width: 5px; height: 5px; border-radius: 50%; background: #86C5FF"></span>Chirurgie radioguidée par détection β</span>
 <h2 style="margin: 0; max-width: 860px; font-size: clamp(38px, 5vw, 72px); line-height: 1; letter-spacing: -0.035em; font-weight: 700"><span class="tg">Un détecteur de particules,</span> <span class="tg2" style="font-weight: 200">au bout de l’aspirateur.</span></h2>
 <p style="margin: 0; max-width: 560px; font-size: 18px; line-height: 1.6; color: #A3A6AF">TRIOP associe détection β et aspiration chirurgicale dans un seul instrument, pensé pour s’effacer dans le geste.</p>
 </div>
@@ -402,6 +454,25 @@ triop-simulateur::part(window){--page:#0F1014;--card:#15161B;--line:rgba(255,255
 </div>
 </article>
 
+</div>
+</div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" style="position: relative">
+<div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px) clamp(96px, 12vw, 160px); display: flex; flex-wrap: wrap; gap: 48px">
+<div class="reveal" style="flex: 1 1 340px; display: flex; flex-direction: column; gap: 20px; align-self: flex-start">
+<span style="display: inline-flex; align-self: flex-start; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #A3A6AF"><span style="width: 5px; height: 5px; border-radius: 50%; background: #86C5FF"></span>Questions fréquentes</span>
+<h2 style="margin: 0; font-size: clamp(34px, 4.4vw, 60px); line-height: 1.04; letter-spacing: -0.03em; font-weight: 700"><span class="tg">Comprendre</span> <span class="tg2" style="font-weight: 200">la détection peropératoire.</span></h2>
+<p style="margin: 0; max-width: 400px; font-size: 16px; line-height: 1.6; color: #A3A6AF">Résection R0, sonde bêta, radiotraceur : l’essentiel pour comprendre TRIOP.</p>
+</div>
+<div style="flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+<sc-for list="{{faq}}" as="q" hint-placeholder-count="6">
+<details class="reveal faq" style="border-radius: 18px; background: #111216; border: 1px solid rgba(255, 255, 255, 0.07); overflow: hidden">
+<summary style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px; cursor: pointer; list-style: none; font-size: 18px; font-weight: 600; letter-spacing: -0.01em">{{q.q}}<span class="faq-icon" aria-hidden="true" style="flex: 0 0 auto; display: inline-flex; width: 28px; height: 28px; border-radius: 50%; align-items: center; justify-content: center; border: 1px solid rgba(134, 197, 255, 0.4); color: #86C5FF; font-size: 18px; font-weight: 300">+</span></summary>
+<p style="margin: 0; padding: 0 24px 22px; font-size: 16px; line-height: 1.65; color: #A3A6AF">{{q.a}}</p>
+</details>
+</sc-for>
 </div>
 </div>
 </section>
@@ -620,7 +691,26 @@ class Component extends DCLogic {
         }
       },
       suckDots: suckDots, targets: targets, orbits: orbits,
-      words: words, partners: partners, founders: founders, news: news
+      words: words, partners: partners, founders: founders, news: news,
+      rClasses: [
+        { code: 'R0', col: '#86C5FF', margin: 'rgba(134,197,255,.7)', title: 'Marges saines', text: 'Aucun résidu tumoral : les marges d’exérèse sont négatives à l’examen microscopique.', dots: [] },
+        { code: 'R1', col: '#AF7DFF', margin: 'rgba(175,125,255,.6)', title: 'Résidu microscopique', text: 'Aucune tumeur visible, mais des cellules tumorales persistent au niveau des marges.', dots: [{ x: 154, y: 58, r: 2.2, c: '#AF7DFF' }, { x: 158, y: 70, r: 1.8, c: '#AF7DFF' }, { x: 152, y: 82, r: 2, c: '#AF7DFF' }, { x: 60, y: 96, r: 1.8, c: '#AF7DFF' }] },
+        { code: 'R2', col: '#FF8A8A', margin: 'rgba(255,138,138,.55)', title: 'Résidu macroscopique', text: 'Une partie de la tumeur reste visible à l’œil nu après l’intervention.', dots: [{ x: 152, y: 62, r: 11, c: 'rgba(255,138,138,.55)' }, { x: 160, y: 74, r: 7, c: 'rgba(255,138,138,.45)' }] }
+      ],
+      facts: [
+        { value: '4,3 à 35 %', text: 'des interventions pour les dix cancers solides les plus fréquents présentent des marges positives, selon le type de cancer.', ref: '[1] 6,5 millions de patients, base NCDB (États-Unis)' },
+        { value: '≈ 23 %', text: 'des patientes opérées d’une chirurgie conservatrice du sein sont réopérées pour reprendre les marges.', ref: '[2] 2 206 patientes ; de 0 à 70 % selon le chirurgien' },
+        { value: '× 2,3', text: 'sur le risque de décès quand les marges sont positives, dans les cancers de la cavité buccale.', ref: '[3] 14 études, 4 839 patients (HR 2,27)' },
+        { value: '8 → 21 %', text: 'de récidive locale à 10 ans pour les sarcomes des tissus mous, de R0 à R1 ; 44 % en R2.', ref: '[4] Environ 2 200 patients' }
+      ],
+      faq: [
+        { q: 'Qu’est-ce qu’une résection R0 ?', a: 'C’est une exérèse dont les marges sont saines à l’examen microscopique, selon la classification R de l’UICC. On parle de R1 lorsqu’un résidu tumoral microscopique persiste à la marge, et de R2 lorsqu’un résidu reste visible à l’œil nu.' },
+        { q: 'Comment fonctionne la sonde TRIOP ?', a: 'Un radiotraceur, administré avant l’opération, se fixe sur les cellules tumorales. Au bloc, TRIOP associe un détecteur de particules β et un aspirateur chirurgical : au contact du tissu, la sonde capte les particules émises et signale le tissu tumoral en temps réel, sans que le chirurgien change d’instrument.' },
+        { q: 'Pourquoi détecter des particules bêta ?', a: 'Les particules β ne parcourent que quelques millimètres dans le tissu : le signal reflète le tissu au contact de la sonde, et non l’activité éloignée. Le rayonnement gamma ambiant est compensé, et les six scintillateurs de la tête indiquent la direction du signal.' },
+        { q: 'Pour quels cancers TRIOP est-elle conçue ?', a: 'La détection repose sur le marquage des cellules tumorales, pas sur un organe. Huit cibles sont étudiées : tumeurs cérébrales, tumeurs du foie, ORL – cavité buccale antérieure, pancréas, sein, voies biliaires périhilaires, sarcome superficiel et vulve.' },
+        { q: 'TRIOP est-elle disponible ?', a: 'Pas encore. TRIOP est un dispositif en cours d’investigation clinique : après des résultats précliniques validés, la sonde est évaluée en médecine vétérinaire et en essais cliniques chez l’humain.' },
+        { q: 'Qui développe TRIOP ?', a: 'Beams, une medtech issue du CNRS et du laboratoire IJCLab (Université Paris-Saclay), créée en 2021 par Virginie Simon, Estelle Villedieu de Torcy, Stéphane Palfi et Laurent Ménard.' }
+      ]
     };
   }
 }
