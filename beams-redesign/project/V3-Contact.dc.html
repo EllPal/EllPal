@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Beams — Contact et recrutement</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,200..800;1,200..800&amp;display=swap">
+<style>
+body{margin:0;background:#0B0C0F}
+a{color:#86C5FF}a:hover{color:#FFFFFF}
+@property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
+.v3{font-family:'Jost',system-ui,sans-serif;color:#FFFFFF;background:#0B0C0F;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.v3 *{box-sizing:border-box}
+.navlink{color:#A3A6AF;text-decoration:none;transition:color .25s}
+.navlink:hover{color:#FFFFFF}
+.btn-v{box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 0 0 1px rgba(175,125,255,.55),0 10px 40px -10px rgba(119,58,237,.9);transition:box-shadow .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1),background-color .3s}
+.btn-v:hover{transform:translateY(-2px);background-color:#8649F5}
+.btn-g{box-shadow:inset 0 1px 0 rgba(255,255,255,.08);transition:background-color .3s,border-color .3s}
+.btn-g:hover{background-color:rgba(255,255,255,.07);border-color:rgba(255,255,255,.24)}
+.arrow{transition:transform .45s cubic-bezier(.16,1,.3,1)}
+a:hover .arrow,button:hover .arrow{transform:translateX(4px)}
+.tg{background:linear-gradient(180deg,#FFFFFF 25%,#9A9DA7 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tg2{background:linear-gradient(90deg,#86C5FF 0%,#AF7DFF 70%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.blur-in{display:inline-block;animation:blurIn 1.5s cubic-bezier(.16,1,.3,1) both}
+@keyframes blurIn{from{opacity:0;filter:blur(16px);transform:translateY(22px)}}
+.swap{animation:swap .7s cubic-bezier(.16,1,.3,1) both}
+@keyframes swap{from{opacity:0;filter:blur(8px);transform:translateY(10px)}}
+.twinkle{animation:twinkle 4s ease-in-out infinite both}
+@keyframes twinkle{0%,100%{opacity:.12}50%{opacity:.85}}
+@keyframes spin{to{--a:360deg}}
+.gborder{position:relative;isolation:isolate}
+.gborder::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:conic-gradient(from var(--a),rgba(255,255,255,.07) 0deg,rgba(255,255,255,.07) 200deg,#86C5FF 260deg,#AF7DFF 300deg,rgba(255,255,255,.07) 345deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 7s linear infinite;pointer-events:none;z-index:4}
+.eclipse{position:absolute;border-radius:50%;background:#0B0C0F;box-shadow:0 -50px 160px -40px rgba(55,191,239,.5),0 -20px 90px -30px rgba(119,58,237,.55),inset 0 60px 120px -60px rgba(55,191,239,.3)}
+.eclipse::before{content:"";position:absolute;inset:0;border-radius:50%;padding:1.5px;background:conic-gradient(from var(--a),rgba(134,197,255,.08) 0deg,rgba(134,197,255,.08) 300deg,#86C5FF 330deg,#FFFFFF 340deg,#AF7DFF 350deg,rgba(134,197,255,.08) 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 18s linear infinite}
+.eclipse::after{content:"";position:absolute;inset:0;border-radius:50%;padding:1.5px;background:linear-gradient(180deg,rgba(190,220,255,.95) 0%,rgba(175,125,255,.45) 5%,transparent 12%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.tab{transition:background-color .35s,color .35s,border-color .35s}
+.tab:hover{color:#FFFFFF}
+.fld{width:100%;min-height:48px;padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);color:#FFFFFF;font-family:inherit;font-size:15px;transition:border-color .3s,box-shadow .3s,background-color .3s;outline:none}
+.fld::placeholder{color:#6E717B}
+.fld:hover{border-color:rgba(255,255,255,.18)}
+.fld:focus{border-color:#86C5FF;background:rgba(134,197,255,.05);box-shadow:0 0 0 4px rgba(134,197,255,.12),0 0 24px -8px rgba(134,197,255,.8)}
+select.fld option{background:#15161B;color:#FFFFFF}
+.petal{animation:petal 4.8s cubic-bezier(.4,0,.2,1) infinite both}
+@keyframes petal{0%,100%{opacity:.26}9%{opacity:1}34%{opacity:.5}}
+.check path{stroke-dasharray:40;stroke-dashoffset:40;animation:draw .8s cubic-bezier(.65,0,.35,1) .2s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.pop{animation:pop .9s cubic-bezier(.16,1,.3,1) both}
+@keyframes pop{from{transform:scale(.6);opacity:0}}
+@media (prefers-reduced-motion: reduce){.v3 *,.v3 *::before,.v3 *::after{animation:none!important;transition:none!important}.check path{stroke-dashoffset:0}}
+.nav-links{display:flex}
+@media (max-width: 960px){.nav-links{display:none}}
+</style>
+</helmet>
+<div class="v3">
+
+<header style="position: sticky; top: 0; z-index: 40; background: rgba(11, 12, 15, 0.62); backdrop-filter: saturate(1.6) blur(18px); border-bottom: 1px solid rgba(255, 255, 255, 0.06)">
+<nav aria-label="Navigation principale" style="max-width: 1240px; margin: 0 auto; padding: 14px clamp(20px, 4vw, 40px); display: flex; align-items: center; justify-content: space-between; gap: 24px">
+<a href="V3-Accueil.dc.html" aria-label="Beams — accueil" style="display: flex; align-items: center; padding: 4px 0">
+<svg viewBox="0 0 269 100" width="100" height="37" role="img" aria-label="Beams"><path fill="#37BFEF" d="{{logoBeam}}"></path><path fill="#FFFFFF" d="{{logoLetters}}"></path></svg>
+</a>
+<div class="nav-links" style="align-items: center; gap: 34px; font-size: 15px">
+<a class="navlink" href="V3-Accueil.dc.html">Technologie</a>
+<a class="navlink" href="V3-Accueil.dc.html">Simulateur</a>
+<a class="navlink" href="V3-Accueil.dc.html">Indications</a>
+<a class="navlink" href="V3-Equipe.dc.html">Équipe</a>
+</div>
+<a class="btn-g" href="V3-Accueil.dc.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.12); color: #E4E5E9; font-size: 14px; text-decoration: none">Retour à l’accueil</a>
+</nav>
+</header>
+
+<section style="position: relative; overflow: hidden">
+<div aria-hidden="true" style="position: absolute; inset: 0">
+<sc-for list="{{stars}}" as="s" hint-placeholder-count="30"><span class="twinkle" style="{{s}}"></span></sc-for>
+</div>
+<div aria-hidden="true" class="eclipse" style="left: 50%; top: 360px; width: 2800px; height: 2800px; margin-left: -1400px"></div>
+
+<div style="position: relative; z-index: 2; max-width: 1240px; margin: 0 auto; padding: clamp(72px, 9vw, 120px) clamp(20px, 4vw, 40px) clamp(96px, 10vw, 140px); display: flex; flex-direction: column; gap: clamp(48px, 6vw, 80px)">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center">
+<span class="blur-in" style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #A3A6AF"><span style="width: 5px; height: 5px; border-radius: 50%; background: #AF7DFF"></span>Contact &amp; recrutement</span>
+<h1 style="margin: 0; font-size: clamp(48px, 7vw, 100px); line-height: 0.96; letter-spacing: -0.04em; font-weight: 700"><span class="blur-in tg" style="animation-delay: 0.1s">Parlons de TRIOP.</span><br><span class="blur-in tg2" style="animation-delay: 0.3s; font-weight: 200">Ou rejoignez-nous.</span></h1>
+<p class="blur-in" style="margin: 0; max-width: 560px; font-size: clamp(17px, 1.5vw, 20px); line-height: 1.6; color: #A3A6AF; animation-delay: 0.5s">Partenariat clinique ou industriel, investissement, presse, candidature : choisissez votre sujet, nous orientons votre message vers la bonne personne.</p>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: stretch">
+<div class="gborder blur-in" style="flex: 999 1 560px; min-width: 0; border-radius: 26px; background: rgba(17, 18, 22, 0.88); backdrop-filter: blur(18px); box-shadow: 0 40px 120px -40px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.06); padding: clamp(20px, 3vw, 36px); display: flex; flex-direction: column; gap: 26px; animation-delay: 0.6s">
+
+<div role="tablist" aria-label="Objet du message" style="display: flex; flex-wrap: wrap; gap: 6px; padding: 5px; border-radius: 16px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.07)">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="4"><button type="button" role="tab" class="tab" aria-selected="{{t.sel}}" onClick="{{t.pick}}" style="{{t.style}}">{{t.label}}</button></sc-for>
+</div>
+
+<sc-if value="{{sent}}" hint-placeholder-val="{{ false }}">
+<div class="swap" role="status" style="min-height: 420px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; text-align: center">
+<span class="pop" style="display: inline-flex; width: 76px; height: 76px; border-radius: 50%; align-items: center; justify-content: center; background: radial-gradient(closest-side, rgba(134, 197, 255, 0.25), transparent); border: 1px solid rgba(134, 197, 255, 0.6); box-shadow: 0 0 40px -6px rgba(134, 197, 255, 0.8)">
+<svg class="check" width="34" height="34" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#86C5FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</span>
+<h2 style="margin: 0; font-size: 34px; letter-spacing: -0.03em; font-weight: 700"><span class="tg">Merci.</span> <span class="tg2" style="font-weight: 200">Message bien reçu.</span></h2>
+<p style="margin: 0; max-width: 420px; font-size: 16px; line-height: 1.6; color: #A3A6AF">{{doneText}}</p>
+<span style="font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #6E717B">Maquette : aucun message n’est envoyé</span>
+<button type="button" class="btn-g" onClick="{{reset}}" style="min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(255, 255, 255, 0.03); color: #FFFFFF; font-family: inherit; font-size: 14px; cursor: pointer">Écrire un autre message</button>
+</div>
+</sc-if>
+
+<sc-if value="{{editing}}" hint-placeholder-val="{{ true }}">
+<div class="swap" key="{{tab}}" style="display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h2 style="margin: 0; font-size: 26px; letter-spacing: -0.02em; font-weight: 600">{{title}}</h2>
+<p style="margin: 0; font-size: 15px; line-height: 1.55; color: #A3A6AF">{{lead}}</p>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px">
+<label style="display: flex; flex-direction: column; gap: 8px; font-size: 14px; color: #C9CBD1">Prénom et nom<input class="fld" type="text" name="nom" autocomplete="name" placeholder="Marie Curie"></label>
+<label style="display: flex; flex-direction: column; gap: 8px; font-size: 14px; color: #C9CBD1">E-mail<input class="fld" type="email" name="email" autocomplete="email" placeholder="marie@exemple.fr"></label>
+<label style="display: flex; flex-direction: column; gap: 8px; font-size: 14px; color: #C9CBD1">{{orgLabel}}<input class="fld" type="text" name="organisation" placeholder="{{orgPlaceholder}}"></label>
+<label style="display: flex; flex-direction: column; gap: 8px; font-size: 14px; color: #C9CBD1">{{selectLabel}}<select class="fld" name="sujet"><sc-for list="{{options}}" as="o" hint-placeholder-count="4"><option>{{o}}</option></sc-for></select></label>
+</div>
+<sc-if value="{{isJoin}}" hint-placeholder-val="{{ false }}">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px">
+<label style="display: flex; flex-direction: column; gap: 8px; font-size: 14px; color: #C9CBD1">LinkedIn ou portfolio<input class="fld" type="url" name="lien" placeholder="https://"></label>
+<label style="display: flex; flex-direction: column; gap: 8px; font-size: 14px; color: #C9CBD1">CV (PDF)<input class="fld" type="file" name="cv" accept="application/pdf" style="padding-top: 11px; color: #A3A6AF"></label>
+</div>
+</sc-if>
+<label style="display: flex; flex-direction: column; gap: 8px; font-size: 14px; color: #C9CBD1">Message<textarea class="fld" name="message" rows="5" placeholder="{{msgPlaceholder}}" style="resize: vertical; line-height: 1.5"></textarea></label>
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px">
+<label style="display: flex; align-items: flex-start; gap: 10px; max-width: 440px; font-size: 13px; line-height: 1.5; color: #8A8D97"><input type="checkbox" style="margin-top: 3px; accent-color: #773AED">J’accepte que Beams utilise ces informations pour me répondre.</label>
+<button type="button" class="btn-v" onClick="{{send}}" style="display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 26px; border: 0; border-radius: 999px; background: #773AED; color: #FFFFFF; font-family: inherit; font-size: 16px; font-weight: 500; cursor: pointer">{{cta}} <svg class="arrow" width="16" height="16" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+</div>
+</div>
+</sc-if>
+</div>
+
+<aside style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div class="blur-in" style="position: relative; overflow: hidden; border-radius: 22px; background: #111216; border: 1px solid rgba(255, 255, 255, 0.07); padding: 26px; display: flex; align-items: center; gap: 18px; animation-delay: 0.7s">
+<svg viewBox="0 0 315 315" width="68" height="68" aria-hidden="true" style="flex: 0 0 auto">
+<circle cx="157.5" cy="157.5" r="157.5" fill="#1D1F25"></circle>
+<g transform="rotate(-30 157.5 157.5)">
+<path class="petal" fill="#45C0F5" style="animation-delay: 0s" d="M166.379 41.3693V120.025C166.379 129.847 177.009 135.979 185.509 131.066L253.633 91.7448C263.147 86.2512 264.92 73.3927 257.474 65.3132C238.943 45.2416 214.448 30.7707 186.8 24.701C176.29 22.3919 166.379 30.601 166.379 41.3693Z"></path>
+<path class="petal" fill="#4478FB" style="animation-delay: 1.6s" d="M186.8 290.291C214.444 284.221 238.943 269.754 257.47 249.678C264.92 241.599 263.147 228.749 253.633 223.251L185.509 183.925C177.009 179.021 166.379 185.149 166.379 194.966V273.627C166.379 284.395 176.286 292.595 186.8 290.291Z"></path>
+<path class="petal" fill="#773AED" style="animation-delay: 3.2s" d="M52.4594 107.109C42.959 101.62 30.9351 106.484 27.6566 116.971C23.6635 129.767 21.4883 143.384 21.4883 157.498C21.4883 171.616 23.6635 185.22 27.6566 198.021C30.9351 208.503 42.959 213.372 52.4594 207.878L120.61 168.539C129.106 163.626 129.106 151.357 120.61 146.453L52.4594 107.109Z"></path>
+<path class="petal" fill="#45C0F5" style="animation-delay: 0.8s" d="M287.353 116.978C284.07 106.491 272.051 101.631 262.541 107.116L194.391 146.46C185.891 151.364 185.891 163.633 194.391 168.55L262.541 207.889C272.051 213.378 284.07 208.51 287.34 198.028C291.346 185.227 293.512 171.623 293.512 157.505C293.512 143.391 291.346 129.774 287.353 116.978Z"></path>
+<path class="petal" fill="#4478FB" style="animation-delay: 4s" d="M61.3669 91.739L129.495 131.069C137.986 135.978 148.621 129.846 148.621 120.024V41.3635C148.621 30.6041 138.705 22.395 128.196 24.6996C100.548 30.7738 76.0441 45.2402 57.5302 65.3118C50.071 73.3914 51.8532 86.2499 61.3669 91.739Z"></path>
+<path class="petal" fill="#773AED" style="animation-delay: 2.4s" d="M129.491 183.929L61.3669 223.255C51.8532 228.753 50.071 241.603 57.5302 249.682C76.0441 269.758 100.543 284.225 128.196 290.295C138.705 292.599 148.621 284.399 148.621 273.626V194.97C148.621 185.153 138 179.025 129.491 183.929Z"></path>
+</g>
+<circle cx="157.5" cy="157.5" r="21" fill="#2B2D34"></circle>
+</svg>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 17px; font-weight: 600">Réponse sous quelques jours</span>
+<span style="font-size: 14px; line-height: 1.5; color: #A3A6AF">Chaque message est lu par un membre de l’équipe.</span>
+</div>
+</div>
+<div class="blur-in" style="border-radius: 22px; background: #111216; border: 1px solid rgba(255, 255, 255, 0.07); padding: 8px 26px; display: flex; flex-direction: column; animation-delay: 0.8s">
+<div style="display: flex; justify-content: space-between; gap: 12px; padding: 18px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.06)"><span style="font-size: 14px; color: #8A8D97">Écrire</span><a href="#" style="font-size: 15px; color: #FFFFFF; text-decoration: none">[contact@beams.bio]</a></div>
+<div style="display: flex; justify-content: space-between; gap: 12px; padding: 18px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.06)"><span style="font-size: 14px; color: #8A8D97">Presse</span><a href="#" style="font-size: 15px; color: #FFFFFF; text-decoration: none">[e-mail presse]</a></div>
+<div style="display: flex; justify-content: space-between; gap: 12px; padding: 18px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.06)"><span style="font-size: 14px; color: #8A8D97">Adresse</span><span style="font-size: 15px; text-align: right">[Adresse — Paris-Saclay]</span></div>
+<div style="display: flex; justify-content: space-between; gap: 12px; padding: 18px 0"><span style="font-size: 14px; color: #8A8D97">Réseaux</span><a href="#" style="font-size: 15px; color: #FFFFFF; text-decoration: none">LinkedIn ↗</a></div>
+</div>
+<div class="blur-in" style="border-radius: 22px; background: linear-gradient(160deg, rgba(119, 58, 237, 0.2), #111216 60%); border: 1px solid rgba(175, 125, 255, 0.22); padding: 26px; display: flex; flex-direction: column; gap: 12px; animation-delay: 0.9s">
+<span style="font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #AF7DFF">Postes ouverts</span>
+<span style="font-size: 18px; font-weight: 600">[Aucune offre publiée pour l’instant]</span>
+<span style="font-size: 14px; line-height: 1.55; color: #C9CBD1">Les candidatures spontanées sont lues avec attention : physique, électronique, logiciel, clinique, réglementaire.</span>
+<button type="button" class="btn-g" onClick="{{goJoin}}" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.14); background: rgba(255, 255, 255, 0.04); color: #FFFFFF; font-family: inherit; font-size: 14px; cursor: pointer">Candidature spontanée <svg class="arrow" width="14" height="14" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+</div>
+</aside>
+</div>
+</div>
+
+<footer style="position: relative; z-index: 2; border-top: 1px solid rgba(255, 255, 255, 0.06); background: rgba(11, 12, 15, 0.7)">
+<div style="max-width: 1240px; margin: 0 auto; padding: 40px clamp(20px, 4vw, 40px); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 24px">
+<svg viewBox="0 0 269 100" width="92" height="34" role="img" aria-label="Beams"><path fill="#37BFEF" d="{{logoBeam}}"></path><path fill="#FFFFFF" d="{{logoLetters}}"></path></svg>
+<div style="display: flex; flex-wrap: wrap; gap: 28px; font-size: 14px">
+<a class="navlink" href="V3-Accueil.dc.html">Accueil</a>
+<a class="navlink" href="V3-Equipe.dc.html">Équipe</a>
+<a class="navlink" href="V3-Contact.dc.html">Contact</a>
+</div>
+<span style="font-size: 13px; color: #8A8D97">© 2026 Beams</span>
+</div>
+</footer>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1700}}'>
+var LOGO_BEAM = 'M55.2672 42.7476L0 37.3216L55.2672 33.5366C58.1369 33.5366 60.1407 36.6991 59.1728 39.6982C58.5841 41.5278 57.0218 42.7476 55.2672 42.7476Z';
+var LOGO_LETTERS = 'M103.448 30.5313H136.509L133.458 40H112.759L110.489 47.0481H129.689L126.774 56.0956H107.574L104.761 64.835H126.055L122.823 74.8758H89.161L103.442 30.5313H103.448Z'
++ 'M156.371 67.5574H142.368L138.066 74.8758H125.472L154.758 30.5313H168.213L168.932 74.8758H156.015L156.377 67.5574H156.371ZM156.898 57.9692L157.628 42.0245L148.136 57.9692H156.903H156.898Z'
++ 'M186.999 30.5313H203.222L200.788 57.5165L215.691 30.5313H231.908L217.627 74.8758H207.524L218.414 41.0563L199.735 74.8758H190.588L193.712 41.0563L182.822 74.8758H172.718L186.999 30.5313Z'
++ 'M228.065 60.2075L240.065 59.3901C239.634 61.509 239.634 63.1185 240.059 64.2314C240.749 66.0233 242.278 66.9224 244.638 66.9224C246.398 66.9224 247.904 66.4634 249.155 65.5454C250.406 64.6275 251.221 63.5649 251.612 62.3515C251.979 61.2009 251.861 60.176 251.244 59.2644C250.627 58.359 248.798 57.4976 245.753 56.6929C240.778 55.3411 237.495 53.5492 235.916 51.3109C234.314 49.0726 234.07 46.2182 235.185 42.7476C235.921 40.4715 237.206 38.315 239.051 36.2905C240.891 34.266 243.195 32.669 245.957 31.5121C248.719 30.3552 252.178 29.7705 256.332 29.7705C261.432 29.7705 264.981 30.8268 266.985 32.933C268.983 35.0393 269.498 38.3904 268.525 42.9928L256.655 43.7472C256.989 41.7479 256.808 40.2955 256.112 39.3901C255.415 38.4848 254.193 38.0258 252.449 38.0258C251.017 38.0258 249.829 38.3653 248.883 39.038C247.938 39.7171 247.31 40.5344 246.998 41.5027C246.772 42.2069 246.868 42.8419 247.281 43.4077C247.672 43.9925 248.878 44.5395 250.893 45.0424C255.868 46.3313 259.31 47.6391 261.217 48.9594C263.125 50.2798 264.296 51.9208 264.726 53.8761C265.157 55.8315 264.987 58.0195 264.206 60.4401C263.289 63.282 261.738 65.9038 259.547 68.3056C257.357 70.7073 254.793 72.5244 251.855 73.763C248.912 75.0016 245.51 75.624 241.644 75.624C234.851 75.624 230.618 74.1716 228.942 71.2669C227.261 68.3621 226.972 64.6715 228.07 60.1949L228.065 60.2075Z'
++ 'M84.2592 0H54.6106L54.4747 0.414964H54.4351L49.205 16.1836H58.9916L60.7407 10.6885H80.8064C87.361 10.6885 91.0629 15.7246 89.0591 21.9176C87.0554 28.1107 80.0989 33.1468 73.5442 33.1468L70.0915 43.8353C76.6461 43.8353 80.3479 48.8714 78.3442 55.0644C76.3404 61.2575 69.3839 66.2936 62.8293 66.2936H33.458L22.7544 99.9874H32.541L39.5881 76.9758H59.3709C72.1575 76.9758 85.7422 67.1424 89.6478 55.0582C91.7874 48.4439 90.5931 42.5024 86.9761 38.4847C93.1911 34.4609 98.2288 28.5256 100.368 21.9113C104.274 9.83338 97.0458 0 84.2592 0Z';
+
+var TABS = {
+  partenariat: { label: 'Partenariat', title: 'Proposer un partenariat', lead: 'Centres hospitaliers, chirurgiens, industriels, laboratoires : construisons ensemble les prochaines étapes cliniques.', orgLabel: 'Établissement ou entreprise', orgPlaceholder: 'CHU, clinique, entreprise…', selectLabel: 'Type de partenariat', options: ['Clinique — centre hospitalier ou chirurgien', 'Industriel', 'Recherche académique', 'Autre'], msg: 'Présentez votre projet ou votre besoin…', cta: 'Envoyer la demande', done: 'Votre demande de partenariat est transmise à l’équipe dirigeante.' },
+  investir: { label: 'Investisseurs', title: 'Investir dans Beams', lead: 'Fonds, business angels, partenaires financiers : échangeons sur la trajectoire de TRIOP.', orgLabel: 'Fonds ou structure', orgPlaceholder: 'Nom du fonds…', selectLabel: 'Vous êtes', options: ['Fonds d’investissement', 'Business angel', 'Investisseur corporate', 'Autre'], msg: 'Votre thèse, votre ticket, vos questions…', cta: 'Prendre contact', done: 'Votre message est transmis à la direction.' },
+  rejoindre: { label: 'Rejoindre l’équipe', title: 'Rejoindre l’équipe', lead: 'Aucune offre ne correspond ? Écrivez-nous quand même : nous lisons chaque candidature.', orgLabel: 'Spécialité', orgPlaceholder: 'Physique, électronique, clinique…', selectLabel: 'Poste visé', options: ['Candidature spontanée', '[Offre à venir]'], msg: 'Parlez-nous de vous et de ce que vous aimeriez construire avec nous…', cta: 'Envoyer ma candidature', done: 'Votre candidature est transmise ; nous revenons vers vous dès que possible.' },
+  presse: { label: 'Presse & autre', title: 'Presse et autres demandes', lead: 'Interviews, visuels, événements ou toute autre question.', orgLabel: 'Média ou organisation', orgPlaceholder: 'Rédaction, événement…', selectLabel: 'Objet', options: ['Presse', 'Événement', 'Autre demande'], msg: 'Votre demande…', cta: 'Envoyer', done: 'Votre message est transmis à la bonne personne.' }
+};
+var ORDER = ['partenariat', 'investir', 'rejoindre', 'presse'];
+
+function rnd(seed) {
+  var s = seed;
+  return function () { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; };
+}
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { tab: 'partenariat', sent: false };
+    var r = rnd(33), stars = [];
+    for (var i = 0; i < 80; i++) {
+      stars.push('position:absolute;left:' + (r() * 100).toFixed(2) + '%;top:' + (r() * 40).toFixed(2) + '%;width:1px;height:1px;border-radius:50%;background:' + (r() < 0.22 ? '#86C5FF' : '#FFFFFF') + ';animation-duration:' + (3 + r() * 5).toFixed(1) + 's;animation-delay:-' + (r() * 6).toFixed(1) + 's');
+    }
+    this.stars = stars;
+  }
+  renderVals() {
+    var self = this, cur = TABS[this.state.tab];
+    var tabs = ORDER.map(function (k) {
+      var on = k === self.state.tab;
+      return {
+        label: TABS[k].label, sel: on ? 'true' : 'false',
+        pick: function () { self.setState({ tab: k, sent: false }); },
+        style: 'flex:1 1 auto;min-height:44px;padding:0 16px;border-radius:12px;border:1px solid ' + (on ? 'rgba(134,197,255,.35)' : 'transparent') + ';background:' + (on ? 'linear-gradient(180deg,rgba(134,197,255,.14),rgba(119,58,237,.10))' : 'transparent') + ';color:' + (on ? '#FFFFFF' : '#A3A6AF') + ';box-shadow:' + (on ? 'inset 0 1px 0 rgba(255,255,255,.12),0 8px 24px -12px rgba(134,197,255,.7)' : 'none') + ';font-family:inherit;font-size:14px;font-weight:500;cursor:pointer'
+      };
+    });
+    return {
+      logoBeam: LOGO_BEAM, logoLetters: LOGO_LETTERS, stars: this.stars,
+      tabs: tabs, tab: this.state.tab,
+      sent: this.state.sent, editing: !this.state.sent,
+      title: cur.title, lead: cur.lead, orgLabel: cur.orgLabel, orgPlaceholder: cur.orgPlaceholder,
+      selectLabel: cur.selectLabel, options: cur.options, msgPlaceholder: cur.msg, cta: cur.cta, doneText: cur.done,
+      isJoin: this.state.tab === 'rejoindre',
+      send: function () { self.setState({ sent: true }); },
+      reset: function () { self.setState({ sent: false }); },
+      goJoin: function () { self.setState({ tab: 'rejoindre', sent: false }); }
+    };
+  }
+}
+</script>
+</body>
+</html>
