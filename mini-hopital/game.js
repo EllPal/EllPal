@@ -24,25 +24,25 @@
   const DAYS = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
 
   const TYPES = {
-    URG:  { name: 'Urgences', abbr: 'URG', shape: 'cross', proc: 0, slots: 0, cap: 8,
+    URG:  { name: 'Urgences', abbr: 'URG', sign: 'URGENCES', shape: 'cross', proc: 0, slots: 0, cap: 8,
             desc: 'Arrivée des urgences. Les patients y sont triés par gravité.' },
-    CONS: { name: 'Consultation', abbr: 'CONS', shape: 'diamond', proc: 2.5, slots: 2, cap: 6,
+    CONS: { name: 'Consultation', abbr: 'CONS', sign: 'CONSULTATIONS', shape: 'diamond', proc: 2.5, slots: 2, cap: 6,
             desc: 'Auscultation, examen clinique, avis spécialisé. Accueille aussi les patients programmés.' },
-    IMG:  { name: 'Imagerie', abbr: 'IMG', shape: 'circle', proc: 3, slots: 2, cap: 6,
+    IMG:  { name: 'Imagerie', abbr: 'IMG', sign: 'IMAGERIE', shape: 'circle', proc: 3, slots: 2, cap: 6,
             desc: 'Radiographie, scanner, IRM.' },
-    HOSP: { name: 'Hospitalisation', abbr: 'HOSP', shape: 'square', proc: 1.2, slots: 3, cap: 6,
+    HOSP: { name: 'Hospitalisation', abbr: 'HOSP', sign: 'HOSPITALISATION', shape: 'square', proc: 1.2, slots: 3, cap: 6,
             desc: 'Admission en chambre. Les patients hospitalisés en partent aussi pour leurs examens.' },
-    BLOC: { name: 'Bloc opératoire', abbr: 'BLOC', shape: 'triangle', proc: 6, slots: 1, cap: 6,
+    BLOC: { name: 'Bloc opératoire', abbr: 'BLOC', sign: 'BLOC OPÉRATOIRE', shape: 'triangle', proc: 6, slots: 1, cap: 6,
             desc: 'Chirurgie. Toujours suivie d’un passage en salle de réveil.' },
-    SSPI: { name: 'Salle de réveil', abbr: 'SSPI', shape: 'pentagon', proc: 4, slots: 2, cap: 6,
+    SSPI: { name: 'Salle de réveil', abbr: 'SSPI', sign: 'SALLE DE RÉVEIL', shape: 'pentagon', proc: 4, slots: 2, cap: 6,
             desc: 'Surveillance post-interventionnelle après le bloc.' },
-    ISO:  { name: 'Isolement', abbr: 'ISO', shape: 'hexagon', proc: 3, slots: 2, cap: 6,
+    ISO:  { name: 'Isolement', abbr: 'ISO', sign: 'ISOLEMENT', shape: 'hexagon', proc: 3, slots: 2, cap: 6,
             desc: 'Chambres à pression négative. Les patients contagieux n’y vont que par le circuit septique.' },
-    RPH:  { name: 'Radiopharmacie', abbr: 'RPH', shape: 'trefoil', proc: 0, slots: 0, cap: 99,
+    RPH:  { name: 'Radiopharmacie', abbr: 'RPH', sign: 'RADIOPHARMACIE', shape: 'trefoil', proc: 0, slots: 0, cap: 99,
             desc: 'Prépare les doses de radiotraceur. Elles décroissent : livrez-les vite en médecine nucléaire par le circuit radioprotégé.' },
-    MN:   { name: 'Médecine nucléaire', abbr: 'MN', shape: 'star', proc: 3.5, slots: 1, cap: 6,
+    MN:   { name: 'Médecine nucléaire', abbr: 'MN', sign: 'MÉD. NUCLÉAIRE', shape: 'star', proc: 3.5, slots: 1, cap: 6,
             desc: 'TEP et scintigraphie. Chaque examen consomme une dose ; le patient en ressort radioactif.' },
-    REA:  { name: 'Réanimation', abbr: 'RÉA', shape: 'heart', proc: 2.5, slots: 2, cap: 6,
+    REA:  { name: 'Réanimation', abbr: 'RÉA', sign: 'RÉANIMATION', shape: 'heart', proc: 2.5, slots: 2, cap: 6,
             desc: 'Admission des urgences vitales.' },
   };
 
@@ -151,7 +151,7 @@
   // Couleurs lues dans les jetons CSS (thème clair / sombre).
   const C = {};
   const TOKENS = ['bg', 'floor', 'grid', 'ink', 'muted', 'node', 'accent', 'danger', 'l1', 'l2', 'l3', 'l4', 'l5', 'l6', 'l7',
-    'sep', 'rad', 'rad-ink', 't1', 't2', 't3', 't4', 'line-soft'];
+    'sep', 'rad', 'rad-ink', 't1', 't2', 't3', 't4', 'line-soft', 'room', 'wall', 'sign', 'sign-ink'];
   function readColors() {
     const cs = getComputedStyle(document.documentElement);
     for (const t of TOKENS) C[t] = cs.getPropertyValue('--' + t).trim() || '#888';
@@ -211,7 +211,7 @@
       if (!ok) continue;
       const T = TYPES[type];
       const node = {
-        id: uid++, type, x, y, waiting: [], queue: [], treating: [], doses: [],
+        id: uid++, type, x, y, code: roomCode(x, y), waiting: [], queue: [], treating: [], doses: [],
         slots: T.slots, cap: T.cap, over: 0, born: G.t, rphT: DOSE_EVERY * 0.5,
       };
       G.nodes.push(node);
@@ -219,6 +219,14 @@
       return node;
     }
     return null;
+  }
+
+  // Repère de la trame structurelle (axes lettrés en colonnes, numérotés en rangées), comme sur un plan.
+  const BAY = 80;
+  const axisLetter = i => String.fromCharCode(65 + (i % 26));
+  function roomCode(x, y) {
+    const col = Math.floor(x / BAY), row = Math.floor(y / BAY) + 1;
+    return `${axisLetter(col)}${row}-${String(G.nodes.length + 1).padStart(2, '0')}`;
   }
 
   function runSchedule() {
@@ -656,9 +664,9 @@
           arr.splice(i, 1);
           if (e.tri <= 2) {
             G.incidents++;
-            floater(x, y - 20, 'Incident grave', 't1');
-            toast(`<b>Incident grave</b> : ${e.name} (${TRIAGE[e.tri].name.toLowerCase()}) n’a pas été pris en charge à temps.`, true);
-            if (G.incidents >= MAX_INCIDENTS) gameOver('Trois incidents graves : l’ARS ferme vos urgences.');
+            floater(x, y - 20, 'EIG', 't1');
+            toast(`<b>Événement indésirable grave</b> : ${e.name} (${TRIAGE[e.tri].name.toLowerCase()}) n’a pas été pris en charge à temps.`, true);
+            if (G.incidents >= MAX_INCIDENTS) gameOver('Trois événements indésirables graves : l’ARS suspend l’activité de vos urgences.');
           } else {
             G.lwbs++;
             floater(x, y - 20, 'Parti sans soins', 'muted');
@@ -702,6 +710,7 @@
     const top = $('.hud-top').getBoundingClientRect();
     const bot = $('#hudBottom').getBoundingClientRect();
     HUD_TOP = top.bottom + 8;
+    $('#toasts').style.top = (top.bottom + 8) + 'px';
     HUD_BOTTOM = CH - bot.top + 8;
   }
 
@@ -804,6 +813,7 @@
     c.lineJoin = 'round'; c.lineCap = 'round';
     c.beginPath(); c.moveTo(pts[0].x, pts[0].y);
     for (let i = 1; i < pts.length; i++) c.lineTo(pts[i].x, pts[i].y);
+    c.strokeStyle = C.floor; c.lineWidth = width + 3.5; c.stroke();
     c.strokeStyle = color; c.lineWidth = width; c.stroke();
     if (kind === 'sep') {
       c.setLineDash([7, 7]); c.strokeStyle = C.node; c.lineWidth = width * 0.38; c.lineCap = 'butt'; c.stroke(); c.setLineDash([]);
@@ -839,18 +849,10 @@
     if (!G) return;
     c.setTransform(DPR * cam.s, 0, 0, DPR * cam.s, DPR * cam.ox, DPR * cam.oy);
 
-    // Emprise du bâtiment et carrelage.
-    const R = G.region;
-    c.fillStyle = C.floor;
-    roundRect(c, R.x, R.y, R.w, R.h, 18); c.fill();
-    c.save(); roundRect(c, R.x, R.y, R.w, R.h, 18); c.clip();
-    c.strokeStyle = C.grid; c.lineWidth = 1 / cam.s;
-    c.beginPath();
-    for (let x = Math.floor(R.x / 40) * 40; x < R.x + R.w; x += 40) { c.moveTo(x, R.y); c.lineTo(x, R.y + R.h); }
-    for (let y = Math.floor(R.y / 40) * 40; y < R.y + R.h; y += 40) { c.moveTo(R.x, y); c.lineTo(R.x + R.w, y); }
-    c.stroke(); c.restore();
+    drawPlan(c);
+    for (const n of G.nodes) drawRoom(c, n);
 
-    // Circuits.
+    // Circuits : bandes de guidage au sol, bordées de blanc.
     for (const l of G.lines) {
       const hidden = drag && drag.line === l && (drag.mode === 'extend' || drag.mode === 'insert');
       strokeLine(c, l.geom.pts, C[l.color], l.kind, LINE_W, hidden ? 0.25 : 1);
@@ -862,14 +864,20 @@
     }
     drawDragPreview(c);
 
-    // Brancardiers.
+    // Brancardiers : un brancard vu de dessus, avec son oreiller à l'avant.
     for (const v of G.vehicles) {
       const cap = vehCap(v), cols = Math.ceil(cap / 2);
-      const len = Math.max(24, cols * 8 + 8), wid = 15;
+      const len = Math.max(26, cols * 8 + 12), wid = 15;
       c.save(); c.translate(v.x, v.y); c.rotate(v.a);
-      c.fillStyle = C[v.line.color];
-      roundRect(c, -len / 2, -wid / 2, len, wid, 4); c.fill();
-      c.lineWidth = 1.5; c.strokeStyle = C.ink; c.stroke();
+      c.fillStyle = C.ink;
+      for (const [wx, wy] of [[-len / 2 + 3, -wid / 2 - 1], [len / 2 - 3, -wid / 2 - 1], [-len / 2 + 3, wid / 2 + 1], [len / 2 - 3, wid / 2 + 1]]) {
+        c.beginPath(); c.arc(wx, wy, 1.8, 0, Math.PI * 2); c.fill();
+      }
+      roundRect(c, -len / 2, -wid / 2, len, wid, 3.5);
+      c.fillStyle = C.node; c.fill();
+      c.lineWidth = 2.6; c.strokeStyle = C[v.line.color]; c.stroke();
+      roundRect(c, len / 2 - 7, -wid / 2 + 3, 4.5, wid - 6, 1.5);
+      c.fillStyle = C['line-soft']; c.fill();
       v.cargo.forEach((e, i) => {
         const col = Math.floor(i / 2), row = i % 2;
         const ex = -len / 2 + 6 + col * 8, ey = row ? 3.4 : -3.4;
@@ -888,22 +896,90 @@
     c.textAlign = 'center'; c.textBaseline = 'middle';
     for (const f of G.floaters) {
       c.globalAlpha = 1 - f.t / 1.6;
-      c.font = `700 ${f.text.length > 3 ? 11 : 14}px ${getFont()}`;
+      c.font = `700 ${f.text.length > 3 ? 11 : 14}px ${getFont('data')}`;
       c.fillStyle = C[f.color] || C.ink;
       c.fillText(f.text, f.x, f.y - f.t * 18);
     }
     c.globalAlpha = 1;
   }
-  let fontCache = null;
-  function getFont() {
-    if (!fontCache) fontCache = getComputedStyle(document.documentElement).getPropertyValue('--font-ui').trim() || 'sans-serif';
-    return fontCache;
+
+  // Plan d'architecte : dalle, trame structurelle en trait mixte, axes repérés, murs extérieurs.
+  function drawPlan(c) {
+    const R = G.region;
+    c.fillStyle = C.floor;
+    c.fillRect(R.x, R.y, R.w, R.h);
+    c.save();
+    c.beginPath(); c.rect(R.x, R.y, R.w, R.h); c.clip();
+    c.strokeStyle = C.grid; c.lineWidth = 1.2; c.setLineDash([14, 5, 2, 5]);
+    c.beginPath();
+    for (let x = Math.ceil(R.x / BAY) * BAY; x < R.x + R.w; x += BAY) { c.moveTo(x, R.y); c.lineTo(x, R.y + R.h); }
+    for (let y = Math.ceil(R.y / BAY) * BAY; y < R.y + R.h; y += BAY) { c.moveTo(R.x, y); c.lineTo(R.x + R.w, y); }
+    c.stroke(); c.setLineDash([]);
+    c.restore();
+    // murs extérieurs : trait épais doublé d'un parement
+    c.strokeStyle = C.wall; c.lineWidth = 6; c.lineJoin = 'miter';
+    c.strokeRect(R.x, R.y, R.w, R.h);
+    c.lineWidth = 1.2;
+    c.strokeRect(R.x + 7, R.y + 7, R.w - 14, R.h - 14);
+    // repères d'axes dans des bulles, en haut et à gauche
+    c.font = `600 9px ${getFont('data')}`; c.textAlign = 'center'; c.textBaseline = 'middle';
+    c.lineWidth = 1.2;
+    for (let x = Math.ceil(R.x / BAY) * BAY; x < R.x + R.w; x += BAY) {
+      bubble(c, x, R.y - 17, axisLetter(Math.round(x / BAY)));
+    }
+    for (let y = Math.ceil(R.y / BAY) * BAY; y < R.y + R.h; y += BAY) {
+      bubble(c, R.x - 17, y, String(Math.round(y / BAY) + 1));
+    }
+  }
+  function bubble(c, x, y, txt) {
+    c.beginPath(); c.arc(x, y, 8, 0, Math.PI * 2);
+    c.fillStyle = C.bg; c.fill(); c.strokeStyle = C.wall; c.stroke();
+    c.fillStyle = C.muted; c.fillText(txt, x, y + 0.5);
+  }
+
+  // Chaque service occupe une pièce, porte en bas avec son débattement.
+  const ROOM = { l: 40, r: 40, t: 36, b: 46, door: 22 };
+  function drawRoom(c, n) {
+    const x0 = n.x - ROOM.l, x1 = n.x + ROOM.r, y0 = n.y - ROOM.t, y1 = n.y + ROOM.b;
+    c.fillStyle = C.room;
+    c.fillRect(x0, y0, x1 - x0, y1 - y0);
+    const d0 = n.x - ROOM.door / 2, d1 = n.x + ROOM.door / 2;
+    c.strokeStyle = C.wall; c.lineWidth = 2.2; c.lineCap = 'square';
+    c.beginPath();
+    c.moveTo(d0, y1); c.lineTo(x0, y1); c.lineTo(x0, y0); c.lineTo(x1, y0); c.lineTo(x1, y1); c.lineTo(d1, y1);
+    c.stroke();
+    // vantail ouvert vers l'intérieur et arc de débattement
+    c.lineWidth = 1;
+    c.beginPath(); c.moveTo(d0, y1); c.lineTo(d0, y1 - ROOM.door); c.stroke();
+    c.setLineDash([2, 2]);
+    c.beginPath(); c.arc(d0, y1, ROOM.door, -Math.PI / 2, 0); c.stroke();
+    c.setLineDash([]);
+    c.font = `500 7px ${getFont('data')}`; c.textAlign = 'left'; c.textBaseline = 'top';
+    c.fillStyle = C.muted;
+    c.fillText(n.code, x0 + 4, y0 + 4);
+  }
+
+  const fontCache = {};
+  function getFont(role = 'ui') {
+    if (!fontCache[role]) fontCache[role] = getComputedStyle(document.documentElement).getPropertyValue('--font-' + role).trim() || 'sans-serif';
+    return fontCache[role];
   }
 
   function roundRect(c, x, y, w, h, r) {
     c.beginPath();
     c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r);
     c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath();
+  }
+
+  // Panneau de signalétique : pictogramme blanc sur fond bleu, rouge pour les urgences,
+  // jaune et noir pour la radiopharmacie.
+  function signPanel(c, type, x, y, r) {
+    const bg = type === 'URG' ? C.t1 : type === 'RPH' ? C.rad : C.sign;
+    roundRect(c, x - r, y - r, r * 2, r * 2, r * 0.3);
+    c.fillStyle = bg; c.fill();
+    if (type === 'RPH') { trefoil(c, x, y, r * 0.62, C['rad-ink'], C.rad); return; }
+    shapePath(c, TYPES[type].shape, x, y, r * 0.55);
+    c.fillStyle = C['sign-ink']; c.fill();
   }
 
   function drawNode(c, n, hovered) {
@@ -914,47 +990,37 @@
     // anneau de saturation
     if (n.over > 0) {
       const f = n.over / OVERFLOW_LIMIT;
-      c.beginPath(); c.arc(n.x, n.y, r + 12, 0, Math.PI * 2);
+      c.beginPath(); c.arc(n.x, n.y, r + 13, 0, Math.PI * 2);
       c.fillStyle = C.danger; c.globalAlpha = 0.12 + 0.18 * f; c.fill(); c.globalAlpha = 1;
-      c.beginPath(); c.arc(n.x, n.y, r + 12, -Math.PI / 2, -Math.PI / 2 + f * Math.PI * 2);
+      c.beginPath(); c.arc(n.x, n.y, r + 13, -Math.PI / 2, -Math.PI / 2 + f * Math.PI * 2);
       c.strokeStyle = C.danger; c.lineWidth = 4; c.lineCap = 'round'; c.stroke();
     }
     if (hovered) {
-      c.beginPath(); c.arc(n.x, n.y, r + 7, 0, Math.PI * 2); c.strokeStyle = C.ink; c.globalAlpha = 0.25; c.lineWidth = 3; c.stroke(); c.globalAlpha = 1;
+      roundRect(c, n.x - r - 6, n.y - r - 6, (r + 6) * 2, (r + 6) * 2, 8);
+      c.strokeStyle = C.ink; c.globalAlpha = 0.3; c.lineWidth = 3; c.stroke(); c.globalAlpha = 1;
     }
-    if (n.type === 'RPH') {
-      shapePath(c, 'circle', n.x, n.y, r);
-      c.fillStyle = C.node; c.fill(); c.lineWidth = 4; c.strokeStyle = C.ink; c.stroke();
-      trefoil(c, n.x, n.y, r * 0.62, C.ink, C.node);
-    } else {
-      shapePath(c, T.shape, n.x, n.y, r);
-      c.fillStyle = C.node; c.fill();
-      c.lineWidth = 4; c.lineJoin = 'round'; c.strokeStyle = C.ink; c.stroke();
-    }
-    // postes de soin : un arc par poste, rempli selon l'avancement
+    signPanel(c, n.type, n.x, n.y, r);
+    // postes de soin : un lit par poste, rempli selon l'avancement du soin
     if (n.slots > 0) {
-      const gap = 0.18, span = (Math.PI * 2) / n.slots;
+      const bw = 9, bh = 4.5, gap = 3, tot = n.slots * bw + (n.slots - 1) * gap;
       for (let i = 0; i < n.slots; i++) {
-        const a0 = -Math.PI / 2 + i * span + gap / 2, a1 = a0 + span - gap;
-        c.beginPath(); c.arc(n.x, n.y, r + 5, a0, a1);
-        c.strokeStyle = C['line-soft']; c.lineWidth = 2.5; c.lineCap = 'butt'; c.stroke();
+        const bx = n.x - tot / 2 + i * (bw + gap), by = n.y + r + 4;
+        c.fillStyle = C.node; c.fillRect(bx, by, bw, bh);
         const tr = n.treating[i];
-        if (tr) {
-          c.beginPath(); c.arc(n.x, n.y, r + 5, a0, a0 + (a1 - a0) * Math.min(1, tr.t / tr.T));
-          c.strokeStyle = C.accent; c.lineWidth = 3; c.stroke();
-        }
+        if (tr) { c.fillStyle = C.accent; c.fillRect(bx, by, bw * Math.min(1, tr.t / tr.T), bh); }
+        c.strokeStyle = C.wall; c.lineWidth = 1; c.strokeRect(bx, by, bw, bh);
       }
     }
-    // libellé
-    c.font = `700 9px ${getFont()}`;
+    // libellé de signalétique
+    c.font = `700 10px ${getFont('sign')}`;
     c.textAlign = 'center'; c.textBaseline = 'top';
-    c.fillStyle = C.muted;
-    c.fillText(T.abbr, n.x, n.y + r + 9);
+    c.fillStyle = C.ink;
+    c.fillText(T.sign, n.x, n.y + r + (n.slots > 0 ? 12 : 5));
     // doses en stock
     if (n.type === 'MN') {
       n.doses.forEach((d, i) => {
         c.globalAlpha = 0.45 + 0.55 * d.life / DOSE_LIFE;
-        trefoil(c, n.x - (n.doses.length - 1) * 5 + i * 10, n.y - r - 12, 4, C['rad-ink'], C.rad);
+        trefoil(c, n.x - (n.doses.length - 1) * 5 + i * 10, n.y - r - 9, 4, C['rad-ink'], C.rad);
         c.globalAlpha = 1;
       });
     }
@@ -965,12 +1031,12 @@
       drawEntity(c, e, n.x + r + 12 + col * sp, n.y - 9 + row * sp, 3.9, true);
     });
     if (n.waiting.length > 15) {
-      c.fillStyle = C.ink; c.textAlign = 'left'; c.textBaseline = 'middle'; c.font = `700 9px ${getFont()}`;
+      c.fillStyle = C.ink; c.textAlign = 'left'; c.textBaseline = 'middle'; c.font = `600 9px ${getFont('data')}`;
       c.fillText('+' + (n.waiting.length - 15), n.x + r + 12 + per * sp, n.y + 12);
     }
     n.queue.slice(0, 10).forEach((e, i) => {
       const col = i % per, row = Math.floor(i / per);
-      drawQueued(c, e, n.x - r - 12 - col * sp, n.y - 9 + row * sp);
+      drawQueued(c, e, n.x - r - 10 - col * sp * 0.8, n.y - 9 + row * sp);
     });
   }
   // Patient en file de soins : il est arrivé, on montre son urgence par un point.
@@ -1196,17 +1262,38 @@
   const el = {
     score: $('#score'), clock: $('#clock'), day: $('#dayName'), strikes: $('#strikes'), palette: $('#palette'),
     pool: $('#poolN'), inv: $('#inv'), hint: $('#hint'), toasts: $('#toasts'),
-    lp: $('#linePanel'), nt: $('#nodeTip'),
+    lp: $('#linePanel'), nt: $('#nodeTip'), tension: $('#tension'), tensionLabel: $('#tensionLabel'),
   };
 
   function toast(html, bad) {
     const t = document.createElement('div');
     t.className = 'toast' + (bad ? ' bad' : '');
-    t.innerHTML = html;
+    t.innerHTML = `<span class="ts">${G ? clockText() : ''}</span><span>${html}</span>`;
     t.addEventListener('click', () => t.remove());
     el.toasts.appendChild(t);
     while (el.toasts.children.length > 2) el.toasts.firstChild.remove();
     setTimeout(() => t.remove(), bad ? 4500 : 5500);
+  }
+
+  function clockText() {
+    const mins = Math.floor(((G.t % DAY) / DAY * 24 * 60) / 10) * 10;
+    return `${String(Math.floor(mins / 60)).padStart(2, '0')}:${String(mins % 60).padStart(2, '0')}`;
+  }
+
+  // Niveau de tension : normal, tension (un service déborde), plan blanc (saturation avancée).
+  const TENSION = ['Activité normale', 'Tension', 'Plan blanc'];
+  let tensionLevel = 0;
+  function updateTension() {
+    let lvl = 0;
+    for (const n of G.nodes) {
+      if (n.over > OVERFLOW_LIMIT * 0.35) { lvl = 2; break; }
+      if (n.over > 0 || crowd(n) > n.cap * 0.8) lvl = 1;
+    }
+    if (lvl === tensionLevel) return;
+    if (lvl === 2) toast('<b>Déclenchement du plan blanc</b> : un service est saturé, désengorgez-le au plus vite.', true);
+    tensionLevel = lvl;
+    el.tension.dataset.level = lvl;
+    el.tensionLabel.textContent = TENSION[lvl];
   }
 
   let lastUi = -1;
@@ -1214,10 +1301,9 @@
     if (!G) return;
     el.score.textContent = G.score;
     const dayIdx = Math.floor(G.t / DAY) % 7;
-    const frac = (G.t % DAY) / DAY;
-    const mins = Math.floor((frac * 24 * 60) / 10) * 10;
     el.day.textContent = `${DAYS[dayIdx]} · S${G.week}`;
-    el.clock.textContent = `${String(Math.floor(mins / 60)).padStart(2, '0')}:${String(mins % 60).padStart(2, '0')}`;
+    el.clock.textContent = clockText();
+    updateTension();
     if (el.strikes.children.length !== MAX_INCIDENTS) el.strikes.innerHTML = '<i></i>'.repeat(MAX_INCIDENTS);
     [...el.strikes.children].forEach((x, i) => x.classList.toggle('on', i < G.incidents));
     updateHint();
@@ -1342,8 +1428,15 @@
     const n = ntNode; if (!n) return;
     const T = TYPES[n.type];
     $('#ntTitle').textContent = T.name;
+    $('#ntCode').textContent = n.code;
     $('#ntDesc').textContent = T.desc;
+    const occ = $('#ntOcc');
+    const ratio = n.type === 'RPH' ? 0 : crowd(n) / n.cap;
+    occ.hidden = n.type === 'RPH';
+    occ.firstElementChild.style.width = Math.min(100, ratio * 100) + '%';
+    occ.className = 'occ' + (ratio > 1 ? ' crit' : ratio > 0.75 ? ' warn' : '');
     const rows = [];
+    if (n.type !== 'RPH') rows.push(['Taux d’occupation', Math.round(ratio * 100) + ' %']);
     if (n.slots) rows.push(['Postes de soin', `${n.treating.length} / ${n.slots}`]);
     if (T.proc) rows.push(['File de soins', n.queue.length]);
     rows.push(['Attente brancardier', n.waiting.filter(e => e.kind === 'patient').length]);
@@ -1351,8 +1444,8 @@
     if (n.type === 'MN') rows.push(['Doses en stock', n.doses.length]);
     if (n.type === 'RPH') rows.push(['Doses prêtes', n.waiting.filter(e => e.kind === 'dose').length]);
     const urgent = [...n.waiting, ...n.queue].filter(e => e.kind === 'patient').sort((a, b) => a.tri - b.tri)[0];
-    if (urgent) rows.push(['Plus urgent', `${urgent.name}`]);
-    $('#ntKv').innerHTML = rows.map(([k, v]) => `<span>${k}</span><b>${v}</b>`).join('');
+    if (urgent) rows.push(['Plus urgent', `${urgent.name}`, 'txt']);
+    $('#ntKv').innerHTML = rows.map(([k, v, cls]) => `<span>${k}</span><b class="${cls || ''}">${v}</b>`).join('');
   }
   $('#ntClose').addEventListener('click', () => { el.nt.hidden = true; ntNode = null; });
   setInterval(() => { if (!el.nt.hidden) fillNodeTip(); }, 400);
@@ -1368,6 +1461,7 @@
     const picks = [];
     while (picks.length < 2 && keys.length) picks.push(keys.splice(Math.floor(Math.random() * keys.length), 1)[0]);
     $('#weekTitle').textContent = `Fin de la semaine ${G.week}`;
+    $('#weekRef').textContent = `Semaine ${G.week} · ${G.score} patients`;
     const box = $('#choices');
     box.innerHTML = '';
     for (const k of picks) {
@@ -1402,10 +1496,12 @@
     store.set('miniHopital.best', String(best));
     $('#overReason').textContent = reason;
     const days = Math.floor(G.t / DAY);
+    $('#overRef').innerHTML = `${DAYS[days % 7]} ${clockText()}<br>Semaine ${G.week}`;
     $('#endStats').innerHTML = [
-      [G.score, 'patients soignés'], [days, days > 1 ? 'jours de garde' : 'jour de garde'],
-      [G.incidents, 'incidents graves'], [G.lwbs, 'partis sans soins'], [G.dosesLost, 'doses périmées'],
-    ].map(([v, k]) => `<div><b>${v}</b><span>${k}</span></div>`).join('');
+      ['Patients pris en charge', G.score], ['Durée de la garde', `${days} j`],
+      ['Événements indésirables graves', G.incidents, G.incidents > 0], ['Partis sans soins', G.lwbs, G.lwbs > 0],
+      ['Doses de radiotraceur périmées', G.dosesLost, G.dosesLost > 0], ['Services ouverts', G.nodes.length],
+    ].map(([k, v, bad]) => `<tr class="${bad ? 'bad' : ''}"><th>${k}</th><td>${v}</td></tr>`).join('');
     $('#bestScore2').textContent = `Record : ${best} patients`;
     openModal('#overModal');
   }
@@ -1455,11 +1551,7 @@
   }
   function nodeIcon(type) {
     return c => {
-      if (type === 'RPH') {
-        shapePath(c, 'circle', 14, 14, 10); c.fillStyle = C.node; c.fill(); c.lineWidth = 2.5; c.strokeStyle = C.ink; c.stroke();
-        trefoil(c, 14, 14, 6, C.ink, C.node); return;
-      }
-      shapePath(c, TYPES[type].shape, 14, 14, 9); c.fillStyle = C.node; c.fill(); c.lineWidth = 2.5; c.lineJoin = 'round'; c.strokeStyle = C.ink; c.stroke();
+      signPanel(c, type, 14, 14, 12);
     };
   }
   function buildLegend() {
@@ -1469,7 +1561,7 @@
     const pv = $('#legendPatients'); pv.innerHTML = '';
     for (const k of [1, 2, 3, 4]) {
       legendItem(pv, c => { shapePath(c, 'circle', 14, 14, 7); c.fillStyle = C[TRIAGE[k].color]; c.fill(); c.lineWidth = 2; c.strokeStyle = C.ink; c.stroke(); },
-        TRIAGE[k].name, `Délai avant dégradation : ${TRIAGE[k].patience} s.` + (k <= 2 ? ' Dépassé, c’est un incident grave.' : ' Dépassé, le patient part sans soins.'));
+        TRIAGE[k].name, `Délai avant dégradation : ${TRIAGE[k].patience} s.` + (k <= 2 ? ' Dépassé, c’est un événement indésirable grave (EIG).' : ' Dépassé, le patient part sans soins.'));
     }
     legendItem(pv, c => { drawEntity(c, { kind: 'patient', tri: 2, inf: true, rad: false, path: ['ISO'], step: 0, patience: 1, maxPatience: 1 }, 14, 14, 5, false); },
       'Patient contagieux', 'Anneau vert pointillé. Il ne voyage que sur le circuit septique.');
@@ -1494,7 +1586,7 @@
     add(c => { drawEntity(c, { kind: 'patient', tri: 2, inf: true, rad: false, path: ['ISO'], step: 0, patience: 1, maxPatience: 1 }, 14, 14, 5, false); },
       '<b>Patients contagieux et radioactifs</b> exigent des circuits dédiés : septique et radioprotégé.');
     add(c => { c.beginPath(); c.arc(14, 14, 10, -Math.PI / 2, Math.PI); c.strokeStyle = C.danger; c.lineWidth = 4; c.stroke(); },
-      '<b>Un service saturé trop longtemps</b> ou trois incidents graves mettent fin à la garde.');
+      '<b>Un service saturé trop longtemps</b> ou trois événements indésirables graves mettent fin à la garde.');
   }
 
   // ================================================================

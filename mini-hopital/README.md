@@ -9,12 +9,20 @@ Pour jouer, ouvrez `index.html` dans un navigateur. Il n’y a rien à installer
 
 - **Services** : Urgences, Consultation (auscultation), Imagerie, Bloc opératoire, Salle de réveil (SSPI), Hospitalisation, Réanimation, Isolement, Médecine nucléaire et Radiopharmacie. Ils ouvrent au fil de la garde, et le bâtiment s’agrandit.
 - **Patients** : chaque patient suit un parcours de soins (par exemple *Polytraumatisé* : Imagerie, Bloc, SSPI, Réanimation). Il affiche la forme du service de sa prochaine étape, et sa couleur indique son niveau de tri.
-- **Tri** : urgence vitale, urgence, semi-urgent, programmé. Chacun a un délai. Les urgences vitales montent en premier dans les brancards et passent en premier dans les files de soins. Si une urgence vitale ou une urgence dépasse son délai, c’est un incident grave. Au-delà, un patient semi-urgent ou programmé part sans soins.
-- **Soins** : chaque service a des postes de soin (les arcs autour de l’icône) et une durée de prise en charge. La file de soins est à gauche du service, l’attente de brancardier à droite.
+- **Tri** : urgence vitale, urgence, semi-urgent, programmé. Chacun a un délai. Les urgences vitales montent en premier dans les brancards et passent en premier dans les files de soins. Si une urgence vitale ou une urgence dépasse son délai, c’est un événement indésirable grave (EIG). Au-delà, un patient semi-urgent ou programmé part sans soins.
+- **Soins** : chaque service a des postes de soin (les petits lits sous le panneau) et une durée de prise en charge. La file de soins est à gauche du service, l’attente de brancardier à droite.
 - **Circuit septique** : les patients contagieux (tuberculose, norovirus, BMR) ont un anneau vert en pointillé. Ils ne voyagent que sur ce circuit, ce qui évite toute contamination croisée.
 - **Circuit radioprotégé** : la Radiopharmacie produit des doses de radiotraceur qui décroissent en 60 s. Elles doivent rejoindre la Médecine nucléaire par ce circuit. Sans dose, aucune TEP ni scintigraphie n’est possible. Un patient qui vient de passer son examen devient radioactif (anneau jaune) et ne repart que par ce circuit.
 - **Fin de semaine** : vous recevez un brancardier, et vous choisissez une ressource parmi deux (nouveau circuit, renfort d’équipe, salle d’attente agrandie, chariot double…).
-- **Fin de partie** : un service saturé trop longtemps (anneau rouge), ou trois incidents graves.
+- **Fin de partie** : un service saturé trop longtemps (anneau rouge), ou trois EIG. Le bandeau affiche le niveau de tension : activité normale, tension, puis plan blanc.
+
+## Direction artistique
+
+Le jeu emprunte trois registres d’un vrai hôpital :
+
+- **Le plan d’architecte** : dalle, murs extérieurs doublés, trame structurelle en trait mixte avec axes repérés (A, B, C… / 1, 2, 3…), et une pièce par service avec sa porte, son débattement et son code de local (ex. `D5-02`).
+- **La signalétique** : chaque service est un panneau à pictogramme blanc sur fond bleu (rouge pour les urgences, jaune et noir pour la radiopharmacie). Les circuits sont des bandes de guidage au sol, et les brancardiers des brancards vus de dessus. Les postes de soin sont dessinés comme des lits.
+- **Le logiciel de régulation** : un bandeau façon dossier patient informatisé, avec un tracé ECG qui s’accélère avec la tension. Les notifications sont horodatées comme un journal, et les écrans prennent la forme de documents (fiche de prise de garde, commission des moyens, rapport de fin de garde, protocole).
 
 ## Commandes
 
