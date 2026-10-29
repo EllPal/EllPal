@@ -9,15 +9,35 @@ Pour jouer, ouvrez `index.html` dans un navigateur. Il n’y a rien à installer
 
 - **Services** : Urgences, Consultation (auscultation), Imagerie, Bloc opératoire, Salle de réveil (SSPI), Hospitalisation, Réanimation, Isolement, Médecine nucléaire et Radiopharmacie ouvrent pendant la première semaine. Viennent ensuite des services spécialisés (voir *Extension de l’hôpital*).
 - **Patients** : chaque patient suit un parcours de soins (par exemple *Polytraumatisé* : Imagerie, Bloc, SSPI, Réanimation, Hospitalisation). Il affiche la forme du service de sa prochaine étape, et sa couleur indique son niveau de tri.
+- **Des histoires variées** : chaque motif d’arrivée et chaque diagnostic a plusieurs noms possibles (*Chute à vélo*, *Cheville tordue au sport*… puis *Fracture du col du fémur*, *Entorse*…). Le parcours reste le même, et la partie raconte une histoire différente à chaque fois.
 - **Diagnostic** : beaucoup de patients ne connaissent que leur premier examen. Une *Douleur abdominale* passe en imagerie, qui révèle une appendicite (bloc), une occlusion (bloc puis réanimation, en urgence vitale) ou une colique néphrétique (consultation). Une *Toux fébrile* peut se révéler être une tuberculose : le patient devient contagieux en imagerie et doit rejoindre l’isolement par le circuit septique.
 - **Aggravation** : un patient semi-urgent qui a attendu 70 % de son délai passe en urgence, avec un délai plus court.
+- **Stabilisation** : après un soin au bloc, en salle de réveil, en réanimation, en coronarographie, en neurovasculaire, en ambulatoire, en isolement ou en maternité, le patient gagne un niveau de tri (jusqu’au semi-urgent). Son transfert en chambre est moins pressant.
 - **Répartition** : quand plusieurs unités font la même chose, les patients visent la moins encombrée (le plus court chemin tient compte de la file d’attente de chaque unité).
 - **Tri** : urgence vitale, urgence, semi-urgent, programmé. Chacun a un délai. Les urgences vitales montent en premier dans les brancards et passent en premier dans les files de soins. Si une urgence vitale ou une urgence dépasse son délai, c’est un événement indésirable grave (EIG). Au-delà, un patient semi-urgent ou programmé part sans soins.
 - **Soins** : chaque service a des postes de soin (les petits lits sous le panneau) et une durée de prise en charge. La file de soins est à gauche du service, l’attente de brancardier à droite.
 - **Circuit septique** : les patients contagieux (tuberculose, norovirus, BMR) ont un anneau vert en pointillé. Ils ne voyagent que sur ce circuit, ce qui évite toute contamination croisée.
-- **Circuit radioprotégé** : la Radiopharmacie produit des doses de radiotraceur qui décroissent en 60 s. Elles doivent rejoindre la Médecine nucléaire par ce circuit. Sans dose, aucune TEP ni scintigraphie n’est possible. Un patient qui vient de passer son examen devient radioactif (anneau jaune) et ne repart que par ce circuit.
+- **Circuit radioprotégé** : la Radiopharmacie produit des doses de radiotraceur qui décroissent en 60 s. Elles doivent rejoindre la Médecine nucléaire par ce circuit, au sous-sol. Sans dose, aucune TEP ni scintigraphie n’est possible. Un patient qui vient de passer son examen devient radioactif (anneau jaune) : il emprunte les circuits standard, mais **voyage seul**, sur son brancard comme dans l’ascenseur.
 - **Fin de semaine** : vous recevez un brancardier, et vous choisissez une ressource parmi deux (passerelles, renfort d’équipe, salle d’attente agrandie, chariot double, second circuit septique ou radioprotégé).
-- **Fin de partie** : un service saturé trop longtemps (anneau rouge), ou trois EIG. Le bandeau affiche le niveau de tension : activité normale, tension, puis plan blanc.
+- **Fin de partie** : un service saturé trop longtemps (anneau rouge), ou trois EIG. Le rapport de fin de garde liste chaque EIG : patient, service attendu, étage et heure. Le bandeau affiche le niveau de tension : activité normale, tension, puis plan blanc.
+
+## Étages et ascenseurs
+
+L’hôpital compte jusqu’à quatre niveaux, chacun avec son plan. Chaque service ouvre à son étage d’affectation, ou au rez-de-chaussée si cet étage n’existe pas encore :
+
+| Niveau | Rôle | Services |
+| --- | --- | --- |
+| 2 | Hospitalisation | Hospitalisation, Maternité, Unité neurovasculaire |
+| 1 | Plateau technique | Bloc, Salle de réveil, Réanimation, Coronarographie |
+| RDC | Accueil, urgences et imagerie | Urgences, Consultations, Imagerie, Isolement, Ambulatoire |
+| -1 | Plateau de médecine nucléaire | Médecine nucléaire, Radiopharmacie (et le bunker de radiothérapie) |
+
+- **Ouverture** : le rez-de-chaussée seul pendant la première semaine, puis le 1er étage (vers 2 min 15, avec la Réanimation), le sous-sol (vers 3 min 25) et le 2e étage (vers 4 min 35). Le bloc et la salle de réveil ouverts la première semaine restent au rez-de-chaussée ; les suivants montent au 1er.
+- **Vue** : on voit un niveau à la fois. La colonne *Niveaux*, à gauche, affiche chaque étage avec le nombre de patients en attente, un voyant orange (tension) ou rouge clignotant (saturation), et les cabines présentes. Les flèches haut et bas du clavier changent aussi d’étage.
+- **Ascenseurs** : les cages d’ascenseurs du plan deviennent de vrais ascenseurs. Chaque cage a un palier à chaque niveau, et deux cabines au départ qui font la navette automatiquement, comme une ligne verticale. Les circuits restent sur leur étage et s’arrêtent au palier, où les patients changent de niveau. Le palier a une salle d’attente qui peut saturer.
+- **Une seule règle de plus** : un patient contagieux ou radioactif monte seul dans la cabine, et la cabine est nettoyée pendant 6 s après un contagieux.
+- **Ressources de fin de semaine** : cabine supplémentaire (à poser sur un palier) et nouvel ascenseur (une autre cage mise en service à tous les niveaux).
+- **Calcul des trajets** : un étage d’ascenseur coûte 1,5 arrêt dans le calcul des plus courts chemins. Les patients préfèrent donc une unité du même étage quand il y en a une.
 
 ## Extension de l’hôpital
 
@@ -30,7 +50,7 @@ Après la première semaine, l’hôpital s’agrandit toutes les 40 s, selon la
 2. une extension sur trois est un nouveau secteur qui amène des patients (Consultations, Hospitalisation, Urgences, **Maternité** et ses propres parcours) ;
 3. sinon, ouvre une spécialité pas encore présente, ou une unité supplémentaire du service le plus chargé.
 
-Les nouveaux services se placent loin des existants, vers les nouvelles ailes. Chaque ouverture apporte un brancardier.
+Les nouveaux services se placent à leur étage d’affectation, loin des existants, vers les nouvelles ailes. Chaque ouverture apporte un brancardier.
 
 **Circuits** : leur nombre suit la taille de l’hôpital. On démarre avec 3 circuits standard, puis on en gagne un tous les 3 services (jusqu’à 7), chacun avec son brancardier.
 
@@ -38,8 +58,11 @@ Les nouveaux services se placent loin des existants, vers les nouvelles ailes. C
 
 Le plan comporte des obstacles fixes, que l’agrandissement du bâtiment découvre peu à peu :
 
-- **Patio** : un circuit peut le franchir par une passerelle. On en a 2 au départ, et chaque franchissement en consomme une. Le compteur est en bas de l’écran.
-- **Noyau d’ascenseurs** et **bunker de radiothérapie** : infranchissables. Un tracé bloqué s’affiche en pointillé rouge. Il faut passer par un autre service.
+- **Patio** : jardin au rez-de-chaussée, vide sur patio aux étages, absent du sous-sol. Un circuit peut le franchir par une passerelle. On en a 2 au départ, et chaque franchissement en consomme une. Le compteur est en bas de l’écran.
+- **Noyau d’ascenseurs** : présent à tous les niveaux et infranchissable. Certains deviennent des ascenseurs, avec un palier réservé juste en dessous.
+- **Bunker de radiothérapie** : au sous-sol, infranchissable.
+
+Un tracé bloqué s’affiche en pointillé rouge, et il faut passer par un autre service.
 
 Entre deux services, le tracé choisit entre « droit puis diagonale » et « diagonale puis droit » celui qui évite les obstacles et franchit le moins de patios.
 
@@ -62,18 +85,18 @@ Le jeu emprunte trois registres d’un vrai hôpital :
 | Choisir le type de circuit | Toucher une pastille libre dans la palette |
 | Gérer brancardiers ou supprimer un circuit | Toucher une pastille utilisée |
 | Voir l’activité d’un service | Toucher le service |
+| Changer d’étage | Toucher un niveau dans la colonne de gauche, ou flèches haut et bas |
 | Pause, vitesse | Espace, 1, 2 |
 
 ## Organisation du code
 
 - `index.html` : la page, l’interface et les jetons de couleur (thèmes clair et sombre).
-- `game.js` : tout le jeu. Les données d’équilibrage sont en tête de fichier : `TYPES` (services), `TRIAGE`, `TEMPLATES` (parcours de soins et diagnostics), `SCHEDULE` (ouvertures guidées), `SPECIALS` (services spécialisés et ce qu’ils soulagent), `OBSTACLES` et `UPGRADES`.
+- `game.js` : tout le jeu. Les données d’équilibrage sont en tête de fichier : `TYPES` (services), `TRIAGE`, `STABILIZE`, `TEMPLATES` (parcours de soins, noms et diagnostics), `FLOORS` et `FLOOR_OF` (étages), les constantes `LIFT_*` (ascenseurs), `SCHEDULE` (ouvertures guidées), `SPECIALS` (services spécialisés et ce qu’ils soulagent), `OBSTACLES` et `UPGRADES`.
 
 Les brancardiers choisissent leurs passagers par plus court chemin. Pour chaque catégorie de patient (standard, contagieux, radioactif, dose) et chaque type de service, un algorithme de Dijkstra calcule le coût en arrêts jusqu’au service voulu, en n’empruntant que les circuits autorisés. Le coût de départ de chaque unité augmente avec sa file d’attente. Ces distances sont recalculées chaque seconde. Un patient monte si l’arrêt suivant est sur un plus court chemin. Une petite marge lui évite de descendre à chaque variation d’encombrement.
 
 ## Pistes
 
-- Étages : relier deux niveaux par les noyaux d’ascenseurs.
 - Bionettoyage : après un patient contagieux, un service est indisponible quelques secondes.
 - Fenêtres horaires du bloc programmé, et pics d’arrivées aux urgences (soirée, week-end).
 - Brancardiers spécialisés : couché, assis, transport d’O₂.

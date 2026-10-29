@@ -164,6 +164,32 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 #inv { display: flex; gap: 6px; flex-wrap: wrap; }
 #invSec:has(#inv:empty) { display: none; }
 
+/* ---------- Coupe du bâtiment : un bouton par niveau ---------- */
+.floorbar {
+  position: absolute; z-index: 5; left: max(10px, env(safe-area-inset-left, 0px)); top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 4px; align-items: stretch;
+  background: var(--panel); border: 1px solid var(--line-soft); border-radius: 8px; padding: 6px 5px 5px;
+  box-shadow: 0 10px 24px -16px #0007;
+}
+.floorbar .lbl { font-size: 9px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); font-weight: 700; text-align: center; }
+.fbtn {
+  width: 50px; min-height: 46px; border: 0; border-radius: 6px; background: var(--room); color: var(--ink);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; position: relative; padding: 4px 0;
+}
+.fbtn b { font-family: var(--font-sign); font-weight: 700; font-size: 19px; line-height: 1; }
+.fbtn small { font-family: var(--font-data); font-size: 10px; font-weight: 600; color: var(--muted); }
+.fbtn.on { background: var(--sign); color: var(--sign-ink); }
+.fbtn.on small { color: var(--sign-ink); opacity: .85; }
+.fbtn::after { content: ""; position: absolute; top: 4px; right: 4px; width: 8px; height: 8px; border-radius: 50%; background: transparent; }
+.fbtn[data-alert="1"]::after { background: var(--t2); }
+.fbtn[data-alert="2"]::after { background: var(--t1); animation: blink .8s steps(2) infinite; }
+.fbtn.new { box-shadow: 0 0 0 3px var(--accent); }
+.fbtn .cabs { position: absolute; left: -9px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 2px; }
+.fbtn .cabs i { width: 6px; height: 6px; border-radius: 1px; background: var(--accent); display: block; }
+@keyframes blink { 50% { opacity: .2; } }
+.slot.away { opacity: .55; }
+.slot .fl { position: absolute; left: -3px; bottom: -4px; font-family: var(--font-data); font-size: 9px; font-weight: 600; color: var(--muted); }
+
 /* ---------- Panneaux flottants (fiches) ---------- */
 .panel {
   position: absolute; z-index: 8; background: var(--panel); border: 1px solid var(--line-soft);
@@ -275,7 +301,7 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
   .doc-body { padding: 16px; }
   .doc-head .ref { display: none; }
 }
-@media (prefers-reduced-motion: reduce) { .toast { animation: none; } .ecg svg { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .toast { animation: none; } .ecg svg { animation: none; } .fbtn[data-alert="2"]::after { animation: none; } }
 </style>
 </head>
 <body>
@@ -303,6 +329,8 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
       <button class="ctl txt" id="btnHelp" aria-label="Protocole et légende" title="Protocole et légende">?</button>
     </div>
   </header>
+
+  <nav class="floorbar" id="floorbar" aria-label="Niveaux du bâtiment" hidden></nav>
 
   <div id="toasts" aria-live="polite"></div>
 
@@ -409,7 +437,7 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
         <h4>Obstacles</h4>
         <div class="legend" id="legendObstacles"></div>
         <h4>Commandes</h4>
-        <p>Glissez d’un service à l’autre pour tracer un circuit. Un tracé en pointillé rouge signale un obstacle infranchissable : passez par un autre service. Tirez l’extrémité en T d’un circuit pour le prolonger, ou revenez en arrière pour le raccourcir. Faites glisser un tronçon sur un service pour l’y faire passer. Revenez sur le premier service pour boucler. Touchez une pastille de la palette pour choisir le type de circuit ou gérer ses brancardiers. Touchez un service pour ouvrir sa fiche. Espace : pause.</p>
+        <p>Glissez d’un service à l’autre pour tracer un circuit. Un tracé en pointillé rouge signale un obstacle infranchissable : passez par un autre service. Tirez l’extrémité en T d’un circuit pour le prolonger, ou revenez en arrière pour le raccourcir. Faites glisser un tronçon sur un service pour l’y faire passer. Revenez sur le premier service pour boucler. Touchez une pastille de la palette pour choisir le type de circuit ou gérer ses brancardiers. Touchez un service pour ouvrir sa fiche. Changez de niveau avec la colonne Niveaux, à gauche, ou les flèches haut et bas. Espace : pause.</p>
         <div class="cta"><button class="btn" id="btnHelpClose">Reprendre</button></div>
       </div>
     </div>
