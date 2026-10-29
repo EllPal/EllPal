@@ -29,7 +29,7 @@
     CONS: { name: 'Consultation', abbr: 'CONS', sign: 'CONSULTATIONS', shape: 'diamond', proc: 2.5, slots: 2, cap: 6,
             desc: 'Auscultation, examen clinique, avis spécialisé. Accueille aussi les patients programmés.' },
     IMG:  { name: 'Imagerie', abbr: 'IMG', sign: 'IMAGERIE', shape: 'circle', proc: 3, slots: 2, cap: 6,
-            desc: 'Radiographie, scanner, IRM.' },
+            desc: 'Radiographie, scanner, IRM. Souvent l’étape qui pose le diagnostic.' },
     HOSP: { name: 'Hospitalisation', abbr: 'HOSP', sign: 'HOSPITALISATION', shape: 'square', proc: 1.2, slots: 3, cap: 6,
             desc: 'Admission en chambre. Les patients hospitalisés en partent aussi pour leurs examens.' },
     BLOC: { name: 'Bloc opératoire', abbr: 'BLOC', sign: 'BLOC OPÉRATOIRE', shape: 'triangle', proc: 6, slots: 1, cap: 6,
@@ -42,8 +42,17 @@
             desc: 'Prépare les doses de radiotraceur. Elles décroissent : livrez-les vite en médecine nucléaire par le circuit radioprotégé.' },
     MN:   { name: 'Médecine nucléaire', abbr: 'MN', sign: 'MÉD. NUCLÉAIRE', shape: 'star', proc: 3.5, slots: 1, cap: 6,
             desc: 'TEP et scintigraphie. Chaque examen consomme une dose ; le patient en ressort radioactif.' },
-    REA:  { name: 'Réanimation', abbr: 'RÉA', sign: 'RÉANIMATION', shape: 'heart', proc: 2.5, slots: 2, cap: 6,
-            desc: 'Admission des urgences vitales.' },
+    REA:  { name: 'Réanimation', abbr: 'RÉA', sign: 'RÉANIMATION', shape: 'heart', proc: 4, slots: 2, cap: 6,
+            desc: 'Défaillances vitales. Une fois stabilisés, les patients montent en hospitalisation.' },
+    // Services spécialisés : ils ouvrent pour soulager un service sous tension.
+    UNV:  { name: 'Unité neurovasculaire', abbr: 'UNV', sign: 'NEUROVASCULAIRE', shape: 'crescent', proc: 3, slots: 2, cap: 6,
+            desc: 'Thrombolyse des AVC. Les AVC y vont plutôt qu’en réanimation.' },
+    AMBU: { name: 'Chirurgie ambulatoire', abbr: 'AMBU', sign: 'AMBULATOIRE', shape: 'semicircle', proc: 4, slots: 2, cap: 6,
+            desc: 'Opéré le matin, rentré le soir. Prend en charge la chirurgie programmée à la place du bloc et du réveil.' },
+    CORO: { name: 'Coronarographie', abbr: 'CORO', sign: 'CORONAROGRAPHIE', shape: 'bolt', proc: 4, slots: 1, cap: 6,
+            desc: 'Cardiologie interventionnelle : on y débouche l’artère d’un infarctus, sans passer par le bloc.' },
+    MAT:  { name: 'Maternité', abbr: 'MAT', sign: 'MATERNITÉ', shape: 'drop', proc: 4, slots: 2, cap: 6,
+            desc: 'Salles de naissance et suites de couches. Envoie aussi ses patientes au bloc et en imagerie.' },
   };
 
   const TRIAGE = {
@@ -52,37 +61,71 @@
     3: { name: 'Semi-urgent', patience: 170, color: 't3' },
     4: { name: 'Programmé', patience: 250, color: 't4' },
   };
+  const AGGRAVATION = 0.3;        // un semi-urgent qui a attendu 70 % de son délai passe en urgence
 
-  // Parcours de soins par service d'origine. « A|B » : A si le service existe, sinon B.
+  // Parcours de soins par service d'origine.
+  //   « A|B » : A si le service existe, sinon B.   « A? » : étape sautée si le service n'existe pas.
+  //   paths : parcours alternatifs, le premier réalisable est retenu.
+  //   then  : diagnostic posé à la fin du parcours connu, qui révèle la suite (vide : sortie).
   const TEMPLATES = {
     URG: [
-      { name: 'Polytraumatisé', tri: 1, path: ['IMG', 'BLOC', 'SSPI', 'REA|HOSP'], w: 2 },
-      { name: 'AVC', tri: 1, path: ['IMG', 'REA|HOSP'], w: 2 },
-      { name: 'Appendicite', tri: 2, path: ['IMG', 'BLOC', 'SSPI', 'HOSP'], w: 3 },
-      { name: 'Douleur thoracique', tri: 2, path: ['CONS', 'IMG', 'HOSP'], w: 3 },
-      { name: 'Fracture du poignet', tri: 3, path: ['IMG', 'CONS'], w: 4 },
-      { name: 'Malaise', tri: 3, path: ['CONS'], w: 3 },
-      { name: 'Suspicion de tuberculose', tri: 2, inf: true, path: ['IMG', 'ISO'], w: 2 },
+      { name: 'Polytraumatisé', tri: 1, path: ['IMG', 'BLOC', 'SSPI', 'REA?', 'HOSP'], w: 2 },
+      { name: 'AVC', tri: 1, path: ['IMG', 'UNV|REA|HOSP', 'HOSP?'], w: 2 },
+      { name: 'Douleur abdominale', tri: 2, path: ['IMG'], w: 4, then: [
+        { name: 'Appendicite', path: ['BLOC', 'SSPI', 'HOSP'], w: 5 },
+        { name: 'Occlusion', tri: 1, path: ['BLOC', 'SSPI', 'REA?', 'HOSP'], w: 2 },
+        { name: 'Colique néphrétique', path: ['CONS'], w: 3 },
+      ] },
+      { name: 'Douleur thoracique', tri: 2, path: ['CONS'], w: 4, then: [
+        { name: 'Infarctus', tri: 1, path: ['CORO', 'REA?', 'HOSP'], w: 3 },
+        { name: 'Embolie pulmonaire', path: ['IMG', 'HOSP'], w: 3 },
+        { name: 'Douleur pariétale', path: [], w: 4 },
+      ] },
+      { name: 'Traumatisme du membre', tri: 3, path: ['IMG'], w: 4, then: [
+        { name: 'Fracture déplacée', path: ['BLOC', 'SSPI', 'HOSP'], w: 3 },
+        { name: 'Fracture simple', path: ['CONS'], w: 5 },
+        { name: 'Entorse', path: [], w: 2 },
+      ] },
+      { name: 'Toux fébrile', tri: 3, path: ['IMG'], w: 3, then: [
+        { name: 'Tuberculose', tri: 2, inf: true, path: ['ISO'], w: 3 },
+        { name: 'Pneumopathie', path: ['HOSP'], w: 5 },
+      ] },
+      { name: 'Malaise', tri: 3, path: ['CONS'], w: 3, then: [
+        { name: 'Bilan cardiaque', path: ['IMG'], w: 4 },
+        { name: 'Malaise vagal', path: [], w: 6 },
+      ] },
       { name: 'Gastro-entérite à norovirus', tri: 3, inf: true, path: ['ISO'], w: 2 },
+      { name: 'Femme en travail', tri: 2, path: ['MAT'], w: 2, then: [
+        { name: 'Accouchement voie basse', path: [], w: 7 },
+        { name: 'Césarienne en urgence', tri: 1, path: ['BLOC', 'SSPI', 'MAT'], w: 3 },
+      ] },
     ],
     CONS: [
-      { name: 'Bilan radiologique', tri: 4, path: ['IMG'], w: 4 },
-      { name: 'Chirurgie ambulatoire', tri: 4, path: ['BLOC', 'SSPI'], w: 2 },
-      { name: 'Bilan d’extension', tri: 4, path: ['IMG', 'MN'], w: 2 },
+      { name: 'Bilan radiologique', tri: 4, path: ['IMG'], w: 4, then: [
+        { name: 'Bilan normal', path: [], w: 6 },
+        { name: 'Masse suspecte', path: ['MN', 'CONS'], w: 3 },
+      ] },
+      { name: 'Chirurgie programmée', tri: 4, paths: [['AMBU'], ['BLOC', 'SSPI']], w: 3 },
       { name: 'Scintigraphie osseuse', tri: 4, path: ['MN'], w: 2 },
+      { name: 'Coronarographie programmée', tri: 4, path: ['CORO', 'HOSP'], w: 1 },
     ],
     HOSP: [
       { name: 'Scanner de contrôle', tri: 3, path: ['IMG', 'HOSP'], w: 4 },
       { name: 'TEP en cours d’hospitalisation', tri: 3, path: ['MN', 'HOSP'], w: 3 },
       { name: 'Reprise chirurgicale', tri: 2, path: ['BLOC', 'SSPI', 'HOSP'], w: 2 },
       { name: 'Avis spécialisé', tri: 4, path: ['CONS', 'HOSP'], w: 2 },
-      { name: 'Détresse respiratoire', tri: 1, path: ['REA'], w: 1 },
+      { name: 'Détresse respiratoire', tri: 1, path: ['REA', 'HOSP'], w: 1 },
       { name: 'BMR détectée', tri: 3, inf: true, path: ['ISO'], w: 2 },
     ],
+    MAT: [
+      { name: 'Échographie', tri: 4, path: ['IMG', 'MAT'], w: 3 },
+      { name: 'Césarienne programmée', tri: 3, path: ['BLOC', 'SSPI', 'MAT'], w: 2 },
+      { name: 'Hémorragie du post-partum', tri: 1, path: ['BLOC', 'REA?', 'MAT'], w: 1 },
+    ],
   };
-  const SPAWN_WEIGHT = { URG: 3, CONS: 1.6, HOSP: 1.2 };
+  const SPAWN_WEIGHT = { URG: 3, CONS: 1.6, HOSP: 1.2, MAT: 1.2 };
 
-  // Ouverture des services au fil de la garde.
+  // Ouverture guidée des premiers services, puis extension pilotée par la tension.
   const SCHEDULE = [
     { t: 0, types: ['URG', 'IMG', 'HOSP', 'CONS'] },
     { t: 35, types: ['BLOC'] },
@@ -91,8 +134,26 @@
     { t: 130, types: ['RPH', 'MN'], unlock: 'rad' },
     { t: 175, types: ['REA'] },
   ];
-  const EXTRA_EVERY = 38;
-  const EXTRA_WEIGHT = { IMG: 3, CONS: 2, HOSP: 2, BLOC: 1.5, SSPI: 1.2, URG: 1, ISO: 0.8, MN: 0.6, REA: 0.8 };
+  const EXPAND_FROM = 215, EXPAND_EVERY = 40;
+  // Un service spécialisé soulage les services listés dans « relieves ».
+  const SPECIALS = [
+    { type: 'UNV', after: 215, relieves: ['REA', 'HOSP'], needs: ['IMG'] },
+    { type: 'AMBU', after: 255, relieves: ['BLOC', 'SSPI'], needs: ['CONS'] },
+    { type: 'CORO', after: 295, relieves: ['BLOC', 'REA'], needs: ['CONS'] },
+    { type: 'MAT', after: 335, relieves: [], needs: ['BLOC'] },
+  ];
+  const SPAWNERS = ['CONS', 'HOSP', 'URG', 'MAT'];
+
+  // Obstacles fixes du bâtiment. Un patio se franchit avec une passerelle ; le reste, jamais.
+  const OBSTACLES = {
+    patio: { name: 'Patio', label: 'PATIO', crossable: true,
+             desc: 'Jardin intérieur. Un circuit peut le franchir par une passerelle (stock limité).' },
+    core: { name: 'Noyau d’ascenseurs', label: 'ASCENSEURS', crossable: false,
+            desc: 'Cages d’ascenseurs, escaliers et gaines techniques. Infranchissable : contournez-le.' },
+    bunker: { name: 'Bunker de radiothérapie', label: 'RADIOTHÉRAPIE', crossable: false,
+              desc: 'Murs de béton de deux mètres. Infranchissable : contournez-le.' },
+  };
+  const START_BRIDGES = 2;
 
   // Qui a le droit d'emprunter quel circuit.
   const RIDE = { std: ['std'], inf: ['sep'], rad: ['rad'], dose: ['rad'] };
@@ -110,14 +171,16 @@
     { kind: 'sep', color: 'sep' }, { kind: 'sep', color: 'sep' },
     { kind: 'rad', color: 'rad' }, { kind: 'rad', color: 'rad' },
   ];
+  // Circuits standard disponibles selon la taille de l'hôpital : 3, puis +1 tous les 3 services.
+  const stdSlotsFor = nodes => clamp(3 + Math.floor((nodes - 4) / 3), 3, 7);
 
   const UPGRADES = {
-    line: { title: 'Nouveau circuit', desc: 'Un circuit standard de plus à tracer.', ok: () => lockedSlot('std') },
+    bridge: { title: 'Deux passerelles', desc: 'Franchissez deux patios de plus avec vos circuits.', ok: () => true },
     line_sep: { title: 'Second circuit septique', desc: 'Un deuxième circuit réservé aux patients contagieux.',
       ok: () => G.slots.some(s => s.kind === 'sep' && s.unlocked) && lockedSlot('sep') },
     line_rad: { title: 'Second circuit radioprotégé', desc: 'Un deuxième circuit pour les doses et patients radioactifs.',
       ok: () => G.slots.some(s => s.kind === 'rad' && s.unlocked) && lockedSlot('rad') },
-    staff: { title: 'Renfort d’équipe', desc: '+1 poste de soin sur le service de votre choix : il traite deux patients à la fois.', ok: () => true },
+    staff: { title: 'Renfort d’équipe', desc: '+1 poste de soin sur le service de votre choix : il traite un patient de plus à la fois.', ok: () => true },
     room: { title: 'Salle d’attente agrandie', desc: '+4 places d’attente sur un service avant saturation.', ok: () => true },
     cart: { title: 'Chariot double', desc: '+2 places pour chaque brancardier d’un circuit.', ok: () => true },
   };
@@ -151,7 +214,7 @@
   // Couleurs lues dans les jetons CSS (thème clair / sombre).
   const C = {};
   const TOKENS = ['bg', 'floor', 'grid', 'ink', 'muted', 'node', 'accent', 'danger', 'l1', 'l2', 'l3', 'l4', 'l5', 'l6', 'l7',
-    'sep', 'rad', 'rad-ink', 't1', 't2', 't3', 't4', 'line-soft', 'room', 'wall', 'sign', 'sign-ink'];
+    'sep', 'rad', 'rad-ink', 't1', 't2', 't3', 't4', 'line-soft', 'room', 'wall', 'sign', 'sign-ink', 'garden', 'garden-ink'];
   function readColors() {
     const cs = getComputedStyle(document.documentElement);
     for (const t of TOKENS) C[t] = cs.getPropertyValue('--' + t).trim() || '#888';
@@ -174,24 +237,78 @@
     const aspect = clamp(CW / availH, 0.5, 2.3);
     const H = 800, W = Math.round(800 * aspect);
     G = {
-      t: 0, score: 0, incidents: 0, lwbs: 0, dosesLost: 0, week: 1, nextWeek: WEEK,
-      W, H, region: null,
+      t: 0, score: 0, incidents: 0, lwbs: 0, dosesLost: 0, aggravated: 0, week: 1, nextWeek: WEEK,
+      W, H, region: null, obstacles: [], bridges: START_BRIDGES,
       nodes: [], lines: [], vehicles: [], floaters: [],
       pool: 3, inv: { staff: 0, room: 0, cart: 0 }, apply: null,
       slots: SLOT_DEFS.map((d, i) => ({ i, kind: d.kind, color: d.color, unlocked: d.kind === 'std' && i < 3, line: null })),
       selSlot: null, speed: 1, paused: false, over: false, modal: false,
-      schedIdx: 0, nextExtra: 210, spawnT: 4, distCache: new Map(), uiVersion: 0, started: false,
+      schedIdx: 0, nextExpand: EXPAND_FROM, expansions: 0, spawnT: 4,
+      distCache: new Map(), distStamp: 0, routeCache: new Map(), uiVersion: 0, started: false,
     };
     updateRegion();
+    G.obstacles = makeObstacles();
     cam.ready = false;
     runSchedule();
     G.uiVersion++;
   }
 
   function updateRegion() {
-    const f = clamp(0.52 + G.t / 650, 0.52, 1);
+    // emprise initiale d'au moins 360 unités de côté, pour loger quatre services même en portrait
+    const f0 = Math.min(1, Math.max(0.52, 360 / G.W, 360 / G.H));
+    const f = clamp(f0 + G.t / 650, f0, 1);
     const w = G.W * f, h = G.H * f;
     G.region = { x: (G.W - w) / 2, y: (G.H - h) / 2, w, h };
+  }
+
+  // ================================================================
+  // Obstacles fixes
+  // ================================================================
+  // Le plan entier est dessiné dès le départ : les obstacles apparaissent quand le bâtiment s'agrandit
+  // jusqu'à eux. Un patio et un noyau d'ascenseurs se trouvent déjà dans l'emprise initiale.
+  function makeObstacles() {
+    const out = [];
+    const R0 = G.region, cx = G.W / 2, cy = G.H / 2;
+    const snap = v => Math.round(v / 20) * 20;
+    const fits = (o, gap) => o.x > 30 && o.y > 30 && o.x + o.w < G.W - 30 && o.y + o.h < G.H - 30 &&
+      out.every(q => o.x > q.x + q.w + gap || q.x > o.x + o.w + gap || o.y > q.y + q.h + gap || q.y > o.y + o.h + gap);
+    const place = (kind, w, h, area, tries = 200) => {
+      for (let i = 0; i < tries; i++) {
+        const o = { kind, w, h, x: snap(area.x + Math.random() * Math.max(1, area.w - w)), y: snap(area.y + Math.random() * Math.max(1, area.h - h)), seed: Math.random() };
+        const inner = o.x > R0.x && o.y > R0.y && o.x + o.w < R0.x + R0.w && o.y + o.h < R0.y + R0.h;
+        if (area.outer && inner) continue;
+        if (fits(o, 110)) { out.push(o); return o; }
+      }
+      return null;
+    };
+    const core = { x: cx - R0.w * 0.3, y: cy - R0.h * 0.3, w: R0.w * 0.6, h: R0.h * 0.6 };
+    place('patio', Math.min(120, snap(R0.w * 0.3)), Math.min(100, snap(R0.h * 0.22)), core);
+    place('core', 40, 40, core);
+    const world = { x: 40, y: 40, w: G.W - 80, h: G.H - 80, outer: true };
+    place('bunker', 140, 100, world);
+    place('patio', 160, 120, world);
+    place('patio', 140, 100, world);
+    place('core', 60, 40, world);
+    place('core', 40, 60, world);
+    return out;
+  }
+
+  function rectHit(x0, y0, x1, y1, o, pad) {
+    return x1 > o.x - pad && x0 < o.x + o.w + pad && y1 > o.y - pad && y0 < o.y + o.h + pad;
+  }
+  // Intersection segment / rectangle (Liang-Barsky), avec une marge.
+  function segHitsRect(a, b, o, pad) {
+    const x0 = o.x - pad, y0 = o.y - pad, x1 = o.x + o.w + pad, y1 = o.y + o.h + pad;
+    const dx = b.x - a.x, dy = b.y - a.y;
+    let t0 = 0, t1 = 1;
+    const p = [-dx, dx, -dy, dy], q = [a.x - x0, x1 - a.x, a.y - y0, y1 - a.y];
+    for (let i = 0; i < 4; i++) {
+      if (p[i] === 0) { if (q[i] < 0) return false; continue; }
+      const r = q[i] / p[i];
+      if (p[i] < 0) { if (r > t1) return false; if (r > t0) t0 = r; }
+      else { if (r < t0) return false; if (r < t1) t1 = r; }
+    }
+    return true;
   }
 
   // ================================================================
@@ -199,26 +316,50 @@
   // ================================================================
   function nodeById(id) { return G.nodes.find(n => n.id === id); }
   function hasType(t) { return G.nodes.some(n => n.type === t); }
+  function typeCount(t) { return G.nodes.filter(n => n.type === t).length; }
+
+  // Emplacement libre (hors obstacles, pièces espacées). Parmi plusieurs candidats, on retient
+  // le plus éloigné des services existants : l'hôpital s'étend vers ses nouvelles ailes.
+  function findSpot() {
+    const R = G.region;
+    let best = null, bestD = -1;
+    for (let a = 0; a < 400 && (!best || a < 60); a++) {
+      const relax = a > 300 ? 0.72 : a > 200 ? 0.85 : 1;
+      const x = R.x + 58 + Math.random() * (R.w - 116);
+      const y = R.y + 50 + Math.random() * (R.h - 112);
+      if (G.obstacles.some(o => rectHit(x - 44, y - 40, x + 44, y + 50, o, 14))) continue;
+      let dmin = Infinity;
+      for (const n of G.nodes) dmin = Math.min(dmin, Math.hypot(n.x - x, n.y - y));
+      if (dmin < MIN_SPACING * relax) continue;
+      const score = Math.min(dmin, 260) + Math.random() * 40;
+      if (score > bestD) { bestD = score; best = { x, y }; }
+    }
+    return best;
+  }
 
   function addNode(type) {
-    const R = G.region;
-    for (let a = 0; a < 500; a++) {
-      const relax = a > 300 ? 0.75 : a > 150 ? 0.88 : 1;
-      const x = R.x + 55 + Math.random() * (R.w - 110);
-      const y = R.y + 55 + Math.random() * (R.h - 110);
-      let ok = true;
-      for (const n of G.nodes) if (Math.hypot(n.x - x, n.y - y) < MIN_SPACING * relax) { ok = false; break; }
-      if (!ok) continue;
-      const T = TYPES[type];
-      const node = {
-        id: uid++, type, x, y, code: roomCode(x, y), waiting: [], queue: [], treating: [], doses: [],
-        slots: T.slots, cap: T.cap, over: 0, born: G.t, rphT: DOSE_EVERY * 0.5,
-      };
-      G.nodes.push(node);
-      invalidateNet();
-      return node;
+    const spot = findSpot();
+    if (!spot) return null;
+    const T = TYPES[type];
+    const { x, y } = spot;
+    const node = {
+      id: uid++, type, x, y, code: roomCode(x, y), waiting: [], queue: [], treating: [], doses: [],
+      slots: T.slots, cap: T.cap, over: 0, born: G.t, rphT: DOSE_EVERY * 0.5,
+    };
+    G.nodes.push(node);
+    invalidateNet();
+    syncSlots();
+    return node;
+  }
+
+  // Plus l'hôpital compte de services, plus il dispose de circuits ; chacun arrive avec son brancardier.
+  function syncSlots() {
+    const want = stdSlotsFor(G.nodes.length);
+    let have = G.slots.filter(s => s.kind === 'std' && s.unlocked).length;
+    while (have < want) {
+      unlockSlot('std'); have++; G.pool++;
+      if (G.t > 0) toast(`<b>Nouveau circuit</b> et un brancardier : l’hôpital compte ${G.nodes.length} services.`);
     }
-    return null;
   }
 
   // Repère de la trame structurelle (axes lettrés en colonnes, numérotés en rangées), comme sur un plan.
@@ -246,11 +387,55 @@
         toast('<b>Circuit radioprotégé</b> débloqué, avec un brancardier formé.');
       }
     }
-    if (G.t >= G.nextExtra) {
-      G.nextExtra += EXTRA_EVERY;
-      const types = Object.keys(EXTRA_WEIGHT).filter(t => hasType(t));
-      const t = pickWeighted(types, k => EXTRA_WEIGHT[k]);
-      if (addNode(t)) toast(`Ouverture d’un service supplémentaire : <b>${TYPES[t].name}</b>`);
+    if (G.t >= G.nextExpand) {
+      G.nextExpand += EXPAND_EVERY;
+      expand();
+    }
+  }
+
+  // Charge d'un type de service : secondes de travail en attente rapportées à sa capacité de soin.
+  function pressure(type) {
+    const T = TYPES[type];
+    if (!T.proc) return 0;
+    let demand = 0, cap = 0;
+    for (const n of G.nodes) {
+      if (n.type === type) { demand += n.queue.length + n.treating.length; cap += n.slots / T.proc; }
+      for (const e of n.waiting) if (e.kind === 'patient' && wants(e) === type) demand++;
+    }
+    for (const v of G.vehicles) for (const e of v.cargo) if (e.kind === 'patient' && wants(e) === type) demand++;
+    return cap ? demand / cap : 0;
+  }
+
+  // Extension de l'hôpital : on ouvre ce qui manque, pas un doublon au hasard.
+  //  1. le service le plus sous tension reçoit un service spécialisé qui le soulage, s'il en existe un ;
+  //  2. une extension sur trois est un nouveau secteur d'activité, qui amène de nouveaux patients ;
+  //  3. sinon, une spécialité pas encore ouverte, ou une seconde unité du service le plus chargé.
+  function expand() {
+    G.expansions++;
+    const dests = [...new Set(G.nodes.map(n => n.type))].filter(t => TYPES[t].proc > 0);
+    const ranked = dests.map(t => ({ t, p: pressure(t) })).sort((a, b) => b.p - a.p);
+    const top = ranked[0];
+    const specials = SPECIALS.filter(s => G.t >= s.after && !hasType(s.type) && s.needs.every(hasType));
+    const relief = top && specials.find(s => s.relieves.includes(top.t));
+    let type, why;
+    if (relief) {
+      type = relief.type;
+      why = `${TYPES[top.t].name} sous tension : ouverture d’un service spécialisé, <b>${TYPES[type].name}</b>.`;
+    } else if (G.expansions % 3 === 0) {
+      const opts = SPAWNERS.filter(t => hasType(t) && typeCount(t) < 3);
+      type = pickWeighted(opts, t => (t === 'URG' ? 0.6 : 1) / typeCount(t));
+      why = `L’activité augmente : nouveau secteur, <b>${TYPES[type].name}</b>.`;
+    } else if (specials.length && (Math.random() < 0.5 || !top || top.p < 2)) {
+      type = specials[0].type;
+      why = `Le projet médical se diversifie : ouverture de <b>${TYPES[type].name}</b>.`;
+    } else if (top) {
+      type = top.t;
+      why = `Forte demande en ${TYPES[type].name.toLowerCase()} : ouverture d’une unité supplémentaire.`;
+    }
+    if (!type) return;
+    if (addNode(type)) {
+      G.pool++;
+      toast(`${why} Un brancardier rejoint l’équipe.`);
     }
   }
 
@@ -271,12 +456,20 @@
   function resolvePath(path) {
     const out = [];
     for (const step of path) {
-      const opts = step.split('|');
+      const optional = step.endsWith('?');
+      const opts = step.replace('?', '').split('|');
       const t = opts.find(o => hasType(o));
-      if (!t) return null;
-      out.push(t);
+      if (t) out.push(t);
+      else if (!optional) return null;
     }
     return out;
+  }
+  function resolveTemplate(tpl) {
+    for (const p of tpl.paths || [tpl.path]) {
+      const r = resolvePath(p);
+      if (r && r.length) return r;
+    }
+    return null;
   }
 
   function spawnPatient() {
@@ -286,7 +479,7 @@
       if (!tpls) continue;
       if (n.type === 'HOSP' && G.t < 40) continue;
       for (const tpl of tpls) {
-        const path = resolvePath(tpl.path);
+        const path = resolveTemplate(tpl);
         if (path) options.push({ n, tpl, path, w: SPAWN_WEIGHT[n.type] * tpl.w });
       }
     }
@@ -294,14 +487,17 @@
     const o = pickWeighted(options, x => x.w);
     const tri = TRIAGE[o.tpl.tri];
     const p = {
-      id: uid++, kind: 'patient', name: o.tpl.name, tri: o.tpl.tri, path: o.path, step: 0,
-      inf: !!o.tpl.inf, rad: false, patience: tri.patience, maxPatience: tri.patience, born: G.t, qt: 0,
+      id: uid++, kind: 'patient', name: o.tpl.name, tri: o.tpl.tri, path: o.path, step: 0, then: o.tpl.then || null,
+      inf: !!o.tpl.inf, rad: false, patience: tri.patience, maxPatience: tri.patience, born: G.t, qt: 0, aggr: false,
     };
     o.n.waiting.push(p);
   }
 
+  // Le rythme d'arrivée accélère avec le temps et avec le nombre de secteurs qui reçoivent des patients.
   function spawnInterval() {
-    return Math.max(0.9, 5.2 * Math.pow(0.9975, G.t)) * rand(0.7, 1.3);
+    const sources = G.nodes.filter(n => TEMPLATES[n.type]).length;
+    const base = 5.6 * Math.pow(0.998, G.t) / (1 + 0.1 * Math.max(0, sources - 3));
+    return Math.max(0.85, base) * rand(0.7, 1.3);
   }
 
   // Arrivée d'une entité à destination dans un service.
@@ -316,9 +512,30 @@
     else node.waiting.push(e);
   }
 
+  // Diagnostic : à la fin du parcours connu, l'examen révèle la suite (ou la sortie).
+  function diagnose(p, node) {
+    const options = p.then.map(b => ({ b, path: b.path.length ? resolvePath(b.path) : [] })).filter(o => o.path);
+    p.then = null;
+    if (!options.length) return;
+    const { b, path } = pickWeighted(options, o => o.b.w);
+    p.name = b.name;
+    p.path = p.path.concat(path);
+    if (b.tri && b.tri < p.tri) {
+      p.tri = b.tri;
+      p.maxPatience = TRIAGE[b.tri].patience;
+      p.patience = p.maxPatience * 0.8;
+      floater(node.x, node.y - NODE_R - 24, b.name, TRIAGE[b.tri].color);
+    }
+    if (b.inf && !p.inf) {
+      p.inf = true;
+      floater(node.x, node.y - NODE_R - 24, `${b.name} : isolement`, 'sep');
+    }
+  }
+
   function finishStep(p, node) {
     if (node.type === 'MN') p.rad = true;
     p.step++;
+    if (p.step >= p.path.length && p.then) diagnose(p, node);
     if (p.step >= p.path.length) {
       G.score++;
       floater(node.x, node.y - NODE_R - 14, '+1', 'ink');
@@ -345,9 +562,15 @@
     return pairs;
   }
 
-  // Distance (en arrêts) de chaque service au plus proche service du type voulu,
-  // en n'empruntant que les circuits autorisés pour cette catégorie.
+  // Coût (en arrêts) depuis chaque service jusqu'au service du type voulu, en n'empruntant que les
+  // circuits autorisés pour cette catégorie. Un service encombré coûte plus cher : les patients se
+  // répartissent d'eux-mêmes vers l'unité la moins chargée quand il y en a plusieurs.
+  function loadPenalty(n) {
+    if (!TYPES[n.type].proc) return 0;
+    return Math.min(4, (n.queue.length + n.treating.length) / Math.max(1, n.slots) * 0.6);
+  }
   function distMap(cat, type) {
+    if (G.t - G.distStamp > 1) { G.distCache.clear(); G.distStamp = G.t; }
     const key = cat + '|' + type;
     let m = G.distCache.get(key);
     if (m) return m;
@@ -359,30 +582,81 @@
       for (const [a, b] of linePairs(l)) { add(b, a); if (!l.loop) add(a, b); }
     }
     m = new Map();
-    const q = [];
-    for (const n of G.nodes) if (n.type === type) { m.set(n.id, 0); q.push(n.id); }
-    for (let qi = 0; qi < q.length; qi++) {
-      const v = q[qi], d = m.get(v);
-      for (const u of rev.get(v) || []) if (!m.has(u)) { m.set(u, d + 1); q.push(u); }
+    const open = [];
+    for (const n of G.nodes) if (n.type === type) { m.set(n.id, loadPenalty(n)); open.push(n.id); }
+    // Dijkstra sur quelques dizaines de services : une recherche linéaire du minimum suffit.
+    const done = new Set();
+    while (open.length) {
+      let bi = 0;
+      for (let i = 1; i < open.length; i++) if (m.get(open[i]) < m.get(open[bi])) bi = i;
+      const v = open.splice(bi, 1)[0];
+      if (done.has(v)) continue;
+      done.add(v);
+      const d = m.get(v);
+      for (const u of rev.get(v) || []) {
+        if (!m.has(u) || d + 1 < m.get(u)) { m.set(u, d + 1); open.push(u); }
+      }
     }
     G.distCache.set(key, m);
     return m;
   }
-  function progresses(e, hereId, nextId) {
+  // Monter : le prochain arrêt est sur un plus court chemin. Rester à bord : il reste presque aussi bon
+  // (une petite marge évite de descendre à chaque variation d'encombrement).
+  function progresses(e, hereId, nextId, aboard) {
     const m = distMap(catOf(e), wants(e));
     const dh = m.get(hereId), dn = m.get(nextId);
-    return dh !== undefined && dn !== undefined && dn === dh - 1;
+    if (dh === undefined || dn === undefined) return false;
+    return dn + 1 <= dh + (aboard ? 0.75 : 1e-6) && dn < dh;
   }
 
   // ---------- Géométrie octilinéaire des circuits ----------
   function segUseKey(a, b) { return a < b ? a + '|' + b : b + '|' + a; }
 
+  // Deux tracés possibles entre deux services : droit puis diagonale, ou diagonale puis droit.
+  // On garde celui qui évite les obstacles infranchissables et franchit le moins de patios.
+  function cornerFor(A, B, variant) {
+    const dx = B.x - A.x, dy = B.y - A.y, adx = Math.abs(dx), ady = Math.abs(dy);
+    const sx = Math.sign(dx) || 1, sy = Math.sign(dy) || 1;
+    if (variant === 0) return adx > ady ? { x: A.x + sx * (adx - ady), y: A.y } : { x: A.x, y: A.y + sy * (ady - adx) };
+    return adx > ady ? { x: B.x - sx * (adx - ady), y: B.y } : { x: B.x, y: B.y - sy * (ady - adx) };
+  }
+  function routeInfo(a, b) {
+    const key = segUseKey(a.id, b.id);
+    let r = G.routeCache.get(key);
+    if (r) return r;
+    const [A, B] = a.id < b.id ? [a, b] : [b, a];
+    const evals = [0, 1].map(variant => {
+      const Cn = cornerFor(A, B, variant);
+      let blocked = false;
+      const patios = [];
+      for (const o of G.obstacles) {
+        const hit = segHitsRect(A, Cn, o, 6) || segHitsRect(Cn, B, o, 6);
+        if (!hit) continue;
+        if (OBSTACLES[o.kind].crossable) patios.push(o); else blocked = true;
+      }
+      return { variant, blocked, patios };
+    });
+    const ok = evals.filter(e => !e.blocked).sort((x, y) => x.patios.length - y.patios.length);
+    r = ok[0] || { variant: 0, blocked: true, patios: [] };
+    G.routeCache.set(key, r);
+    return r;
+  }
+  function bridgesFor(nodes, loop) {
+    let n = 0;
+    for (let i = 0; i < nodes.length - 1; i++) n += routeInfo(nodeById(nodes[i]), nodeById(nodes[i + 1])).patios.length;
+    if (loop && nodes.length > 2) n += routeInfo(nodeById(nodes[nodes.length - 1]), nodeById(nodes[0])).patios.length;
+    return n;
+  }
+  function bridgesUsed(except) {
+    let n = 0;
+    for (const l of G.lines) if (l !== except) n += bridgesFor(l.nodes, l.loop);
+    return n;
+  }
+
   function segPoints(a, b, off) {
     let A = a, B = b, rev = false;
     if (a.id > b.id) { A = b; B = a; rev = true; }
-    const dx = B.x - A.x, dy = B.y - A.y, adx = Math.abs(dx), ady = Math.abs(dy);
-    const sx = Math.sign(dx) || 1, sy = Math.sign(dy) || 1;
-    const Cn = adx > ady ? { x: A.x + sx * (adx - ady), y: A.y } : { x: A.x, y: A.y + sy * (ady - adx) };
+    const Cn = cornerFor(A, B, routeInfo(a, b).variant);
     let pts = [{ x: A.x, y: A.y }, Cn, { x: B.x, y: B.y }];
     pts = pts.filter((p, i) => i === 0 || dist(p, pts[i - 1]) > 0.5);
     if (pts.length < 2) pts = [{ x: A.x, y: A.y }, { x: B.x + 0.01, y: B.y }];
@@ -490,6 +764,8 @@
     const si = others % 2 === 1 && !l.loop ? n - 1 : 0;
     const v = { id: uid++, line: l, cargo: [], si, ti: si, dir: si === 0 ? 1 : -1, pos: l.geom.nodeDist[si], td: 0, state: 'move', wait: 0, x: 0, y: 0, a: 0 };
     v.td = v.pos;
+    const p0 = pointAt(l.geom, v.pos);
+    v.x = p0.x; v.y = p0.y; v.a = p0.a;
     G.vehicles.push(v);
     G.uiVersion++;
     return v;
@@ -542,13 +818,13 @@
     for (const e of v.cargo.slice()) {
       if ((e.kind === 'patient' && wants(e) === node.type) || (e.kind === 'dose' && node.type === 'MN')) {
         v.cargo.splice(v.cargo.indexOf(e), 1); deliver(e, node); moves++;
-      } else if (!progresses(e, node.id, nextId)) {
+      } else if (!progresses(e, node.id, nextId, true)) {
         v.cargo.splice(v.cargo.indexOf(e), 1); node.waiting.push(e); moves++;
       }
     }
     // Montée : priorité à la gravité, puis au temps restant.
     const cap = vehCap(v);
-    const cands = node.waiting.filter(e => canRide(e, l.kind) && progresses(e, node.id, nextId));
+    const cands = node.waiting.filter(e => canRide(e, l.kind) && progresses(e, node.id, nextId, false));
     cands.sort((a, b) => priority(a) - priority(b));
     for (const e of cands) {
       if (v.cargo.length >= cap) break;
@@ -557,7 +833,7 @@
       moves++;
     }
     v.state = 'stop';
-    v.wait = 0.4 + moves * 0.22;
+    v.wait = moves ? 0.35 + moves * 0.22 : 0.12; // sans échange, le brancardier ne fait que passer
   }
 
   function priority(e) {
@@ -660,6 +936,12 @@
           continue;
         }
         e.patience -= dt;
+        // Réévaluation : un semi-urgent qui attend trop s'aggrave et passe en urgence.
+        if (e.tri === 3 && !e.aggr && e.patience < e.maxPatience * AGGRAVATION) {
+          e.aggr = true; e.tri = 2; G.aggravated++;
+          e.maxPatience = TRIAGE[2].patience * 0.6; e.patience = e.maxPatience;
+          floater(x, y - 20, 'Aggravation', 't2');
+        }
         if (e.patience <= 0) {
           arr.splice(i, 1);
           if (e.tri <= 2) {
@@ -757,6 +1039,21 @@
         c.closePath(); break;
       }
       case 'trefoil': c.arc(x, y, r, 0, Math.PI * 2); break;
+      case 'crescent':
+        c.arc(x, y, r * 1.05, Math.PI * 0.25, Math.PI * 1.75);
+        c.arc(x + r * 0.55, y, r * 0.75, Math.PI * 1.62, Math.PI * 0.38, true);
+        c.closePath(); break;
+      case 'semicircle': c.arc(x, y + r * 0.45, r * 1.15, Math.PI, 0); c.closePath(); break;
+      case 'bolt':
+        c.moveTo(x + r * 0.2, y - r * 1.15); c.lineTo(x - r * 0.8, y + r * 0.15); c.lineTo(x - r * 0.05, y + r * 0.15);
+        c.lineTo(x - r * 0.3, y + r * 1.15); c.lineTo(x + r * 0.85, y - r * 0.2); c.lineTo(x + r * 0.1, y - r * 0.2);
+        c.closePath(); break;
+      case 'drop':
+        c.moveTo(x, y - r * 1.2);
+        c.bezierCurveTo(x + r * 0.5, y - r * 0.5, x + r * 1.0, y, x + r * 0.95, y + r * 0.35);
+        c.arc(x, y + r * 0.35, r * 0.95, 0, Math.PI);
+        c.bezierCurveTo(x - r * 1.0, y, x - r * 0.5, y - r * 0.5, x, y - r * 1.2);
+        c.closePath(); break;
       default: c.arc(x, y, r, 0, Math.PI * 2);
     }
   }
@@ -850,7 +1147,25 @@
     c.setTransform(DPR * cam.s, 0, 0, DPR * cam.s, DPR * cam.ox, DPR * cam.oy);
 
     drawPlan(c);
+    drawObstacles(c);
     for (const n of G.nodes) drawRoom(c, n);
+
+    // Passerelles : un tablier sous chaque circuit qui franchit un patio.
+    for (const l of G.lines) {
+      for (const [a, b] of linePairs(l)) {
+        for (const o of routeInfo(nodeById(a), nodeById(b)).patios) {
+          c.save();
+          c.beginPath(); c.rect(o.x - 4, o.y - 4, o.w + 8, o.h + 8); c.clip();
+          const pts = l.geom.pts;
+          c.beginPath(); c.moveTo(pts[0].x, pts[0].y);
+          for (let i = 1; i < pts.length; i++) c.lineTo(pts[i].x, pts[i].y);
+          c.lineJoin = 'round'; c.lineCap = 'butt';
+          c.strokeStyle = C.wall; c.lineWidth = LINE_W + 12; c.stroke();
+          c.strokeStyle = C.floor; c.lineWidth = LINE_W + 7; c.stroke();
+          c.restore();
+        }
+      }
+    }
 
     // Circuits : bandes de guidage au sol, bordées de blanc.
     for (const l of G.lines) {
@@ -935,6 +1250,68 @@
     c.beginPath(); c.arc(x, y, 8, 0, Math.PI * 2);
     c.fillStyle = C.bg; c.fill(); c.strokeStyle = C.wall; c.stroke();
     c.fillStyle = C.muted; c.fillText(txt, x, y + 0.5);
+  }
+
+  // Obstacles : patio planté, noyau d'ascenseurs (symbole de cabine barrée), bunker en béton.
+  function drawObstacles(c) {
+    const R = G.region;
+    c.save();
+    c.beginPath(); c.rect(R.x, R.y, R.w, R.h); c.clip();
+    for (const o of G.obstacles) {
+      if (rectHit(o.x, o.y, o.x + o.w, o.y + o.h, R, 0)) drawObstacle(c, o, true);
+    }
+    c.restore();
+  }
+
+  function drawObstacle(c, o, withLabel) {
+    if (o.kind === 'patio') {
+      c.fillStyle = C.garden; c.fillRect(o.x, o.y, o.w, o.h);
+      // arbres : positions tirées de la graine de l'obstacle, stables d'une image à l'autre
+      let sd = o.seed * 9301;
+      const rnd = () => { sd = (sd * 9301 + 49297) % 233280; return sd / 233280; };
+      const trees = Math.round(o.w * o.h / 2600);
+      c.strokeStyle = C['garden-ink']; c.lineWidth = 1;
+      for (let i = 0; i < trees; i++) {
+        const tx = o.x + 14 + rnd() * (o.w - 28), ty = o.y + 14 + rnd() * (o.h - 28), tr = 6 + rnd() * 6;
+        c.beginPath(); c.arc(tx, ty, tr, 0, Math.PI * 2); c.stroke();
+        c.beginPath(); c.arc(tx, ty, 1.2, 0, Math.PI * 2); c.fillStyle = C['garden-ink']; c.fill();
+      }
+      // façade vitrée : trait double fin
+      c.strokeStyle = C.wall; c.lineWidth = 1.2;
+      c.strokeRect(o.x, o.y, o.w, o.h); c.strokeRect(o.x + 3, o.y + 3, o.w - 6, o.h - 6);
+    } else {
+      const thick = o.kind === 'bunker' ? 9 : 4;
+      c.fillStyle = C.room; c.fillRect(o.x, o.y, o.w, o.h);
+      // poché hachuré des parties pleines
+      c.save(); c.beginPath(); c.rect(o.x, o.y, o.w, o.h); c.clip();
+      c.strokeStyle = C.wall; c.lineWidth = 1; c.globalAlpha = 0.55;
+      c.beginPath();
+      for (let k = -o.h; k < o.w; k += 6) { c.moveTo(o.x + k, o.y + o.h); c.lineTo(o.x + k + o.h, o.y); }
+      c.stroke(); c.restore();
+      c.strokeStyle = C.wall; c.lineWidth = thick;
+      c.strokeRect(o.x + thick / 2, o.y + thick / 2, o.w - thick, o.h - thick);
+      if (o.kind === 'core') {
+        // cabines d'ascenseur : carrés barrés d'une croix
+        const n = Math.max(1, Math.round(Math.max(o.w, o.h) / 22)), horiz = o.w >= o.h;
+        const cs = Math.min(horiz ? o.w / n : o.w, horiz ? o.h : o.h / n) - 8;
+        for (let i = 0; i < n; i++) {
+          const cx = horiz ? o.x + (i + 0.5) * o.w / n : o.x + o.w / 2, cy = horiz ? o.y + o.h / 2 : o.y + (i + 0.5) * o.h / n;
+          c.fillStyle = C.floor; c.fillRect(cx - cs / 2, cy - cs / 2, cs, cs);
+          c.strokeStyle = C.ink; c.lineWidth = 1;
+          c.strokeRect(cx - cs / 2, cy - cs / 2, cs, cs);
+          c.beginPath(); c.moveTo(cx - cs / 2, cy - cs / 2); c.lineTo(cx + cs / 2, cy + cs / 2);
+          c.moveTo(cx + cs / 2, cy - cs / 2); c.lineTo(cx - cs / 2, cy + cs / 2); c.stroke();
+        }
+      }
+    }
+    if (!withLabel) return;
+    const lbl = OBSTACLES[o.kind].label;
+    c.font = `600 8px ${getFont('data')}`; c.textAlign = 'center'; c.textBaseline = 'top';
+    const tw = c.measureText(lbl).width + 8;
+    const ly = o.kind === 'core' ? o.y + o.h + 4 : o.y + 6;
+    c.fillStyle = C.floor; c.fillRect(o.x + o.w / 2 - tw / 2, ly - 1, tw, 11);
+    c.fillStyle = o.kind === 'patio' ? C['garden-ink'] : C.muted;
+    c.fillText(lbl, o.x + o.w / 2, ly);
   }
 
   // Chaque service occupe une pièce, porte en bas avec son débattement.
@@ -1051,7 +1428,18 @@
 
   function drawDragPreview(c) {
     if (!drag) return;
-    const slotColor = C[drag.color] || C.ink;
+    const { nodes, loop, except } = dragNodes(drag);
+    const over = nodes.length >= 2 && bridgesUsed(except) + bridgesFor(nodes, loop) > G.bridges;
+    const slotColor = over ? C.danger : C[drag.color] || C.ink;
+    if (drag.blocked) {
+      const from = drag.mode === 'insert' ? nodeById(drag.line.nodes[drag.seg]) : nodeById(drag.list[drag.list.length - 1]);
+      c.setLineDash([6, 5]);
+      c.strokeStyle = C.danger; c.lineWidth = 3; c.lineCap = 'round';
+      c.beginPath(); c.moveTo(from.x, from.y); c.lineTo(drag.blocked.x, drag.blocked.y); c.stroke();
+      c.setLineDash([]);
+      c.font = `700 11px ${getFont('data')}`; c.textAlign = 'center'; c.textBaseline = 'bottom'; c.fillStyle = C.danger;
+      c.fillText('PASSAGE IMPOSSIBLE', drag.blocked.x, drag.blocked.y - NODE_R - 10);
+    }
     if (drag.mode === 'new' || drag.mode === 'extend') {
       const ids = drag.list;
       const pts = [];
@@ -1185,26 +1573,58 @@
     if (Math.hypot(sx - drag.sx, sy - drag.sy) > 6) drag.moved = true;
     const h = nodeAt(p, 0);
     drag.hover = h;
+    if (h !== drag.blocked) drag.blocked = null;
     if (!h) return;
+    const blocked = (a, b) => routeInfo(nodeById(a), nodeById(b)).blocked;
     if (drag.mode === 'new' || drag.mode === 'extend') {
       const L = drag.list, len = L.length;
       if (drag.loop) { if (h.id === L[len - 1]) drag.loop = false; return; }
       if (h.id === L[len - 1]) return;
       if (len >= 2 && h.id === L[len - 2]) { L.pop(); return; }
-      if (h.id === L[0] && len >= 3) { drag.loop = true; return; }
-      if (!L.includes(h.id)) L.push(h.id);
+      if (h.id === L[0] && len >= 3) {
+        if (blocked(L[len - 1], h.id)) drag.blocked = h; else drag.loop = true;
+        return;
+      }
+      if (L.includes(h.id)) return;
+      if (blocked(L[len - 1], h.id)) drag.blocked = h;
+      else L.push(h.id);
     } else if (drag.mode === 'insert') {
-      drag.target = drag.line.nodes.includes(h.id) ? null : h;
+      const l = drag.line;
+      const a = l.nodes[drag.seg], b = l.nodes[(drag.seg + 1) % l.nodes.length];
+      if (l.nodes.includes(h.id)) drag.target = null;
+      else if (blocked(a, h.id) || blocked(h.id, b)) { drag.target = null; drag.blocked = h; }
+      else drag.target = h;
     }
   });
+
+  // Le tracé tient-il dans le stock de passerelles ?
+  function bridgesOk(nodes, loop, except) {
+    if (bridgesUsed(except) + bridgesFor(nodes, loop) <= G.bridges) return true;
+    toast(`Pas assez de passerelles pour franchir ce patio (${G.bridges} au total). Contournez-le, ou libérez une passerelle en modifiant un autre circuit.`, true);
+    return false;
+  }
+  function dragNodes(d) {
+    if (d.mode === 'insert') {
+      const nodes = d.line.nodes.slice();
+      if (d.target) nodes.splice(d.seg + 1, 0, d.target.id);
+      return { nodes, loop: d.line.loop, except: d.line };
+    }
+    const nodes = d.list.slice();
+    if (d.reversed) nodes.reverse();
+    return { nodes, loop: d.loop, except: d.mode === 'extend' ? d.line : null };
+  }
 
   const endDrag = ev => {
     if (!drag) return;
     const d = drag; drag = null;
+    if (d.blocked && d.list && d.list.length < 2) {
+      toast(`Passage impossible : un obstacle infranchissable sépare ces services. Passez par un autre service.`, true);
+    }
     if (d.mode === 'new') {
       if (d.list.length >= 2) {
         const slot = pickSlot();
         if (!slot) { toast('Tous vos circuits sont utilisés. Prolongez-en un, ou supprimez-en un depuis la palette.', true); return; }
+        if (!bridgesOk(d.list, d.loop, null)) return;
         createLine(slot, d.list, d.loop);
         G.selSlot = null;
         G.started = true;
@@ -1215,12 +1635,12 @@
       let list = d.list.slice();
       if (d.reversed) list.reverse();
       const same = list.length === d.line.nodes.length && list.every((x, i) => x === d.line.nodes[i]) && !d.loop;
-      if (!same) setLineNodes(d.line, list, d.loop);
+      if (!same && bridgesOk(list, d.loop, d.line)) setLineNodes(d.line, list, d.loop);
     } else if (d.mode === 'insert') {
       if (d.target) {
         const nodes = d.line.nodes.slice();
         nodes.splice(d.seg + 1, 0, d.target.id);
-        setLineNodes(d.line, nodes, d.line.loop);
+        if (bridgesOk(nodes, d.line.loop, d.line)) setLineNodes(d.line, nodes, d.line.loop);
       } else if (!d.moved) {
         openLinePanel(d.line);
       }
@@ -1261,7 +1681,7 @@
   // ================================================================
   const el = {
     score: $('#score'), clock: $('#clock'), day: $('#dayName'), strikes: $('#strikes'), palette: $('#palette'),
-    pool: $('#poolN'), inv: $('#inv'), hint: $('#hint'), toasts: $('#toasts'),
+    pool: $('#poolN'), bridges: $('#bridgesN'), inv: $('#inv'), hint: $('#hint'), toasts: $('#toasts'),
     lp: $('#linePanel'), nt: $('#nodeTip'), tension: $('#tension'), tensionLabel: $('#tensionLabel'),
   };
 
@@ -1311,6 +1731,7 @@
     lastUi = G.uiVersion;
     renderPalette();
     el.pool.textContent = G.pool;
+    el.bridges.textContent = `${G.bridges - bridgesUsed(null)}/${G.bridges}`;
     renderInventory();
     if (!el.lp.hidden && lpLine) fillLinePanel(lpLine);
   }
@@ -1469,7 +1890,7 @@
       b.className = 'choice';
       b.innerHTML = `<strong>${UPGRADES[k].title}</strong><span>${UPGRADES[k].desc}</span>`;
       b.addEventListener('click', () => {
-        if (k === 'line') unlockSlot('std');
+        if (k === 'bridge') { G.bridges += 2; toast('Deux passerelles de plus : vos circuits peuvent franchir davantage de patios.'); }
         else if (k === 'line_sep') unlockSlot('sep');
         else if (k === 'line_rad') unlockSlot('rad');
         else { G.inv[k]++; toast(`${TOKEN_LABEL[k]} en réserve : touchez-la en bas de l’écran pour l’utiliser.`); }
@@ -1561,7 +1982,7 @@
     const pv = $('#legendPatients'); pv.innerHTML = '';
     for (const k of [1, 2, 3, 4]) {
       legendItem(pv, c => { shapePath(c, 'circle', 14, 14, 7); c.fillStyle = C[TRIAGE[k].color]; c.fill(); c.lineWidth = 2; c.strokeStyle = C.ink; c.stroke(); },
-        TRIAGE[k].name, `Délai avant dégradation : ${TRIAGE[k].patience} s.` + (k <= 2 ? ' Dépassé, c’est un événement indésirable grave (EIG).' : ' Dépassé, le patient part sans soins.'));
+        TRIAGE[k].name, `Délai avant dégradation : ${TRIAGE[k].patience} s.` + (k <= 2 ? ' Dépassé, c’est un événement indésirable grave (EIG).' : k === 3 ? ' S’il attend trop, il s’aggrave et passe en urgence.' : ' Dépassé, le patient part sans soins.'));
     }
     legendItem(pv, c => { drawEntity(c, { kind: 'patient', tri: 2, inf: true, rad: false, path: ['ISO'], step: 0, patience: 1, maxPatience: 1 }, 14, 14, 5, false); },
       'Patient contagieux', 'Anneau vert pointillé. Il ne voyage que sur le circuit septique.');
@@ -1570,6 +1991,20 @@
     legendItem(pv, c => trefoil(c, 14, 14, 8, C['rad-ink'], C.rad), 'Dose de radiotraceur', `Décroît en ${DOSE_LIFE} s. Sans dose, la médecine nucléaire est à l’arrêt.`);
     legendItem(pv, c => { shapePath(c, 'triangle', 14, 14, 7); c.fillStyle = C.t4; c.fill(); c.lineWidth = 2; c.strokeStyle = C.ink; c.stroke(); },
       'Forme = prochaine étape', 'Un triangle va au bloc, un cercle en imagerie… Couleur = niveau de tri.');
+    legendItem(pv, c => { shapePath(c, 'circle', 14, 14, 7); c.fillStyle = C.t3; c.fill(); c.lineWidth = 2; c.strokeStyle = C.ink; c.stroke(); c.font = `700 12px ${getFont('data')}`; c.fillStyle = C.ink; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('?', 14, 14.5); },
+      'Diagnostic', 'Beaucoup de patients ne connaissent que leur premier examen. Le résultat révèle la suite : bloc, coronarographie, isolement… ou retour à domicile.');
+    legendItem(pv, c => { shapePath(c, 'circle', 14, 14, 7); c.fillStyle = C.t2; c.fill(); c.lineWidth = 2; c.strokeStyle = C.ink; c.stroke(); },
+      'Aggravation', 'Un semi-urgent qui attend trop passe en urgence, avec un délai plus court.');
+    legendItem(pv, c => { for (const [x, y] of [[8, 9], [20, 9], [14, 20]]) { shapePath(c, 'circle', x, y, 4); c.fillStyle = C.t3; c.fill(); c.lineWidth = 1.5; c.strokeStyle = C.ink; c.stroke(); } },
+      'Répartition', 'Quand plusieurs unités font la même chose, les patients visent la moins encombrée.');
+    const ov = $('#legendObstacles'); ov.innerHTML = '';
+    const mini = { patio: { w: 24, h: 18 }, core: { w: 12, h: 20 }, bunker: { w: 24, h: 18 } };
+    for (const k of Object.keys(OBSTACLES)) {
+      const m = mini[k];
+      legendItem(ov, c => drawObstacle(c, { kind: k, x: 14 - m.w / 2, y: 14 - m.h / 2, w: m.w, h: m.h, seed: 0.4 }, false), OBSTACLES[k].name, OBSTACLES[k].desc);
+    }
+    legendItem(ov, c => { c.fillStyle = C.garden; c.fillRect(6, 4, 16, 20); c.strokeStyle = C.wall; c.lineWidth = 9; c.beginPath(); c.moveTo(2, 14); c.lineTo(26, 14); c.stroke(); c.strokeStyle = C.floor; c.lineWidth = 7; c.stroke(); c.strokeStyle = C.l1; c.lineWidth = 4; c.stroke(); },
+      'Passerelle', 'Chaque franchissement de patio consomme une passerelle. Le compteur est en bas de l’écran.');
     const lv = $('#legendLines'); lv.innerHTML = '';
     for (const [kind, col] of [['std', 'l1'], ['sep', 'sep'], ['rad', 'rad']]) {
       legendItem(lv, c => strokeLine(c, [{ x: 3, y: 20 }, { x: 11, y: 20 }, { x: 25, y: 8 }], C[col], kind, 6), KIND_LABEL[kind], KIND_RULE[kind]);
@@ -1582,9 +2017,11 @@
     add(c => strokeLine(c, [{ x: 3, y: 22 }, { x: 10, y: 22 }, { x: 25, y: 7 }], C.l1, 'std', 6),
       '<b>Tracez des circuits</b> en glissant d’un service à l’autre. Un brancardier y fait la navette.');
     add(c => { shapePath(c, 'triangle', 14, 15, 8); c.fillStyle = C.t1; c.fill(); c.lineWidth = 2; c.strokeStyle = C.ink; c.stroke(); },
-      '<b>Chaque patient montre sa prochaine étape</b> par la forme du service, et sa gravité par la couleur. Les urgences vitales passent en premier.');
+      '<b>Chaque patient montre sa prochaine étape</b> par la forme du service, et sa gravité par la couleur. Souvent, c’est l’examen qui révèle la suite du parcours.');
     add(c => { drawEntity(c, { kind: 'patient', tri: 2, inf: true, rad: false, path: ['ISO'], step: 0, patience: 1, maxPatience: 1 }, 14, 14, 5, false); },
       '<b>Patients contagieux et radioactifs</b> exigent des circuits dédiés : septique et radioprotégé.');
+    add(c => drawObstacle(c, { kind: 'patio', x: 2, y: 5, w: 24, h: 18, seed: 0.4 }, false),
+      '<b>Les obstacles ne bougent pas.</b> Les patios se franchissent par passerelle ; ascenseurs et bunker se contournent.');
     add(c => { c.beginPath(); c.arc(14, 14, 10, -Math.PI / 2, Math.PI); c.strokeStyle = C.danger; c.lineWidth = 4; c.stroke(); },
       '<b>Un service saturé trop longtemps</b> ou trois événements indésirables graves mettent fin à la garde.');
   }
@@ -1625,7 +2062,7 @@
   requestAnimationFrame(frame);
 
   // Accès de débogage depuis la console.
-  window.miniHopital = { get state() { return G; }, step, spawnPatient, addVehicle, createLine: (ids, kind = 'std') => {
+  window.miniHopital = { get state() { return G; }, step, spawnPatient, addVehicle, routeInfo: (a, b) => routeInfo(a, b), createLine: (ids, kind = 'std') => {
     const slot = G.slots.find(s => s.kind === kind && s.unlocked && !s.line);
     return slot ? createLine(slot, ids, false) : null;
   } };

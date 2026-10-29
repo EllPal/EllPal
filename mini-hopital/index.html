@@ -21,6 +21,8 @@
   --node: #ffffff;
   --panel: #ffffff;
   --line-soft: #cfd9df;
+  --garden: #dbead8;      /* patios plantés */
+  --garden-ink: #5f8a5a;
   --sign: #123f6b;        /* panneaux de signalétique */
   --sign-ink: #ffffff;
   --sih: #0c2c4a;         /* bandeau du logiciel */
@@ -42,7 +44,7 @@
   :root:not([data-theme="light"]) {
     --bg: #060c11; --floor: #0d1820; --room: #122029; --wall: #41596a; --grid: #142430;
     --ink: #e0ebf1; --muted: #8fa7b5; --node: #0f1d26; --panel: #102029; --line-soft: #26404f;
-    --sign: #2a6aa8; --sign-ink: #ffffff; --sih: #07131d; --sih-2: #0e2232; --sih-ink: #dce9f2; --sih-muted: #7f9db3;
+    --garden: #13261b; --garden-ink: #4f8a5e; --sign: #2a6aa8; --sign-ink: #ffffff; --sih: #07131d; --sih-2: #0e2232; --sih-ink: #dce9f2; --sih-muted: #7f9db3;
     --accent: #3cc3d1; --danger: #ff5a5f; --ok: #46c47a;
     --l1: #5b8cff; --l2: #a77bf0; --l3: #f0629f; --l4: #2fc2d4; --l5: #c98e55; --l6: #8190ff; --l7: #9aa9b0;
     --sep: #4cc865; --rad: #f2c40f; --rad-ink: #0a0a0a;
@@ -53,7 +55,7 @@
 :root[data-theme="dark"] {
   --bg: #060c11; --floor: #0d1820; --room: #122029; --wall: #41596a; --grid: #142430;
   --ink: #e0ebf1; --muted: #8fa7b5; --node: #0f1d26; --panel: #102029; --line-soft: #26404f;
-  --sign: #2a6aa8; --sign-ink: #ffffff; --sih: #07131d; --sih-2: #0e2232; --sih-ink: #dce9f2; --sih-muted: #7f9db3;
+  --garden: #13261b; --garden-ink: #4f8a5e; --sign: #2a6aa8; --sign-ink: #ffffff; --sih: #07131d; --sih-2: #0e2232; --sih-ink: #dce9f2; --sih-muted: #7f9db3;
   --accent: #3cc3d1; --danger: #ff5a5f; --ok: #46c47a;
   --l1: #5b8cff; --l2: #a77bf0; --l3: #f0629f; --l4: #2fc2d4; --l5: #c98e55; --l6: #8190ff; --l7: #9aa9b0;
   --sep: #4cc865; --rad: #f2c40f; --rad-ink: #0a0a0a;
@@ -314,6 +316,12 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
           <span id="poolN">3</span>
         </div>
       </div>
+      <div class="dock-sec" title="Passerelles libres sur le total"><span class="lbl">Passerelles</span>
+        <div class="pool">
+          <svg viewBox="0 0 28 18" aria-hidden="true"><rect x="7" y="1" width="14" height="16" fill="var(--garden)"/><rect x="1" y="6" width="26" height="6" fill="var(--node)" stroke="var(--wall)" stroke-width="1.6"/></svg>
+          <span id="bridgesN">2/2</span>
+        </div>
+      </div>
       <div class="dock-sec" id="invSec"><span class="lbl">Ressources</span><div id="inv"></div></div>
     </div>
   </footer>
@@ -398,8 +406,10 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
         <div class="legend" id="legendPatients"></div>
         <h4>Circuits</h4>
         <div class="legend" id="legendLines"></div>
+        <h4>Obstacles</h4>
+        <div class="legend" id="legendObstacles"></div>
         <h4>Commandes</h4>
-        <p>Glissez d’un service à l’autre pour tracer un circuit. Tirez l’extrémité en T d’un circuit pour le prolonger, ou revenez en arrière pour le raccourcir. Faites glisser un tronçon sur un service pour l’y faire passer. Revenez sur le premier service pour boucler. Touchez une pastille de la palette pour choisir le type de circuit ou gérer ses brancardiers. Touchez un service pour ouvrir sa fiche. Espace : pause.</p>
+        <p>Glissez d’un service à l’autre pour tracer un circuit. Un tracé en pointillé rouge signale un obstacle infranchissable : passez par un autre service. Tirez l’extrémité en T d’un circuit pour le prolonger, ou revenez en arrière pour le raccourcir. Faites glisser un tronçon sur un service pour l’y faire passer. Revenez sur le premier service pour boucler. Touchez une pastille de la palette pour choisir le type de circuit ou gérer ses brancardiers. Touchez un service pour ouvrir sa fiche. Espace : pause.</p>
         <div class="cta"><button class="btn" id="btnHelpClose">Reprendre</button></div>
       </div>
     </div>
