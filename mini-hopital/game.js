@@ -1694,7 +1694,7 @@
 
   function drawChooser(c) {
     if (!drag || !drag.start) return;
-    if (drag.mode === 'new' && drag.downAt && !drag.moved) {
+    if ((drag.mode === 'new' || drag.mode === 'extend') && drag.downAt && !drag.moved) {
       // anneau qui se remplit pendant l'appui long
       const f = Math.min(1, (performance.now() - drag.downAt) / HOLD_MS), n = drag.start;
       c.beginPath(); c.arc(n.x, n.y, NODE_R + 9, -Math.PI / 2, -Math.PI / 2 + f * Math.PI * 2);
@@ -1784,15 +1784,18 @@
     for (const n of G.nodes) { if (n.z !== G.view) continue; const d = dist(n, p); if (d < tol && d < bd) { bd = d; best = n; } }
     return best;
   }
-  function handleAt(p) {
+  // Toutes les extrémités en T sous le pointeur, de la plus proche à la plus lointaine :
+  // plusieurs circuits qui finissent au même service ont leurs extrémités superposées.
+  function handlesNear(p) {
     const tol = Math.max(14, 20 / cam.s);
-    let best = null, bd = Infinity;
+    const out = [];
     for (const l of G.lines) if (l.z === G.view) for (const h of endHandles(l)) {
       const d = Math.min(dist(h.tip, p), dist({ x: (h.tip.x + h.base.x) / 2 + h.dx * 4, y: (h.tip.y + h.base.y) / 2 + h.dy * 4 }, p));
-      if (d < tol && d < bd) { bd = d; best = h; }
+      if (d < tol) out.push({ h, d });
     }
-    return best;
+    return out.sort((a, b) => a.d - b.d).map(x => x.h);
   }
+  const handleEnd = h => (h.end === 'head' ? h.line.nodes[0] : h.line.nodes[h.line.nodes.length - 1]);
   function lineAt(p) {
     const tol = Math.max(9, 14 / cam.s);
     let best = null, bd = Infinity;
@@ -1840,12 +1843,14 @@
     if (G.apply) { applyToken(p); return; }
 
     const n0 = nodeAt(p, 0);
-    const h = handleAt(p);
+    const near = handlesNear(p);
+    const h = near[0];
     const onNodeCore = n0 && dist(n0, p) < NODE_R;
     if (h && !onNodeCore) {
       const list = h.line.nodes.slice();
       if (h.end === 'head') list.reverse();
       drag = { mode: 'extend', line: h.line, list, orig: list.slice(), atHead: false, reversed: h.end === 'head', kind: h.line.kind, color: h.line.color, loop: false, pt: p, sx, sy, moved: false };
+      armHold(drag, nodeById(handleEnd(h)), near);
       return;
     }
     const n = nodeAt(p);
@@ -1860,17 +1865,14 @@
           const reversed = l.nodes[0] === n.id && l.nodes[l.nodes.length - 1] !== n.id;
           if (reversed) list.reverse();
           drag = { mode: 'extend', line: l, list, orig: list.slice(), reversed, kind: l.kind, color: l.color, loop: false, pt: p, sx, sy, moved: false };
+          armHold(drag, n, near);
           return;
         }
       }
       const slot = pickSlot();
       const d = { mode: 'new', list: [n.id], slot, kind: slot ? slot.kind : 'std', color: slot ? slot.color : 'muted', loop: false, pt: p, sx, sy, moved: false, start: n };
       drag = d;
-      // appui long : si des circuits se terminent ici, un sélecteur propose lequel prolonger
-      if (lineEndsAt(n).length) {
-        d.downAt = performance.now();
-        d.holdTimer = setTimeout(() => { if (drag === d && !d.moved) openChooser(d); }, HOLD_MS);
-      }
+      armHold(d, n, near);
       return;
     }
     const hit = lineAt(p);
@@ -1884,9 +1886,24 @@
   function lineEndsAt(n) {
     return G.lines.filter(l => !l.lift && !l.loop && l.z === n.z && (l.nodes[0] === n.id || l.nodes[l.nodes.length - 1] === n.id));
   }
+  // Appui long sur un service ou sur des extrémités en T : si au moins un circuit se termine là,
+  // le sélecteur s'ouvre au bout de HOLD_MS, quel que soit le geste engagé (nouveau circuit ou prolongement).
+  function armHold(d, n, near) {
+    const lines = [...new Set([...lineEndsAt(n), ...near.map(h => h.line)])];
+    if (!lines.length) return;
+    d.start = n;
+    d.holdLines = lines;
+    d.ends = new Map(near.map(h => [h.line, handleEnd(h)]));
+    d.downAt = performance.now();
+    d.holdTimer = setTimeout(() => { if (drag === d && !d.moved) openChooser(d); }, HOLD_MS);
+  }
   function openChooser(d) {
     const n = d.start;
-    const opts = lineEndsAt(n).map(l => ({ line: l, kind: l.kind, color: l.color, label: `Prolonger · ${KIND_LABEL[l.kind].toLowerCase()}` }));
+    const opts = d.holdLines.map(l => ({
+      line: l, kind: l.kind, color: l.color, label: `Prolonger · ${KIND_LABEL[l.kind].toLowerCase()}`,
+      // le terminus à prolonger : ce service s'il est un bout du circuit, sinon le bout dont le T a été touché
+      endId: l.nodes[0] === n.id || l.nodes[l.nodes.length - 1] === n.id ? n.id : d.ends.get(l),
+    }));
     const free = pickSlot();
     if (free) opts.push({ slot: free, kind: free.kind, color: free.color, label: `Nouveau ${KIND_LABEL[free.kind].toLowerCase()}` });
     const R = 54 / cam.s, r = 14 / cam.s;
@@ -1905,7 +1922,7 @@
     const n = d.start, o = d.sel;
     if (o.line) {
       const l = o.line, list = l.nodes.slice();
-      const reversed = l.nodes[0] === n.id;
+      const reversed = l.nodes[0] === o.endId && l.nodes[l.nodes.length - 1] !== o.endId;
       if (reversed) list.reverse();
       drag = { mode: 'extend', line: l, list, orig: list.slice(), reversed, kind: l.kind, color: l.color, loop: false, pt: p, sx, sy, moved: true };
       G.selSlot = l.slot;
@@ -2603,7 +2620,7 @@
   requestAnimationFrame(frame);
 
   // Accès de débogage depuis la console.
-  window.miniHopital = { get state() { return G; }, step, spawnPatient, addVehicle, routeInfo: (a, b) => routeInfo(a, b), canPlace: (n, x, y, z) => canPlace(n, x, y, z), createLine: (ids, kind = 'std') => {
+  window.miniHopital = { get state() { return G; }, step, spawnPatient, addVehicle, dragMode: () => drag && drag.mode, routeInfo: (a, b) => routeInfo(a, b), canPlace: (n, x, y, z) => canPlace(n, x, y, z), createLine: (ids, kind = 'std') => {
     const slot = G.slots.find(s => s.kind === kind && s.unlocked && !s.line);
     return slot ? createLine(slot, ids, false) : null;
   } };

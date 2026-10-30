@@ -85,7 +85,7 @@ Le jeu emprunte trois registres d’un vrai hôpital :
 | --- | --- |
 | Tracer un circuit | Glisser d’un service à l’autre (on peut en enchaîner plusieurs) |
 | Prolonger ou raccourcir | Tirer l’extrémité en T, ou sélectionner le circuit dans la palette puis glisser depuis son terminus |
-| Choisir le circuit à prolonger | Maintenir l’appui sur un service : un sélecteur circulaire affiche les circuits qui s’y terminent et un « + » pour un nouveau circuit. Glisser vers une pastille, puis continuer vers le service à relier (relâcher sur la pastille la sélectionne seulement) |
+| Choisir le circuit à prolonger | Maintenir l’appui sur un service ou sur des extrémités en T superposées : un sélecteur circulaire affiche tous les circuits qui s’y terminent et un « + » pour un nouveau circuit. Glisser vers une pastille, puis continuer vers le service à relier (relâcher sur la pastille la sélectionne seulement) |
 | Déménager un service | Toucher le compteur *Déménager*, puis le service, puis faire glisser sa pièce au nouvel emplacement, au besoin après avoir changé d’étage |
 | Faire passer un circuit par un service | Glisser un tronçon sur le service |
 | Boucler | Revenir sur le premier service |
