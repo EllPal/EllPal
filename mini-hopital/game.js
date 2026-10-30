@@ -19,7 +19,7 @@
   const OVERFLOW_LIMIT = 30;      // secondes de saturation tolérées
   const MAX_INCIDENTS = 3;
   const DOSE_LIFE = 60;           // durée de vie d'une dose de radiotraceur
-  const DOSE_EVERY = 9;
+  const DOSE_EVERY = 6;
   const MIN_SPACING = 115;
   const DAYS = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
 
@@ -218,13 +218,14 @@
   const START_MOVES = 1;          // déménagements de service disponibles au départ
 
   // Qui a le droit d'emprunter quel circuit. Les ascenseurs (« lift ») servent à tous.
-  // Un patient radioactif emprunte les circuits standard, mais voyage seul.
-  const RIDE = { std: ['std', 'lift'], inf: ['sep', 'lift'], rad: ['std', 'lift'], dose: ['rad', 'lift'] };
+  // Le circuit radioprotégé dessert la médecine nucléaire : doses, patients qui s'y rendent (« nuc »)
+  // et patients injectés, radioactifs, qui voyagent seuls. Ces patients prennent aussi les circuits standard.
+  const RIDE = { std: ['std', 'lift'], nuc: ['std', 'rad', 'lift'], inf: ['sep', 'lift'], rad: ['std', 'rad', 'lift'], dose: ['rad', 'lift'] };
   const KIND_LABEL = { std: 'Circuit standard', sep: 'Circuit septique', rad: 'Circuit radioprotégé' };
   const KIND_RULE = {
-    std: 'Patients sans précaution particulière. Un patient radioactif y voyage seul sur son brancard.',
+    std: 'Tous les patients sans précaution particulière. Un patient radioactif y voyage seul sur son brancard.',
     sep: 'Réservé aux patients contagieux : il évite toute contamination croisée.',
-    rad: 'Réservé aux doses de radiotraceur, de la radiopharmacie à la médecine nucléaire.',
+    rad: 'Dessert la médecine nucléaire : doses de radiotraceur, patients qui s’y rendent et patients injectés (seuls sur leur brancard).',
   };
 
   const SLOT_DEFS = [
@@ -306,6 +307,8 @@
       t: 0, score: 0, incidents: 0, lwbs: 0, dosesLost: 0, aggravated: 0, week: 1, nextWeek: WEEK,
       W, H, region: null, obstacles: [], bridges: START_BRIDGES, moves: START_MOVES, moveNode: null, hoverPt: null,
       floors: [0], view: 0, shafts: [], eig: [],
+      // relevés pour le rapport de fin de garde
+      stats: { samples: [], nextSample: 0, events: [], arrivals: [0, 0, 0, 0, 0], svc: {}, journeys: [], peak: { n: 0, t: 0 } },
       nodes: [], lines: [], vehicles: [], floaters: [],
       pool: 3, inv: { staff: 0, room: 0, cart: 0, cabin: 0 }, apply: null,
       slots: SLOT_DEFS.map((d, i) => ({ i, kind: d.kind, color: d.color, unlocked: d.kind === 'std' && i < 3, line: null })),
@@ -515,6 +518,7 @@
     if (!G.shafts.length) activateShaft(nextCore());
     for (const sh of G.shafts) setLineNodes(sh.line, shaftPaliers(sh), false);
     G.newFloor = { z, t: G.t };
+    G.stats.events.push({ t: G.t, kind: 'floor', label: z === -1 ? 'Sous-sol' : z === 1 ? '1er étage' : `${z}e étage` });
     G.uiVersion++;
   }
 
@@ -604,7 +608,7 @@
   // Patients et doses
   // ================================================================
   function wants(e) { return e.kind === 'dose' ? 'MN' : e.path[e.step]; }
-  function catOf(e) { return e.kind === 'dose' ? 'dose' : e.inf ? 'inf' : e.rad ? 'rad' : 'std'; }
+  function catOf(e) { return e.kind === 'dose' ? 'dose' : e.inf ? 'inf' : e.rad ? 'rad' : wants(e) === 'MN' ? 'nuc' : 'std'; }
   function canRide(e, kind) { return RIDE[catOf(e)].includes(kind); }
 
   function resolvePath(path) {
@@ -646,6 +650,7 @@
       inf: !!o.tpl.inf, rad: false, patience: tri.patience, maxPatience: tri.patience, born: G.t, qt: 0, aggr: false,
     };
     o.n.waiting.push(p);
+    G.stats.arrivals[p.tri]++;
   }
 
   // Le rythme d'arrivée accélère avec le temps et avec le nombre de secteurs qui reçoivent des patients.
@@ -691,10 +696,12 @@
 
   function finishStep(p, node) {
     if (node.type === 'MN') p.rad = true;
+    svcStat(node.type).passes++;
     p.step++;
     if (p.step >= p.path.length && p.then) diagnose(p, node);
     if (p.step >= p.path.length) {
       G.score++;
+      G.stats.journeys.push(G.t - p.born);
       floater(node.x, node.y - NODE_R - 14, '+1', 'ink', node.z);
       return;
     }
@@ -1134,7 +1141,7 @@
         n.rphT -= dt;
         if (n.rphT <= 0) {
           n.rphT = DOSE_EVERY;
-          if (dosesInSystem() < 1 + G.nodes.filter(m => m.type === 'MN').length) {
+          if (dosesInSystem() < 1 + 2 * G.nodes.filter(m => m.type === 'MN').length) {
             n.waiting.push({ id: uid++, kind: 'dose', life: DOSE_LIFE });
           }
         }
@@ -1194,6 +1201,12 @@
     };
     for (const n of G.nodes) { tick(n.waiting, n.x, n.y, n.z); tick(n.queue, n.x, n.y, n.z); tick(n.doses, n.x, n.y, n.z); }
     for (const v of G.vehicles) tick(v.cargo, v.x, v.y, v.z);
+    // temps-patient passé à attendre dans chaque service : brancardier, puis file de soins
+    for (const n of G.nodes) {
+      let w = 0;
+      for (const e of n.waiting) if (e.kind === 'patient') w++;
+      if (w || n.queue.length) { const st = svcStat(n.type); st.wait += w * dt; st.queue += n.queue.length * dt; }
+    }
   }
 
   function floater(x, y, text, color, z) { G.floaters.push({ x, y, text, color, z, t: 0 }); }
@@ -1201,8 +1214,26 @@
   // ================================================================
   // Boucle de simulation
   // ================================================================
+  function svcStat(type) {
+    return G.stats.svc[type] || (G.stats.svc[type] = { passes: 0, wait: 0, queue: 0 });
+  }
+  // Relevé de charge toutes les 2 s de jeu : patients en attente (brancardier, file de soins, transport), par tri.
+  function sampleLoad() {
+    const S = G.stats;
+    if (G.t < S.nextSample) return;
+    S.nextSample += 2;
+    const tri = [0, 0, 0, 0, 0];
+    const count = arr => { for (const e of arr) if (e.kind === 'patient') tri[e.tri]++; };
+    for (const n of G.nodes) { count(n.waiting); count(n.queue); }
+    for (const v of G.vehicles) count(v.cargo);
+    const total = tri[1] + tri[2] + tri[3] + tri[4];
+    S.samples.push({ t: G.t, n: total, tri: tri.slice(1) });
+    if (total > S.peak.n) S.peak = { n: total, t: G.t };
+  }
+
   function step(dt) {
     G.t += dt;
+    sampleLoad();
     updateRegion();
     runSchedule();
     if (G.t >= 3) {
@@ -2290,6 +2321,7 @@
       if (n.over > 0 || crowd(n) > n.cap * 0.8) lvl = 1;
     }
     if (lvl === tensionLevel) return;
+    if (lvl === 2) G.stats.events.push({ t: G.t, kind: 'alert', label: 'Plan blanc' });
     if (lvl === 2) toast('<b>Déclenchement du plan blanc</b> : un service est saturé, désengorgez-le au plus vite.', true);
     tensionLevel = lvl;
     el.tension.dataset.level = lvl;
@@ -2412,7 +2444,18 @@
     }
   }
 
-  let hintKey = '';
+  let hintKey = '', stranded = null;
+  // Un patient qui attend depuis un moment sans aucun itinéraire possible vers sa prochaine étape.
+  function strandedPatient() {
+    if (!G.lines.length) return null;
+    for (const n of G.nodes) {
+      for (const e of n.waiting) {
+        if (e.kind !== 'patient' || e.maxPatience - e.patience < 8) continue;
+        if (distMap(catOf(e), wants(e)).get(n.id) === undefined) return { e, n };
+      }
+    }
+    return null;
+  }
   function updateHint() {
     let key = '', html = '';
     if (vdrag && vdrag.moved) {
@@ -2438,6 +2481,11 @@
     }
     else if (hasType('ISO') && !G.lines.some(l => l.kind === 'sep')) { key = 'sep'; html = 'Les patients contagieux ne voyagent que sur le circuit septique. Touchez la pastille verte en pointillé, puis tracez des Urgences vers l’Isolement.'; }
     else if (hasType('MN') && !G.lines.some(l => l.kind === 'rad')) { key = 'rad'; html = 'Touchez la pastille jaune, puis reliez la Radiopharmacie à la Médecine nucléaire : les doses et les patients injectés ne passent que par ce circuit.'; }
+    else if ((stranded = strandedPatient())) {
+      const { e, n } = stranded;
+      key = 'stranded' + n.id + wants(e);
+      html = `Aucun circuit ne mène de ${n.type === 'ASC' ? 'ce palier' : TYPES[n.type].name.toLowerCase()} ${atFloor(n.z)} vers ${TYPES[wants(e)].name.toLowerCase()} : ${e.inf ? 'il faut un circuit septique' : 'reliez ces services'}, ascenseur compris.`;
+    }
     else if (G.lines.length === 1 && G.t < 40) { key = 'second'; html = 'Chaque patient porte la forme du service où il doit aller. Reliez tous les services pour que les brancardiers les y conduisent.'; }
     else if (G.selSlot != null && G.slots[G.selSlot] && !G.slots[G.selSlot].line) { key = 'sel' + G.selSlot; html = `${KIND_LABEL[G.slots[G.selSlot].kind]} sélectionné : glissez d’un service à l’autre pour le tracer.`; }
     if (key === hintKey) return;
@@ -2603,12 +2651,262 @@
     $('#endStats').innerHTML = [
       ['Patients pris en charge', G.score], ['Durée de la garde', `${days} j`],
       ['Événements indésirables graves', G.incidents, G.incidents > 0], ['Partis sans soins', G.lwbs, G.lwbs > 0],
-      ['Doses de radiotraceur périmées', G.dosesLost, G.dosesLost > 0], ['Services ouverts', G.nodes.length],
+      ['Doses de radiotraceur périmées', G.dosesLost, G.dosesLost > 0], ['Services ouverts', G.nodes.filter(n => n.type !== 'ASC').length],
+      ['Aggravations en attente', G.aggravated, G.aggravated > 0], ['Niveaux ouverts', G.floors.length],
     ].map(([k, v, bad]) => `<tr class="${bad ? 'bad' : ''}"><th>${k}</th><td>${v}</td></tr>`).join('') +
-      G.eig.map(x => `<tr class="bad"><th>EIG · ${x.name}, en attente de ${x.want.toLowerCase()} ${atFloor(x.z)}</th><td>${clockAt(x.t)}</td></tr>`).join('');
+      G.eig.map(x => `<tr class="bad"><th>EIG · ${x.name}, en attente de ${x.want.toLowerCase()} ${atFloor(x.z)}</th><td>${timeLabel(x.t)}</td></tr>`).join('');
     $('#bestScore2').textContent = `Record : ${best} patients`;
     openModal('#overModal');
+    renderReport();
   }
+
+  // ---------- Rapport de fin de garde : graphiques ----------
+  // Les durées sont données en temps d'horloge du jeu : une journée de 24 h dure DAY secondes.
+  const SVGNS = 'http://www.w3.org/2000/svg';
+  const gameHours = sec => sec * 24 / DAY;
+  const fmtNum = (v, d = 0) => v.toLocaleString('fr-FR', { minimumFractionDigits: d, maximumFractionDigits: d });
+  const fmtHours = sec => { const h = gameHours(sec); return `${fmtNum(h, h < 10 ? 1 : 0)} h`; };
+  const dayAbbr = t => DAYS[Math.floor(t / DAY) % 7].slice(0, 3);
+  const timeLabel = t => `${dayAbbr(t)}. ${clockAt(t)}`;
+  const svcName = t => (t === 'ASC' ? 'Paliers d’ascenseur' : TYPES[t].name);
+  const SEV = [1, 2, 3, 4].map(k => ({ k, name: TRIAGE[k].name, fill: `var(--sev${k})`, ink: `var(--sev${k}-ink)` }));
+
+  function niceMax(v) {
+    for (const s of [4, 8, 10, 20, 30, 40, 50, 60, 80, 100, 150, 200, 300, 400, 500]) if (v <= s) return s;
+    return Math.ceil(v / 100) * 100;
+  }
+  function svgEl(tag, attrs, parent) {
+    const e = document.createElementNS(SVGNS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function svgText(parent, x, y, str, attrs = {}) {
+    const t = svgEl('text', { x, y, 'font-size': 11, fill: 'var(--muted)', ...attrs }, parent);
+    t.textContent = str;
+    return t;
+  }
+
+  // Infobulle unique : la valeur en premier, le libellé ensuite.
+  const ctip = $('#ctip');
+  function showTip(lines, x, y) {
+    ctip.replaceChildren();
+    for (const ln of lines) {
+      const row = document.createElement('div');
+      row.className = 'row';
+      if (ln.key) { const k = document.createElement('span'); k.className = 'key'; k.style.background = ln.key; row.appendChild(k); }
+      if (ln.value !== undefined) { const b = document.createElement('b'); b.textContent = ln.value; row.appendChild(b); }
+      const s = document.createElement('span'); s.textContent = ln.label; row.appendChild(s);
+      ctip.appendChild(row);
+    }
+    ctip.hidden = false;
+    const r = ctip.getBoundingClientRect();
+    ctip.style.left = clamp(x + 14, 8, window.innerWidth - r.width - 8) + 'px';
+    ctip.style.top = clamp(y - r.height - 12, 8, window.innerHeight - r.height - 8) + 'px';
+  }
+  const hideTip = () => { ctip.hidden = true; };
+  function hoverable(elm, lines) {
+    elm.setAttribute('tabindex', '0');
+    elm.addEventListener('pointermove', ev => showTip(lines(), ev.clientX, ev.clientY));
+    elm.addEventListener('pointerleave', hideTip);
+    elm.addEventListener('focus', () => { const r = elm.getBoundingClientRect(); showTip(lines(), r.left + r.width / 2, r.top); });
+    elm.addEventListener('blur', hideTip);
+  }
+
+  // Charge au fil de la garde : une seule série (patients en attente), aire légère, repères d'événements.
+  function drawLoadChart(box) {
+    const S = G.stats, data = S.samples;
+    box.replaceChildren();
+    if (data.length < 2) return;
+    const W = Math.max(280, box.clientWidth), H = W < 480 ? 190 : 220;
+    const m = { l: 34, r: 30, t: 30, b: 24 };
+    const t1 = data[data.length - 1].t, yMax = niceMax(Math.max(4, ...data.map(d => d.n)) * 1.08);
+    const x = t => m.l + t / t1 * (W - m.l - m.r), y = v => H - m.b - v / yMax * (H - m.t - m.b);
+    const svg = svgEl('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': `Patients en attente au fil de la garde, pic de ${S.peak.n} à ${timeLabel(S.peak.t)}` }, box);
+    for (const v of [0, yMax / 2, yMax]) {
+      svgEl('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: 'var(--line-soft)', 'stroke-width': 1 }, svg);
+      svgText(svg, m.l - 6, y(v) + 4, fmtNum(v), { 'text-anchor': 'end', 'font-variant-numeric': 'tabular-nums' });
+    }
+    // jours en abscisse, un sur deux si la place manque
+    const every = (W - m.l - m.r) / (t1 / DAY) < 34 ? 2 : 1;
+    for (let d = 0; d * DAY <= t1; d += every) svgText(svg, x(d * DAY) + 2, H - 6, dayAbbr(d * DAY), { 'font-size': 10.5 });
+    // repères : ouvertures d'étage et plan blanc, libellés étagés pour ne pas se chevaucher
+    // repères : une étiquette seulement si elle a la place sur l'une des deux rangées (sinon, l'infobulle la donne)
+    const rowEnd = [-1e9, -1e9];
+    for (const ev of S.events) {
+      const ex = x(ev.t), tw = ev.label.length * 5.4 + 6;
+      const row = ex >= rowEnd[0] ? 0 : ex >= rowEnd[1] ? 1 : -1;
+      const color = ev.kind === 'alert' ? 'var(--danger)' : 'var(--muted)';
+      svgEl('line', { x1: ex, x2: ex, y1: row < 0 ? m.t : m.t - 4 + row * 11, y2: H - m.b, stroke: color, 'stroke-width': 1, opacity: 0.55 }, svg);
+      if (row >= 0 && ex + tw < W) { svgText(svg, ex + 3, m.t - 8 + row * 11, ev.label, { 'font-size': 10, fill: color }); rowEnd[row] = ex + tw; }
+    }
+    const pts = data.map(d => `${x(d.t).toFixed(1)},${y(d.n).toFixed(1)}`);
+    svgEl('path', { d: `M${x(0)},${y(0)} L${pts.join(' L')} L${x(t1)},${y(0)} Z`, fill: 'var(--accent)', opacity: 0.1 }, svg);
+    svgEl('path', { d: `M${pts.join(' L')}`, fill: 'none', stroke: 'var(--accent)', 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, svg);
+    // EIG : triangles d'alerte sur la ligne de base
+    for (const e of G.eig) {
+      const ex = x(Math.min(e.t, t1)), by = y(0);
+      svgEl('path', { d: `M${ex},${by - 11} L${ex + 6},${by - 1} L${ex - 6},${by - 1} Z`, fill: 'var(--danger)' }, svg);
+      svgText(svg, ex, by - 3, '!', { 'font-size': 8, 'font-weight': 700, fill: '#fff', 'text-anchor': 'middle' });
+    }
+    // fin de série : point cerclé et valeur
+    const last = data[data.length - 1];
+    svgEl('circle', { cx: x(last.t), cy: y(last.n), r: 4, fill: 'var(--accent)', stroke: 'var(--panel)', 'stroke-width': 2 }, svg);
+    svgText(svg, x(last.t) + 7, y(last.n) + 4, fmtNum(last.n), { fill: 'var(--ink)', 'font-weight': 700 });
+    // réticule : suit le pointeur et se cale sur le relevé le plus proche
+    const guide = svgEl('line', { y1: m.t, y2: H - m.b, stroke: 'var(--ink)', 'stroke-width': 1, opacity: 0 }, svg);
+    const dot = svgEl('circle', { r: 4, fill: 'var(--accent)', stroke: 'var(--panel)', 'stroke-width': 2, opacity: 0 }, svg);
+    const hit = svgEl('rect', { x: m.l, y: 0, width: W - m.l - m.r, height: H, fill: 'transparent' }, svg);
+    const at = clientX => {
+      const r = svg.getBoundingClientRect(), px = (clientX - r.left) * W / r.width;
+      const t = clamp((px - m.l) / (W - m.l - m.r), 0, 1) * t1;
+      let best = data[0];
+      for (const d of data) if (Math.abs(d.t - t) < Math.abs(best.t - t)) best = d;
+      return best;
+    };
+    hit.addEventListener('pointermove', ev => {
+      const d = at(ev.clientX);
+      guide.setAttribute('x1', x(d.t)); guide.setAttribute('x2', x(d.t)); guide.setAttribute('opacity', 0.35);
+      dot.setAttribute('cx', x(d.t)); dot.setAttribute('cy', y(d.n)); dot.setAttribute('opacity', 1);
+      const lines = [{ value: fmtNum(d.n), label: `patients en attente · ${timeLabel(d.t)}` }];
+      SEV.forEach((s, i) => { if (d.tri[i]) lines.push({ key: s.fill, value: fmtNum(d.tri[i]), label: s.name.toLowerCase() }); });
+      for (const ev2 of S.events) if (Math.abs(ev2.t - d.t) < 2) lines.push({ label: `Repère : ${ev2.label}` });
+      for (const e of G.eig) if (Math.abs(e.t - d.t) < 2) lines.push({ key: 'var(--danger)', label: `EIG : ${e.name}` });
+      showTip(lines, ev.clientX, ev.clientY);
+    });
+    hit.addEventListener('pointerleave', () => { guide.setAttribute('opacity', 0); dot.setAttribute('opacity', 0); hideTip(); });
+  }
+
+  // Barres horizontales classées, une seule teinte. emphasize : la plus longue en couleur, les autres en gris.
+  function drawBars(box, rows, { emphasize, unit, detail }) {
+    box.replaceChildren();
+    if (!rows.length) { const p = document.createElement('p'); p.className = 'cap'; p.textContent = 'Pas encore de données.'; box.appendChild(p); return; }
+    const W = Math.max(260, box.clientWidth), rowH = 26, bar = 12;
+    const labelW = Math.min(150, W * 0.42), valW = 56, x0 = labelW + 8, x1 = W - valW;
+    const H = rows.length * rowH + 4, vMax = Math.max(...rows.map(r => r.v)) || 1;
+    const svg = svgEl('svg', { viewBox: `0 0 ${W} ${H}`, role: 'list' }, box);
+    rows.forEach((r, i) => {
+      const yy = i * rowH + 4, w = Math.max(2, (x1 - x0) * r.v / vMax), rad = Math.min(4, w / 2);
+      const g = svgEl('g', { role: 'listitem', 'aria-label': `${r.name} : ${unit(r.v)}` }, svg);
+      svgText(g, labelW, yy + bar - 1, r.name, { 'text-anchor': 'end', fill: 'var(--ink)', 'font-size': 12 });
+      const by = yy + 2;
+      svgEl('path', { d: `M${x0},${by} H${x0 + w - rad} Q${x0 + w},${by} ${x0 + w},${by + rad} V${by + bar - rad} Q${x0 + w},${by + bar} ${x0 + w - rad},${by + bar} H${x0} Z`,
+        fill: emphasize && i > 0 ? 'var(--dim)' : 'var(--accent)' }, g);
+      svgText(g, x0 + w + 6, by + bar - 2, unit(r.v), { 'font-variant-numeric': 'tabular-nums' });
+      const hitR = svgEl('rect', { x: 0, y: yy - 2, width: W, height: rowH, fill: 'transparent' }, g);
+      hoverable(hitR, () => [{ value: unit(r.v), label: r.name }, ...detail(r)]);
+    });
+  }
+
+  // Gravité à l'arrivée : une barre segmentée haute, une rampe d'une seule teinte (de l'urgence vitale au programmé).
+  function drawTriage(box) {
+    box.replaceChildren();
+    const counts = G.stats.arrivals.slice(1), total = counts.reduce((a, b) => a + b, 0);
+    if (!total) return;
+    const bar = document.createElement('div');
+    bar.className = 'segbar';
+    bar.setAttribute('role', 'img');
+    bar.setAttribute('aria-label', 'Gravité à l’arrivée : ' + SEV.map((s, i) => `${s.name} ${Math.round(counts[i] / total * 100)} %`).join(', '));
+    box.appendChild(bar);
+    SEV.forEach((s, i) => {
+      if (!counts[i]) return;
+      const seg = document.createElement('div');
+      seg.className = 'seg';
+      seg.style.flex = `${counts[i]} 1 0`;
+      seg.style.background = s.fill;
+      seg.style.color = s.ink;
+      const pct = Math.round(counts[i] / total * 100);
+      seg.dataset.label = `${pct} %`;
+      bar.appendChild(seg);
+      hoverable(seg, () => [{ value: `${pct} %`, label: `${s.name} · ${fmtNum(counts[i])} patients` }]);
+    });
+    // le pourcentage ne s'inscrit dans un bloc que s'il y tient
+    requestAnimationFrame(() => {
+      for (const seg of bar.children) if (seg.getBoundingClientRect().width > 46) seg.textContent = seg.dataset.label;
+    });
+    const leg = document.createElement('div');
+    leg.className = 'legend-row';
+    for (const s of SEV) {
+      const it = document.createElement('span'), sw = document.createElement('i');
+      sw.style.background = s.fill;
+      it.appendChild(sw);
+      it.appendChild(document.createTextNode(s.name));
+      leg.appendChild(it);
+    }
+    box.appendChild(leg);
+  }
+
+  // Vue tableau : chaque graphique a son équivalent lisible sans couleur ni survol.
+  function dataTables(box, svcRows) {
+    box.replaceChildren();
+    const table = (caption, head, rows) => {
+      const wrap = document.createElement('div'); wrap.className = 'scroll';
+      const t = document.createElement('table');
+      const cap = document.createElement('caption'); cap.textContent = caption; t.appendChild(cap);
+      const tr = document.createElement('tr');
+      head.forEach(h => { const th = document.createElement('th'); th.textContent = h; tr.appendChild(th); });
+      t.appendChild(tr);
+      for (const r of rows) {
+        const row = document.createElement('tr');
+        r.forEach((v, i) => { const td = document.createElement('td'); td.textContent = v; if (i) td.className = 'n'; row.appendChild(td); });
+        t.appendChild(row);
+      }
+      wrap.appendChild(t); box.appendChild(wrap);
+    };
+    const S = G.stats, days = [];
+    for (const d of S.samples) {
+      const k = Math.floor(d.t / DAY);
+      (days[k] = days[k] || { k, sum: 0, n: 0, max: 0 });
+      days[k].sum += d.n; days[k].n++; days[k].max = Math.max(days[k].max, d.n);
+    }
+    table('Charge par journée', ['Jour', 'Attente moyenne', 'Pic'], days.filter(Boolean).map(d => [`${DAYS[d.k % 7]} (S${Math.floor(d.k / 7) + 1})`, fmtNum(d.sum / d.n, 1), fmtNum(d.max)]));
+    table('Services', ['Service', 'Passages', 'Attente brancardier', 'File de soins'], svcRows.map(r => [r.name, fmtNum(r.passes), fmtHours(r.wait), fmtHours(r.queue)]));
+    const total = S.arrivals.slice(1).reduce((a, b) => a + b, 0) || 1;
+    table('Gravité à l’arrivée', ['Niveau de tri', 'Patients', 'Part'], SEV.map((s, i) => [s.name, fmtNum(S.arrivals[i + 1]), `${Math.round(S.arrivals[i + 1] / total * 100)} %`]));
+    if (S.events.length) table('Repères', ['Heure', 'Événement'], S.events.map(e => [timeLabel(e.t), e.label]));
+  }
+
+  function renderReport() {
+    const S = G.stats;
+    const arrivals = S.arrivals.slice(1).reduce((a, b) => a + b, 0);
+    const mean = S.journeys.length ? S.journeys.reduce((a, b) => a + b, 0) / S.journeys.length : 0;
+    const svcRows = Object.entries(S.svc).map(([t, v]) => ({ t, name: svcName(t), passes: v.passes, wait: v.wait, queue: v.queue }));
+    const busiest = svcRows.filter(r => r.t !== 'ASC').sort((a, b) => b.passes - a.passes)[0];
+    const tiles = [
+      ['Patients pris en charge', fmtNum(G.score), `sur ${fmtNum(arrivals)} arrivées`],
+      ['Séjour moyen', fmtHours(mean), 'de l’arrivée à la sortie'],
+      ['Pic de charge', fmtNum(S.peak.n), `patients en attente · ${timeLabel(S.peak.t)}`],
+      ['Service le plus sollicité', busiest ? busiest.name : '—', busiest ? `${fmtNum(busiest.passes)} passages` : ''],
+    ];
+    const box = $('#endTiles');
+    box.replaceChildren();
+    for (const [k, v, sub] of tiles) {
+      const d = document.createElement('div'); d.className = 'tile';
+      for (const [cls, txt] of [['k', k], ['v', v], ['s', sub]]) { const sp = document.createElement('span'); sp.className = cls; sp.textContent = txt; d.appendChild(sp); }
+      box.appendChild(d);
+    }
+    drawLoadChart($('#chLoad'));
+    // au-delà de 7 services, la queue est regroupée dans « Autres »
+    const fold = (rows, key) => {
+      const sorted = rows.filter(r => r[key] > 0).sort((a, b) => b[key] - a[key]);
+      if (sorted.length <= 8) return sorted.map(r => ({ ...r, v: r[key] }));
+      const rest = sorted.slice(7);
+      return [...sorted.slice(0, 7).map(r => ({ ...r, v: r[key] })),
+        { name: `Autres (${rest.length})`, v: rest.reduce((a, r) => a + r[key], 0), passes: rest.reduce((a, r) => a + r.passes, 0), wait: rest.reduce((a, r) => a + r.wait, 0), queue: rest.reduce((a, r) => a + r.queue, 0) }];
+    };
+    drawBars($('#chPasses'), fold(svcRows.filter(r => r.t !== 'ASC'), 'passes'), {
+      emphasize: false, unit: v => fmtNum(v),
+      detail: r => [{ label: `${fmtNum(r.passes)} étapes de soin réalisées` }],
+    });
+    drawBars($('#chWait'), fold(svcRows.map(r => ({ ...r, total: r.wait + r.queue })), 'total'), {
+      emphasize: true, unit: v => fmtHours(v),
+      detail: r => [{ label: `${fmtHours(r.wait)} à attendre un brancardier` }, { label: `${fmtHours(r.queue)} en file de soins` }],
+    });
+    drawTriage($('#chTri'));
+    dataTables($('#endData'), svcRows.sort((a, b) => b.passes - a.passes));
+  }
+  window.addEventListener('resize', () => { if (G && G.over && !$('#overModal').hidden) renderReport(); });
+
 
   // ---------- Contrôles ----------
   function setSpeed(s) {
@@ -2626,7 +2924,8 @@
   $('#btnHelpClose').addEventListener('click', () => closeModal('#helpModal'));
   $('#btnLegend').addEventListener('click', () => openModal('#helpModal'));
   $('#btnStart').addEventListener('click', () => { closeModal('#startModal'); });
-  $('#btnRestart').addEventListener('click', () => { closeModal('#overModal'); newGame(); setSpeed(1); });
+  $('#btnRestart').addEventListener('click', () => {
+    hideTip(); closeModal('#overModal'); newGame(); setSpeed(1); });
   window.addEventListener('keydown', ev => {
     if (ev.target && ev.target.tagName === 'INPUT') return;
     if (ev.code === 'Space') { ev.preventDefault(); setSpeed(0); }

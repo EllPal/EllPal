@@ -17,14 +17,23 @@ Pour jouer, ouvrez `index.html` dans un navigateur. Il n’y a rien à installer
 - **Tri** : urgence vitale, urgence, semi-urgent, programmé. Chacun a un délai. Les urgences vitales montent en premier dans les brancards et passent en premier dans les files de soins. Si une urgence vitale ou une urgence dépasse son délai, c’est un événement indésirable grave (EIG). Au-delà, un patient semi-urgent ou programmé part sans soins.
 - **Soins** : chaque service a des postes de soin (les petits lits sous le panneau) et une durée de prise en charge. La file de soins est à gauche du service, l’attente de brancardier à droite.
 - **Circuit septique** : les patients contagieux (tuberculose, norovirus, BMR) ont un anneau vert en pointillé. Ils ne voyagent que sur ce circuit, ce qui évite toute contamination croisée.
-- **Circuit radioprotégé** : la Radiopharmacie produit des doses de radiotraceur qui décroissent en 60 s. Elles doivent rejoindre la Médecine nucléaire par ce circuit, au sous-sol. Sans dose, aucune TEP ni scintigraphie n’est possible. Un patient qui vient de passer son examen devient radioactif (anneau jaune) : il emprunte les circuits standard, mais **voyage seul**, sur son brancard comme dans l’ascenseur.
+- **Circuit radioprotégé** : il dessert la médecine nucléaire, au sous-sol. La Radiopharmacie produit des doses de radiotraceur qui décroissent en 60 s (une toutes les 6 s, deux en circulation par médecine nucléaire). Elles ne voyagent que par ce circuit, et sans dose aucune TEP ni scintigraphie n’est possible. Les patients qui vont en médecine nucléaire (les étoiles) peuvent emprunter ce circuit comme les circuits standard. Un patient qui vient de passer son examen devient radioactif (anneau jaune) : il emprunte ces deux circuits, mais **voyage seul**, sur son brancard comme dans l’ascenseur.
+- **Patient sans itinéraire** : si un patient attend sans qu’aucun circuit ne mène à sa prochaine étape, la barre d’aide le signale (service de départ, étage, service à relier).
 - **Fin de semaine** : vous recevez un brancardier, et vous choisissez une ressource parmi deux (passerelles, déménagements, renfort d’équipe, salle d’attente agrandie, chariot double, cabine ou ascenseur, circuit septique de plus).
 - **Déménagement** : une ressource comme les passerelles (1 au départ, 2 de plus en fin de semaine). Elle déplace un service avec ses patients :
   - **sur le même étage**, ses circuits suivent la pièce, à condition de ne traverser aucun obstacle et de ne pas demander plus de passerelles ;
   - **vers un autre étage**, le service quitte ses circuits : ses voisins se rejoignent, ou le circuit est coupé si un obstacle les sépare.
 
   Un aperçu vert ou rouge montre si l’emplacement convient. Les paliers d’ascenseur ne se déplacent pas.
-- **Fin de partie** : un service saturé trop longtemps (anneau rouge), ou trois EIG. Le rapport de fin de garde liste chaque EIG : patient, service attendu, étage et heure. Le bandeau affiche le niveau de tension : activité normale, tension, puis plan blanc.
+- **Fin de partie** : un service saturé trop longtemps (anneau rouge), ou trois EIG.
+- **Rapport de fin de garde** : il montre comment l’hôpital a été sollicité, avec les durées en heures d’horloge du jeu (une journée de 24 h dure 20 s) :
+  - quatre chiffres clés : patients pris en charge sur le nombre d’arrivées, séjour moyen, pic de charge, service le plus sollicité ;
+  - la courbe des patients en attente au fil de la garde, avec en repères les ouvertures d’étage, le plan blanc et les EIG (triangles), et une infobulle détaillant la gravité à chaque instant ;
+  - les passages par service, et l’attente cumulée par service en heures-patients, où le goulot d’étranglement ressort en couleur ;
+  - la gravité à l’arrivée, en barre segmentée ;
+  - une synthèse qui liste chaque EIG (patient, service attendu, étage, heure), et un tableau de données pour chaque graphique.
+
+  La gravité y suit une rampe d’une seule teinte, plus foncée pour l’urgence vitale (vérifiée pour les daltoniens). Les couleurs de tri du plan, trop proches entre orange et jaune, ne servent pas dans les graphiques. Le bandeau affiche le niveau de tension : activité normale, tension, puis plan blanc.
 
 ## Étages et ascenseurs
 

@@ -36,6 +36,10 @@
   --l5: #8a5a2b; --l6: #4b5bd6; --l7: #56656d;
   --sep: #2f9e44; --rad: #e2b100; --rad-ink: #1b1b1b;
   --t1: #d62828; --t2: #ef7409; --t3: #d9a400; --t4: #2c9d5b;
+  /* rapport : gravité en rampe d'une seule teinte (ordinale, validée), gris de mise en retrait */
+  --sev1: #7a1a1d; --sev2: #b3262b; --sev3: #dc5a55; --sev4: #ec9a94;
+  --sev1-ink: #ffffff; --sev2-ink: #ffffff; --sev3-ink: #1b1b1b; --sev4-ink: #1b1b1b;
+  --dim: #b4c0c7;
   --font-sign: "Barlow Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
   --font-ui: "Atkinson Hyperlegible", "Segoe UI", system-ui, -apple-system, sans-serif;
   --font-data: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
@@ -49,6 +53,7 @@
     --l1: #5b8cff; --l2: #a77bf0; --l3: #f0629f; --l4: #2fc2d4; --l5: #c98e55; --l6: #8190ff; --l7: #9aa9b0;
     --sep: #4cc865; --rad: #f2c40f; --rad-ink: #0a0a0a;
     --t1: #ff4d4d; --t2: #ff9433; --t3: #f2c40f; --t4: #46c47a;
+    --sev1: #ffc2bd; --sev2: #ff8a80; --sev3: #e5534f; --sev4: #b0302f; --sev1-ink: #1b1b1b; --sev2-ink: #1b1b1b; --sev3-ink: #1b1b1b; --sev4-ink: #ffffff; --dim: #3e5664;
     color-scheme: dark;
   }
 }
@@ -60,6 +65,7 @@
   --l1: #5b8cff; --l2: #a77bf0; --l3: #f0629f; --l4: #2fc2d4; --l5: #c98e55; --l6: #8190ff; --l7: #9aa9b0;
   --sep: #4cc865; --rad: #f2c40f; --rad-ink: #0a0a0a;
   --t1: #ff4d4d; --t2: #ff9433; --t3: #f2c40f; --t4: #46c47a;
+    --sev1: #ffc2bd; --sev2: #ff8a80; --sev3: #e5534f; --sev4: #b0302f; --sev1-ink: #1b1b1b; --sev2-ink: #1b1b1b; --sev3-ink: #1b1b1b; --sev4-ink: #ffffff; --dim: #3e5664;
   color-scheme: dark;
 }
 
@@ -298,6 +304,38 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
   border: 2px solid var(--danger); color: var(--danger); padding: 3px 8px; border-radius: 4px; transform: rotate(-2deg); margin-bottom: 8px;
 }
 
+/* ---------- Rapport de fin de garde : graphiques ---------- */
+.doc-wide { width: min(880px, 100%); }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 16px 0 6px; }
+.tile { background: var(--room); border-radius: 8px; padding: 10px 12px; display: grid; gap: 2px; min-width: 0; }
+.tile .k { font-size: 12px; color: var(--muted); }
+.tile .v { font-size: 26px; font-weight: 700; line-height: 1.1; }
+.tile .s { font-size: 12px; color: var(--muted); }
+.chart-card { margin-top: 16px; min-width: 0; }
+.chart-card h3 { margin: 0; font-size: 15px; font-weight: 700; }
+.chart-card .cap { margin: 2px 0 8px; font-size: 12.5px; color: var(--muted); line-height: 1.4; }
+.chart { width: 100%; min-width: 0; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.chart svg text { font-family: var(--font-ui); }
+.two-up { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0 24px; }
+.segbar { display: flex; gap: 2px; height: 28px; margin-top: 4px; }
+.segbar .seg { border-radius: 4px; display: flex; align-items: center; padding: 0 8px; font-size: 12px; font-weight: 700; min-width: 0; overflow: visible; white-space: nowrap; cursor: default; }
+.segbar .seg:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.legend-row { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 8px; font-size: 12.5px; color: var(--ink); }
+.legend-row span { display: inline-flex; align-items: center; gap: 6px; }
+.legend-row i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+.ctip { position: fixed; z-index: 40; pointer-events: none; background: var(--panel); color: var(--ink); border: 1px solid var(--line-soft); border-radius: 6px; padding: 6px 9px; font-size: 12px; line-height: 1.45; box-shadow: 0 8px 20px -10px #0007; max-width: 240px; }
+.ctip b { font-size: 14px; }
+.ctip .row { display: flex; align-items: center; gap: 6px; }
+.ctip .key { width: 10px; height: 2px; display: inline-block; }
+.data-view { margin-top: 14px; font-size: 13px; }
+.data-view summary { cursor: pointer; color: var(--muted); font-weight: 700; }
+.data-view table { width: 100%; border-collapse: collapse; margin: 8px 0 14px; font-variant-numeric: tabular-nums; }
+.data-view caption { text-align: left; font-weight: 700; padding: 4px 0; }
+.data-view th, .data-view td { text-align: left; padding: 4px 6px; border-bottom: 1px solid var(--line-soft); }
+.data-view td.n { text-align: right; }
+.data-view .scroll { overflow-x: auto; max-height: 240px; overflow-y: auto; }
+
 @media (max-width: 760px) {
   .sih { grid-template-columns: 1fr auto; }
   .kpis { grid-column: 1 / -1; grid-row: 2; justify-content: space-between; }
@@ -424,17 +462,47 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 
   <!-- Rapport de fin de garde -->
   <div class="modal" id="overModal" hidden>
-    <div class="doc">
+    <div class="doc doc-wide">
       <div class="doc-head"><span class="logo"><i></i></span><div class="what">Rapport de fin de garde<span>Transmis à la direction des soins</span></div><div class="ref" id="overRef"></div></div>
       <div class="doc-body">
         <span class="stamp">Garde interrompue</span>
         <h2 id="overTitle">Garde terminée</h2>
         <p class="lede" id="overReason"></p>
+        <div class="tiles" id="endTiles"></div>
+        <section class="chart-card">
+          <h3>Charge de l’hôpital au fil de la garde</h3>
+          <p class="cap">Patients en attente à chaque instant : d’un brancardier, d’un soin ou en cours de transport. Repères : ouvertures d’étage, plan blanc, EIG.</p>
+          <div class="chart" id="chLoad"></div>
+        </section>
+        <div class="two-up">
+          <section class="chart-card">
+            <h3>Passages par service</h3>
+            <p class="cap">Étapes de soin réalisées : ce que l’hôpital a le plus produit.</p>
+            <div class="chart" id="chPasses"></div>
+          </section>
+          <section class="chart-card">
+            <h3>Où les patients ont attendu</h3>
+            <p class="cap">Attente cumulée, en heures-patients (brancardier et file de soins). Le goulot d’étranglement est mis en avant.</p>
+            <div class="chart" id="chWait"></div>
+          </section>
+        </div>
+        <section class="chart-card">
+          <h3>Gravité à l’arrivée</h3>
+          <p class="cap">Répartition des patients selon leur niveau de tri au moment de leur arrivée.</p>
+          <div id="chTri"></div>
+        </section>
+        <h4>Synthèse</h4>
         <table class="report" id="endStats"></table>
+        <details class="data-view">
+          <summary>Données des graphiques</summary>
+          <div id="endData"></div>
+        </details>
         <div class="cta"><button class="btn" id="btnRestart">Nouvelle garde</button><span class="best" id="bestScore2"></span></div>
       </div>
     </div>
   </div>
+
+  <div class="ctip" id="ctip" role="status" hidden></div>
 
   <!-- Protocole et légende -->
   <div class="modal" id="helpModal" hidden>
