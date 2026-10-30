@@ -90,6 +90,8 @@ Le jeu emprunte trois registres d’un vrai hôpital :
 | Faire passer un circuit par un service | Glisser un tronçon sur le service |
 | Boucler | Revenir sur le premier service |
 | Choisir le type de circuit | Toucher une pastille libre dans la palette |
+| Ajouter un brancardier | Faire glisser un brancard depuis la case *Réserve* et le déposer sur un circuit, à l’endroit où il doit démarrer (le circuit visé s’illumine) |
+| Déplacer ou retirer un brancardier | Attraper un brancard en route : le déposer ailleurs sur son circuit ou sur un autre (ses patients descendent au service vers lequel il roulait), ou hors circuit pour le remettre en réserve. Un simple toucher ouvre la fiche de son circuit |
 | Gérer brancardiers ou supprimer un circuit | Toucher une pastille utilisée |
 | Voir l’activité d’un service | Toucher le service |
 | Changer d’étage | Toucher un niveau dans la colonne de gauche, ou flèches haut et bas |

@@ -955,6 +955,48 @@
     G.uiVersion++;
   }
 
+  // Distance, le long d'un circuit, du point le plus proche de p.
+  function projectOnLine(l, p) {
+    const { pts, cum } = l.geom;
+    let best = 0, bd = Infinity;
+    for (let i = 0; i < pts.length - 1; i++) {
+      const a = pts[i], b = pts[i + 1], dx = b.x - a.x, dy = b.y - a.y, L2 = dx * dx + dy * dy;
+      const t = L2 ? clamp(((p.x - a.x) * dx + (p.y - a.y) * dy) / L2, 0, 1) : 0;
+      const d = Math.hypot(p.x - (a.x + t * dx), p.y - (a.y + t * dy));
+      if (d < bd) { bd = d; best = cum[i] + t * (cum[i + 1] - cum[i]); }
+    }
+    return best;
+  }
+  // Pose un brancardier sur un circuit, à l'endroit visé ; il repart vers le service suivant.
+  function placeOnLine(v, l, p) {
+    const nd = l.geom.nodeDist, n = l.nodes.length, d = projectOnLine(l, p);
+    let i = 0;
+    while (i < nd.length - 2 && nd[i + 1] <= d) i++;
+    if (!l.loop && i >= n - 1) i = n - 2;
+    v.si = i; v.ti = l.loop ? (i + 1) % n : i + 1; v.dir = 1;
+    v.pos = d; v.state = 'move';
+    v.targetId = l.nodes[v.ti];
+    v.td = l.loop && v.ti === 0 ? l.geom.L : nd[v.ti];
+    const q = pointAt(l.geom, d);
+    v.x = q.x; v.y = q.y; v.a = q.a; v.z = l.z;
+  }
+  function addVehicleAt(l, p) {
+    const v = addVehicle(l);
+    if (v) placeOnLine(v, l, p);
+    return v;
+  }
+  // Changer un brancardier de circuit : ses patients descendent au service vers lequel il roulait.
+  function moveVehicleTo(v, l, p) {
+    if (l !== v.line) {
+      const n = nodeById(v.line.nodes[v.ti]) || nodeById(v.line.nodes[v.si]);
+      for (const e of v.cargo) if (n) drop(e, n);
+      v.cargo = [];
+      v.line = l;
+    }
+    placeOnLine(v, l, p);
+    G.uiVersion++;
+  }
+
   function remapVehicle(v) {
     // le brancardier reprend au service vers lequel il roulait, ou au plus proche
     const l = v.line;
@@ -1386,27 +1428,10 @@
     // Brancardiers : un brancard vu de dessus, avec son oreiller à l'avant.
     for (const v of G.vehicles) {
       if (v.line.lift || v.z !== z) continue;
-      const cap = vehCap(v), cols = Math.ceil(cap / 2);
-      const len = Math.max(26, cols * 8 + 12), wid = 15;
-      c.save(); c.translate(v.x, v.y); c.rotate(v.a);
-      c.fillStyle = C.ink;
-      for (const [wx, wy] of [[-len / 2 + 3, -wid / 2 - 1], [len / 2 - 3, -wid / 2 - 1], [-len / 2 + 3, wid / 2 + 1], [len / 2 - 3, wid / 2 + 1]]) {
-        c.beginPath(); c.arc(wx, wy, 1.8, 0, Math.PI * 2); c.fill();
-      }
-      roundRect(c, -len / 2, -wid / 2, len, wid, 3.5);
-      c.fillStyle = C.node; c.fill();
-      c.lineWidth = 2.6; c.strokeStyle = C[v.line.color]; c.stroke();
-      roundRect(c, len / 2 - 7, -wid / 2 + 3, 4.5, wid - 6, 1.5);
-      c.fillStyle = C['line-soft']; c.fill();
-      v.cargo.forEach((e, i) => {
-        const col = Math.floor(i / 2), row = i % 2;
-        const ex = -len / 2 + 6 + col * 8, ey = row ? 3.4 : -3.4;
-        c.save(); c.translate(ex, ey); c.rotate(-v.a);
-        drawEntity(c, e, 0, 0, 2.6, false);
-        c.restore();
-      });
-      c.restore();
+      if (vdrag && vdrag.from === v && vdrag.moved) continue; // celui qu'on déplace suit le pointeur
+      drawStretcher(c, v.x, v.y, v.a, C[v.line.color], v.cargo, vehCap(v), 1);
     }
+    drawVehicleDrag(c);
 
     // Services.
     const hover = drag ? drag.hover : null;
@@ -1692,6 +1717,49 @@
     c.globalAlpha = 0.7; signPanel(c, n.type, p.x, p.y, NODE_R); c.globalAlpha = 1;
   }
 
+  function drawStretcher(c, x, y, a, color, cargo, cap, alpha) {
+    const cols = Math.ceil(cap / 2);
+    const len = Math.max(26, cols * 8 + 12), wid = 15;
+    c.save(); c.globalAlpha = alpha; c.translate(x, y); c.rotate(a);
+    c.fillStyle = C.ink;
+    for (const [wx, wy] of [[-len / 2 + 3, -wid / 2 - 1], [len / 2 - 3, -wid / 2 - 1], [-len / 2 + 3, wid / 2 + 1], [len / 2 - 3, wid / 2 + 1]]) {
+      c.beginPath(); c.arc(wx, wy, 1.8, 0, Math.PI * 2); c.fill();
+    }
+    roundRect(c, -len / 2, -wid / 2, len, wid, 3.5);
+    c.fillStyle = C.node; c.fill();
+    c.lineWidth = 2.6; c.strokeStyle = color; c.stroke();
+    roundRect(c, len / 2 - 7, -wid / 2 + 3, 4.5, wid - 6, 1.5);
+    c.fillStyle = C['line-soft']; c.fill();
+    cargo.forEach((e, i) => {
+      const col = Math.floor(i / 2), row = i % 2;
+      const ex = -len / 2 + 6 + col * 8, ey = row ? 3.4 : -3.4;
+      c.save(); c.translate(ex, ey); c.rotate(-a);
+      drawEntity(c, e, 0, 0, 2.6, false);
+      c.restore();
+    });
+    c.restore();
+  }
+
+  // Glisser-déposer d'un brancardier : le circuit visé s'illumine, le brancard suit le pointeur,
+  // posé dans l'axe du circuit à l'endroit où il sera déposé.
+  function drawVehicleDrag(c) {
+    if (!vdrag || !vdrag.moved || !vdrag.pt || vdrag.overDock) return;
+    const v = vdrag.from === 'pool' ? null : vdrag.from;
+    let x = vdrag.pt.x, y = vdrag.pt.y, a = 0, color = C.muted;
+    if (vdrag.line) {
+      const l = vdrag.line;
+      c.save();
+      c.beginPath(); c.moveTo(l.geom.pts[0].x, l.geom.pts[0].y);
+      for (const q of l.geom.pts) c.lineTo(q.x, q.y);
+      c.strokeStyle = C.accent; c.globalAlpha = 0.35; c.lineWidth = LINE_W + 12; c.lineJoin = 'round'; c.lineCap = 'round'; c.stroke();
+      c.restore();
+      const q = pointAt(l.geom, projectOnLine(l, vdrag.pt));
+      x = q.x; y = q.y; a = q.a; color = C[l.color];
+    }
+    const cap = vdrag.line ? VEH_CAP + vdrag.line.cart : v ? vehCap(v) : VEH_CAP;
+    drawStretcher(c, x, y, a, color, v ? v.cargo : [], cap, vdrag.line ? 0.95 : 0.6);
+  }
+
   function drawChooser(c) {
     if (!drag || !drag.start) return;
     if ((drag.mode === 'new' || drag.mode === 'extend') && drag.downAt && !drag.moved) {
@@ -1796,8 +1864,8 @@
     return out.sort((a, b) => a.d - b.d).map(x => x.h);
   }
   const handleEnd = h => (h.end === 'head' ? h.line.nodes[0] : h.line.nodes[h.line.nodes.length - 1]);
-  function lineAt(p) {
-    const tol = Math.max(9, 14 / cam.s);
+  function lineAt(p, tolPx = 14) {
+    const tol = Math.max(9, tolPx / cam.s);
     let best = null, bd = Infinity;
     for (const l of G.lines) {
       if (l.lift || l.z !== G.view) continue;
@@ -1843,6 +1911,11 @@
     if (G.apply) { applyToken(p); return; }
 
     const n0 = nodeAt(p, 0);
+    const v0 = vehicleAt(p);
+    if (v0 && !(n0 && dist(n0, p) < NODE_R * 0.8)) {
+      vdrag = { from: v0, sx: ev.clientX, sy: ev.clientY, moved: false, pt: p, line: null };
+      return;
+    }
     const near = handlesNear(p);
     const h = near[0];
     const onNodeCore = n0 && dist(n0, p) < NODE_R;
@@ -1880,6 +1953,51 @@
       drag = { mode: 'insert', line: hit.line, seg: hit.seg, target: null, color: hit.line.color, pt: p, sx, sy, moved: false };
     }
   });
+
+  // ---------- Glisser-déposer des brancardiers ----------
+  // Depuis la réserve (en bas de l'écran) ou depuis un circuit : on dépose sur un circuit,
+  // ou, pour un brancardier en service, hors circuit pour le remettre en réserve.
+  let vdrag = null;
+  function vehicleAt(p) {
+    const tol = Math.max(14, 16 / cam.s);
+    let best = null, bd = Infinity;
+    for (const v of G.vehicles) {
+      if (v.line.lift || v.z !== G.view) continue;
+      const d = Math.hypot(v.x - p.x, v.y - p.y);
+      if (d < tol && d < bd) { bd = d; best = v; }
+    }
+    return best;
+  }
+  function vdragMove(cx, cy) {
+    if (Math.hypot(cx - vdrag.sx, cy - vdrag.sy) > 6) vdrag.moved = true;
+    const r = canvas.getBoundingClientRect();
+    vdrag.pt = toWorld(cx - r.left, cy - r.top);
+    const dock = $('.dock').getBoundingClientRect();
+    vdrag.overDock = cx >= dock.left && cx <= dock.right && cy >= dock.top && cy <= dock.bottom;
+    const hit = vdrag.overDock ? null : lineAt(vdrag.pt, 26);
+    vdrag.line = hit ? hit.line : null;
+  }
+  function vdragEnd() {
+    const d = vdrag; vdrag = null;
+    el.poolDrag.classList.remove('dragging');
+    if (d.from === 'pool') {
+      if (d.line) addVehicleAt(d.line, d.pt);
+      return;
+    }
+    const v = d.from;
+    if (!G.vehicles.includes(v)) return;
+    if (!d.moved) { openLinePanel(v.line); return; }       // un simple toucher ouvre la fiche du circuit
+    if (d.line) moveVehicleTo(v, d.line, d.pt);
+    else { removeVehicle(v); toast('Brancardier remis en réserve.'); }
+  }
+  function startPoolDrag(ev) {
+    if (!G || G.over || G.modal || G.pool <= 0) return;
+    closePanels();
+    vdrag = { from: 'pool', sx: ev.clientX, sy: ev.clientY, moved: false, pt: null, line: null };
+    el.poolDrag.classList.add('dragging');
+    el.poolDrag.setPointerCapture(ev.pointerId);
+    ev.preventDefault();
+  }
 
   // ---------- Sélecteur de circuit (appui long sur un service) ----------
   const HOLD_MS = 380;
@@ -1934,6 +2052,7 @@
   }
 
   canvas.addEventListener('pointermove', ev => {
+    if (vdrag) { vdragMove(ev.clientX, ev.clientY); return; }
     if (G && G.apply === 'move') G.hoverPt = toWorld(evtPoint(ev).sx, evtPoint(ev).sy);
     if (!drag) return;
     const { sx, sy } = evtPoint(ev);
@@ -2025,8 +2144,9 @@
     }
     void ev;
   };
-  canvas.addEventListener('pointerup', endDrag);
-  canvas.addEventListener('pointercancel', () => { if (drag && drag.holdTimer) clearTimeout(drag.holdTimer); drag = null; });
+  canvas.addEventListener('pointerup', ev => { if (vdrag) vdragEnd(); else endDrag(ev); });
+  canvas.addEventListener('pointercancel', () => {
+    vdrag = null; if (drag && drag.holdTimer) clearTimeout(drag.holdTimer); drag = null; });
 
   function applyToken(p) {
     const tok = G.apply;
@@ -2140,7 +2260,7 @@
   // ================================================================
   const el = {
     score: $('#score'), clock: $('#clock'), day: $('#dayName'), strikes: $('#strikes'), palette: $('#palette'),
-    pool: $('#poolN'), bridges: $('#bridgesN'), floorbar: $('#floorbar'), moves: $('#movesN'), moveBtn: $('#moveBtn'), inv: $('#inv'), hint: $('#hint'), toasts: $('#toasts'),
+    pool: $('#poolN'), poolDrag: $('#poolDrag'), bridges: $('#bridgesN'), floorbar: $('#floorbar'), moves: $('#movesN'), moveBtn: $('#moveBtn'), inv: $('#inv'), hint: $('#hint'), toasts: $('#toasts'),
     lp: $('#linePanel'), nt: $('#nodeTip'), tension: $('#tension'), tensionLabel: $('#tensionLabel'),
   };
 
@@ -2192,6 +2312,7 @@
     lastUi = G.uiVersion;
     renderPalette();
     el.pool.textContent = G.pool;
+    el.poolDrag.classList.toggle('empty', G.pool <= 0);
     el.bridges.textContent = `${Math.max(0, G.bridges - bridgesUsed(null))}/${G.bridges}`;
     el.moves.textContent = G.moves;
     el.moveBtn.disabled = G.moves <= 0;
@@ -2294,7 +2415,13 @@
   let hintKey = '';
   function updateHint() {
     let key = '', html = '';
-    if (G.apply === 'move') {
+    if (vdrag && vdrag.moved) {
+      key = 'vdrag' + (vdrag.from === 'pool');
+      html = vdrag.from === 'pool'
+        ? 'Déposez le brancardier sur un circuit, à l’endroit où il doit commencer sa tournée.'
+        : 'Déposez-le sur un circuit pour le déplacer, ou ailleurs pour le remettre en réserve.';
+    }
+    else if (G.apply === 'move') {
       key = 'move' + (G.moveNode ? G.moveNode.id : '');
       html = (G.moveNode
         ? `Touchez le nouvel emplacement de ${TYPES[G.moveNode.type].name.toLowerCase()}${G.floors.length > 1 ? ', à cet étage ou à un autre (colonne Niveaux)' : ''}.`
@@ -2349,6 +2476,10 @@
     $('#lpCap').textContent = `${VEH_CAP + l.cart} places par brancardier · ${G.pool} brancardier(s) en réserve.`;
   }
   $('#lpClose').addEventListener('click', () => { el.lp.hidden = true; });
+  el.poolDrag.addEventListener('pointerdown', startPoolDrag);
+  el.poolDrag.addEventListener('pointermove', ev => { if (vdrag && vdrag.from === 'pool') vdragMove(ev.clientX, ev.clientY); });
+  el.poolDrag.addEventListener('pointerup', () => { if (vdrag && vdrag.from === 'pool') vdragEnd(); });
+  el.poolDrag.addEventListener('pointercancel', () => { vdrag = null; el.poolDrag.classList.remove('dragging'); });
   $('#moveBtn').addEventListener('click', () => {
     if (!G || G.moves <= 0) return;
     if (G.apply === 'move') cancelMove();
@@ -2620,7 +2751,7 @@
   requestAnimationFrame(frame);
 
   // Accès de débogage depuis la console.
-  window.miniHopital = { get state() { return G; }, step, spawnPatient, addVehicle, dragMode: () => drag && drag.mode, routeInfo: (a, b) => routeInfo(a, b), canPlace: (n, x, y, z) => canPlace(n, x, y, z), createLine: (ids, kind = 'std') => {
+  window.miniHopital = { get state() { return G; }, step, spawnPatient, addVehicle, pointOn: (l, f) => pointAt(l.geom, l.geom.L * f), dragMode: () => drag && drag.mode, routeInfo: (a, b) => routeInfo(a, b), canPlace: (n, x, y, z) => canPlace(n, x, y, z), createLine: (ids, kind = 'std') => {
     const slot = G.slots.find(s => s.kind === kind && s.unlocked && !s.line);
     return slot ? createLine(slot, ids, false) : null;
   } };
