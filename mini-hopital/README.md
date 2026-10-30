@@ -18,7 +18,12 @@ Pour jouer, ouvrez `index.html` dans un navigateur. Il n’y a rien à installer
 - **Soins** : chaque service a des postes de soin (les petits lits sous le panneau) et une durée de prise en charge. La file de soins est à gauche du service, l’attente de brancardier à droite.
 - **Circuit septique** : les patients contagieux (tuberculose, norovirus, BMR) ont un anneau vert en pointillé. Ils ne voyagent que sur ce circuit, ce qui évite toute contamination croisée.
 - **Circuit radioprotégé** : la Radiopharmacie produit des doses de radiotraceur qui décroissent en 60 s. Elles doivent rejoindre la Médecine nucléaire par ce circuit, au sous-sol. Sans dose, aucune TEP ni scintigraphie n’est possible. Un patient qui vient de passer son examen devient radioactif (anneau jaune) : il emprunte les circuits standard, mais **voyage seul**, sur son brancard comme dans l’ascenseur.
-- **Fin de semaine** : vous recevez un brancardier, et vous choisissez une ressource parmi deux (passerelles, renfort d’équipe, salle d’attente agrandie, chariot double, second circuit septique ou radioprotégé).
+- **Fin de semaine** : vous recevez un brancardier, et vous choisissez une ressource parmi deux (passerelles, déménagements, renfort d’équipe, salle d’attente agrandie, chariot double, cabine ou ascenseur, circuit septique de plus).
+- **Déménagement** : une ressource comme les passerelles (1 au départ, 2 de plus en fin de semaine). Elle déplace un service avec ses patients :
+  - **sur le même étage**, ses circuits suivent la pièce, à condition de ne traverser aucun obstacle et de ne pas demander plus de passerelles ;
+  - **vers un autre étage**, le service quitte ses circuits : ses voisins se rejoignent, ou le circuit est coupé si un obstacle les sépare.
+
+  Un aperçu vert ou rouge montre si l’emplacement convient. Les paliers d’ascenseur ne se déplacent pas.
 - **Fin de partie** : un service saturé trop longtemps (anneau rouge), ou trois EIG. Le rapport de fin de garde liste chaque EIG : patient, service attendu, étage et heure. Le bandeau affiche le niveau de tension : activité normale, tension, puis plan blanc.
 
 ## Étages et ascenseurs
@@ -80,6 +85,8 @@ Le jeu emprunte trois registres d’un vrai hôpital :
 | --- | --- |
 | Tracer un circuit | Glisser d’un service à l’autre (on peut en enchaîner plusieurs) |
 | Prolonger ou raccourcir | Tirer l’extrémité en T, ou sélectionner le circuit dans la palette puis glisser depuis son terminus |
+| Choisir le circuit à prolonger | Maintenir l’appui sur un service : un sélecteur circulaire affiche les circuits qui s’y terminent et un « + » pour un nouveau circuit. Glisser vers une pastille, puis continuer vers le service à relier (relâcher sur la pastille la sélectionne seulement) |
+| Déménager un service | Toucher le compteur *Déménager*, puis le service, puis faire glisser sa pièce au nouvel emplacement, au besoin après avoir changé d’étage |
 | Faire passer un circuit par un service | Glisser un tronçon sur le service |
 | Boucler | Revenir sur le premier service |
 | Choisir le type de circuit | Toucher une pastille libre dans la palette |

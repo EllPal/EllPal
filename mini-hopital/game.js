@@ -215,6 +215,7 @@
               desc: 'Au sous-sol, murs de béton de deux mètres. Infranchissable : contournez-le.' },
   };
   const START_BRIDGES = 2;
+  const START_MOVES = 1;          // déménagements de service disponibles au départ
 
   // Qui a le droit d'emprunter quel circuit. Les ascenseurs (« lift ») servent à tous.
   // Un patient radioactif emprunte les circuits standard, mais voyage seul.
@@ -238,6 +239,7 @@
 
   const UPGRADES = {
     bridge: { title: 'Deux passerelles', desc: 'Franchissez deux patios de plus avec vos circuits.', ok: () => true },
+    move: { title: 'Deux déménagements', desc: 'Déplacez deux services, sur le même étage ou à un autre niveau, avec leurs patients.', ok: () => true },
     cabin: { title: 'Cabine supplémentaire', desc: 'Une cabine de plus dans la cage d’ascenseur de votre choix.', ok: () => G.shafts.length > 0 },
     lift: { title: 'Nouvel ascenseur', desc: 'Une autre cage d’ascenseurs est mise en service, à tous les niveaux.',
       ok: () => G.floors.length > 1 && !!nextCore() },
@@ -302,7 +304,7 @@
     const H = 800, W = Math.round(800 * aspect);
     G = {
       t: 0, score: 0, incidents: 0, lwbs: 0, dosesLost: 0, aggravated: 0, week: 1, nextWeek: WEEK,
-      W, H, region: null, obstacles: [], bridges: START_BRIDGES,
+      W, H, region: null, obstacles: [], bridges: START_BRIDGES, moves: START_MOVES, moveNode: null, hoverPt: null,
       floors: [0], view: 0, shafts: [], eig: [],
       nodes: [], lines: [], vehicles: [], floaters: [],
       pool: 3, inv: { staff: 0, room: 0, cart: 0, cabin: 0 }, apply: null,
@@ -1409,6 +1411,8 @@
     // Services.
     const hover = drag ? drag.hover : null;
     for (const n of nodes) drawNode(c, n, n === hover);
+    drawChooser(c);
+    drawMoveGhost(c, z);
 
     // Textes flottants.
     c.textAlign = 'center'; c.textBaseline = 'middle';
@@ -1665,8 +1669,70 @@
     c.globalAlpha = 1;
   }
 
+  // Déménagement : le service choisi est entouré ; sa pièce suit le pointeur, verte ou rouge selon la place.
+  function drawMoveGhost(c, z) {
+    if (G.apply !== 'move' || !G.moveNode) return;
+    const n = G.moveNode;
+    if (n.z === z) {
+      c.setLineDash([6, 4]); c.strokeStyle = C.accent; c.lineWidth = 3;
+      c.strokeRect(n.x - ROOM.l - 5, n.y - ROOM.t - 5, ROOM.l + ROOM.r + 10, ROOM.t + ROOM.b + 10);
+      c.setLineDash([]);
+    }
+    const p = G.hoverPt;
+    if (!p || (n.z === z && dist(p, n) < NODE_R * 2)) return;
+    const ok = canPlace(n, p.x, p.y, z).ok;
+    c.globalAlpha = 0.85;
+    c.fillStyle = ok ? C.room : C.danger;
+    c.globalAlpha = ok ? 0.9 : 0.25;
+    c.fillRect(p.x - ROOM.l, p.y - ROOM.t, ROOM.l + ROOM.r, ROOM.t + ROOM.b);
+    c.globalAlpha = 1;
+    c.setLineDash([6, 4]); c.strokeStyle = ok ? C.accent : C.danger; c.lineWidth = 2;
+    c.strokeRect(p.x - ROOM.l, p.y - ROOM.t, ROOM.l + ROOM.r, ROOM.t + ROOM.b);
+    c.setLineDash([]);
+    c.globalAlpha = 0.7; signPanel(c, n.type, p.x, p.y, NODE_R); c.globalAlpha = 1;
+  }
+
+  function drawChooser(c) {
+    if (!drag || !drag.start) return;
+    if (drag.mode === 'new' && drag.downAt && !drag.moved) {
+      // anneau qui se remplit pendant l'appui long
+      const f = Math.min(1, (performance.now() - drag.downAt) / HOLD_MS), n = drag.start;
+      c.beginPath(); c.arc(n.x, n.y, NODE_R + 9, -Math.PI / 2, -Math.PI / 2 + f * Math.PI * 2);
+      c.strokeStyle = C.accent; c.lineWidth = 3; c.lineCap = 'round'; c.stroke();
+      return;
+    }
+    if (drag.mode !== 'choose') return;
+    const n = drag.start, s = 1 / cam.s;
+    // anneau de fond : le service reste visible au centre
+    c.beginPath(); c.arc(n.x, n.y, drag.R + 20 * s, 0, Math.PI * 2); c.arc(n.x, n.y, NODE_R + 6, 0, Math.PI * 2, true);
+    c.fillStyle = C.floor; c.globalAlpha = 0.9; c.fill('evenodd'); c.globalAlpha = 1;
+    c.beginPath(); c.arc(n.x, n.y, drag.R + 20 * s, 0, Math.PI * 2);
+    c.strokeStyle = C['line-soft']; c.lineWidth = 1.5 * s; c.stroke();
+    for (const o of drag.opts) {
+      const on = drag.sel === o, r = o.r * (on ? 1.2 : 1);
+      if (o.line) {
+        c.beginPath(); c.arc(o.x, o.y, r, 0, Math.PI * 2); c.fillStyle = C[o.color]; c.fill();
+        if (o.kind !== 'std') {
+          c.setLineDash([3 * s, 3 * s]); c.lineWidth = 3 * s; c.strokeStyle = o.kind === 'sep' ? C.floor : C['rad-ink'];
+          c.beginPath(); c.arc(o.x, o.y, r * 0.6, 0, Math.PI * 2); c.stroke(); c.setLineDash([]);
+        }
+      } else {
+        c.beginPath(); c.arc(o.x, o.y, r, 0, Math.PI * 2); c.fillStyle = C.node; c.fill();
+        c.setLineDash([4 * s, 3 * s]); c.lineWidth = 3 * s; c.strokeStyle = C[o.color]; c.stroke(); c.setLineDash([]);
+        c.strokeStyle = C.ink; c.lineWidth = 2.4 * s;
+        c.beginPath(); c.moveTo(o.x - r * 0.45, o.y); c.lineTo(o.x + r * 0.45, o.y); c.moveTo(o.x, o.y - r * 0.45); c.lineTo(o.x, o.y + r * 0.45); c.stroke();
+      }
+      if (on) { c.beginPath(); c.arc(o.x, o.y, r + 3.5 * s, 0, Math.PI * 2); c.strokeStyle = C.ink; c.lineWidth = 2.2 * s; c.stroke(); }
+    }
+    const label = drag.sel ? drag.sel.label.toUpperCase() : 'GLISSEZ VERS UN CIRCUIT';
+    c.font = `600 ${10 * s}px ${getFont('data')}`; c.textAlign = 'center'; c.textBaseline = 'bottom';
+    const tw = c.measureText(label).width + 12 * s, ty = n.y - drag.R - 24 * s;
+    c.fillStyle = C.ink; c.fillRect(n.x - tw / 2, ty - 15 * s, tw, 17 * s);
+    c.fillStyle = C.floor; c.fillText(label, n.x, ty);
+  }
+
   function drawDragPreview(c) {
-    if (!drag) return;
+    if (!drag || drag.mode === 'choose' || drag.mode === 'place') return;
     const { nodes, loop, except } = dragNodes(drag);
     const over = nodes.length >= 2 && bridgesUsed(except) + bridgesFor(nodes, loop) > G.bridges;
     const slotColor = over ? C.danger : C[drag.color] || C.ink;
@@ -1769,6 +1835,8 @@
     const p = toWorld(sx, sy);
     canvas.setPointerCapture(ev.pointerId);
 
+    // déménagement, 2e étape : la pièce suit le doigt et se pose au relâchement
+    if (G.apply === 'move' && G.moveNode) { G.hoverPt = p; drag = { mode: 'place', sx, sy }; return; }
     if (G.apply) { applyToken(p); return; }
 
     const n0 = nodeAt(p, 0);
@@ -1796,7 +1864,13 @@
         }
       }
       const slot = pickSlot();
-      drag = { mode: 'new', list: [n.id], slot, kind: slot ? slot.kind : 'std', color: slot ? slot.color : 'muted', loop: false, pt: p, sx, sy, moved: false, start: n };
+      const d = { mode: 'new', list: [n.id], slot, kind: slot ? slot.kind : 'std', color: slot ? slot.color : 'muted', loop: false, pt: p, sx, sy, moved: false, start: n };
+      drag = d;
+      // appui long : si des circuits se terminent ici, un sélecteur propose lequel prolonger
+      if (lineEndsAt(n).length) {
+        d.downAt = performance.now();
+        d.holdTimer = setTimeout(() => { if (drag === d && !d.moved) openChooser(d); }, HOLD_MS);
+      }
       return;
     }
     const hit = lineAt(p);
@@ -1805,11 +1879,51 @@
     }
   });
 
+  // ---------- Sélecteur de circuit (appui long sur un service) ----------
+  const HOLD_MS = 380;
+  function lineEndsAt(n) {
+    return G.lines.filter(l => !l.lift && !l.loop && l.z === n.z && (l.nodes[0] === n.id || l.nodes[l.nodes.length - 1] === n.id));
+  }
+  function openChooser(d) {
+    const n = d.start;
+    const opts = lineEndsAt(n).map(l => ({ line: l, kind: l.kind, color: l.color, label: `Prolonger · ${KIND_LABEL[l.kind].toLowerCase()}` }));
+    const free = pickSlot();
+    if (free) opts.push({ slot: free, kind: free.kind, color: free.color, label: `Nouveau ${KIND_LABEL[free.kind].toLowerCase()}` });
+    const R = 54 / cam.s, r = 14 / cam.s;
+    opts.forEach((o, i) => {
+      const a = -Math.PI / 2 + i * (Math.PI * 2 / opts.length);
+      o.x = n.x + Math.cos(a) * R; o.y = n.y + Math.sin(a) * R; o.r = r;
+    });
+    d.mode = 'choose'; d.opts = opts; d.R = R; d.sel = null;
+    if (navigator.vibrate) { try { navigator.vibrate(12); } catch (e) { /* vibration indisponible */ } }
+  }
+  // Le doigt quitte le sélecteur en passant par une pastille : on enchaîne sur le tracé avec ce circuit.
+  function chooseMove(d, p, sx, sy) {
+    const hov = d.opts.find(o => dist(o, p) < o.r * 1.6);
+    if (hov) d.sel = hov;
+    if (!d.sel || dist(p, d.start) < d.R + d.sel.r * 1.4) return;
+    const n = d.start, o = d.sel;
+    if (o.line) {
+      const l = o.line, list = l.nodes.slice();
+      const reversed = l.nodes[0] === n.id;
+      if (reversed) list.reverse();
+      drag = { mode: 'extend', line: l, list, orig: list.slice(), reversed, kind: l.kind, color: l.color, loop: false, pt: p, sx, sy, moved: true };
+      G.selSlot = l.slot;
+    } else {
+      G.selSlot = o.slot.i;
+      drag = { mode: 'new', list: [n.id], slot: o.slot, kind: o.slot.kind, color: o.slot.color, loop: false, pt: p, sx, sy, moved: true, start: n };
+    }
+    G.uiVersion++;
+  }
+
   canvas.addEventListener('pointermove', ev => {
+    if (G && G.apply === 'move') G.hoverPt = toWorld(evtPoint(ev).sx, evtPoint(ev).sy);
     if (!drag) return;
     const { sx, sy } = evtPoint(ev);
     const p = toWorld(sx, sy);
     drag.pt = p;
+    if (drag.mode === 'choose') { chooseMove(drag, p, sx, sy); return; }
+    if (drag.mode === 'place') return;
     if (Math.hypot(sx - drag.sx, sy - drag.sy) > 6) drag.moved = true;
     const h = nodeAt(p, 0);
     drag.hover = h;
@@ -1857,6 +1971,13 @@
   const endDrag = ev => {
     if (!drag) return;
     const d = drag; drag = null;
+    if (d.holdTimer) clearTimeout(d.holdTimer);
+    if (d.mode === 'place') { if (G.hoverPt) applyMove(G.hoverPt); return; }
+    if (d.mode === 'choose') {
+      // relâché sur une pastille : elle devient le circuit sélectionné dans la palette
+      if (d.sel) { G.selSlot = d.sel.line ? d.sel.line.slot : d.sel.slot.i; G.uiVersion++; }
+      return;
+    }
     if (d.blocked && d.list && d.list.length < 2) {
       toast(`Passage impossible : un obstacle infranchissable sépare ces services. Passez par un autre service.`, true);
     }
@@ -1888,10 +2009,11 @@
     void ev;
   };
   canvas.addEventListener('pointerup', endDrag);
-  canvas.addEventListener('pointercancel', () => { drag = null; });
+  canvas.addEventListener('pointercancel', () => { if (drag && drag.holdTimer) clearTimeout(drag.holdTimer); drag = null; });
 
   function applyToken(p) {
     const tok = G.apply;
+    if (tok === 'move') { applyMove(p); return; }
     if (tok === 'cart') {
       const hit = lineAt(p);
       if (hit) applyCart(hit.line);
@@ -1914,6 +2036,82 @@
     }
     G.inv[tok]--; G.apply = null; G.uiVersion++;
   }
+  // ---------- Déménagement d'un service ----------
+  // 1er toucher : le service à déplacer ; 2e toucher : son nouvel emplacement, au niveau affiché.
+  function applyMove(p) {
+    if (!G.moveNode) {
+      const n = nodeAt(p);
+      if (!n) { cancelMove(); return; }
+      if (n.type === 'ASC') { toast('Un palier d’ascenseur ne se déplace pas : il est fixé à sa cage.', true); return; }
+      G.moveNode = n;
+      G.uiVersion++;
+      return;
+    }
+    const n = G.moveNode;
+    const tap = nodeAt(p, 0);
+    if (tap === n) { G.moveNode = null; G.uiVersion++; return; } // retoucher le service le désélectionne
+    const res = canPlace(n, p.x, p.y, G.view);
+    if (!res.ok) { toast(`Impossible d’installer ${TYPES[n.type].name.toLowerCase()} ici : ${res.why}.`, true); return; }
+    const from = n.z;
+    moveNode(n, p.x, p.y, G.view);
+    G.moves--;
+    G.moveNode = null; G.apply = null; G.uiVersion++;
+    toast(`<b>${TYPES[n.type].name}</b> a déménagé${from !== n.z ? ' ' + atFloor(n.z) : ''}, avec ses patients.` +
+      (from !== n.z ? ' Ses circuits sont restés à l’ancien étage : reliez-le de nouveau.' : ''));
+  }
+  function cancelMove() { G.apply = null; G.moveNode = null; G.hoverPt = null; G.uiVersion++; }
+
+  function canPlace(n, x, y, z) {
+    const R = G.region;
+    if (x < R.x + 50 || x > R.x + R.w - 50 || y < R.y + 44 || y > R.y + R.h - 54) return { ok: false, why: 'c’est hors du bâtiment' };
+    if (G.obstacles.some(o => obstOn(o, z) && rectHit(x - 44, y - 40, x + 44, y + 50, o, 10))) return { ok: false, why: 'un obstacle occupe la place' };
+    if (G.obstacles.some(o => o.kind === 'core' && rectHit(x - 44, y - 40, x + 44, y + 50, palierRoom(o), 6))) return { ok: false, why: 'la place est réservée à un palier d’ascenseur' };
+    if (G.nodes.some(m => m !== n && m.z === z && Math.hypot(m.x - x, m.y - y) < MIN_SPACING * 0.8)) return { ok: false, why: 'c’est trop près d’un autre service' };
+    if (z !== n.z) return { ok: true };
+    // même étage : les circuits suivent la pièce, à condition de rester praticables
+    const ox = n.x, oy = n.y;
+    n.x = x; n.y = y; G.routeCache.clear();
+    let why = null;
+    for (const l of G.lines) {
+      if (l.lift || !l.nodes.includes(n.id)) continue;
+      for (const [a, b] of linePairs(l)) if ((a === n.id || b === n.id) && routeInfo(nodeById(a), nodeById(b)).blocked) why = 'un de ses circuits traverserait un obstacle';
+    }
+    if (!why && bridgesUsed(null) > G.bridges) why = 'ses circuits demanderaient plus de passerelles';
+    n.x = ox; n.y = oy; G.routeCache.clear();
+    return why ? { ok: false, why } : { ok: true };
+  }
+
+  // Retirer un service d'un circuit. Ses voisins se rejoignent ; si un obstacle les sépare,
+  // le circuit est coupé à cet endroit (on garde la plus longue partie, ou on ouvre la boucle).
+  function removeNodeFromLine(l, id) {
+    const i = l.nodes.indexOf(id);
+    if (i < 0) return;
+    let nodes = l.nodes.filter(x => x !== id), loop = l.loop && nodes.length > 2;
+    const interior = l.loop || (i > 0 && i < l.nodes.length - 1);
+    if (interior && nodes.length >= 2) {
+      const a = nodes[(i - 1 + nodes.length) % nodes.length], b = nodes[i % nodes.length];
+      const r = routeInfo(nodeById(a), nodeById(b));
+      if (r.blocked || (r.patios.length && bridgesUsed(l) + bridgesFor(nodes, loop) > G.bridges)) {
+        if (l.loop) { const k = nodes.indexOf(b); nodes = nodes.slice(k).concat(nodes.slice(0, k)); loop = false; }
+        else { const left = nodes.slice(0, i), right = nodes.slice(i); nodes = left.length >= right.length ? left : right; }
+      }
+    }
+    setLineNodes(l, nodes, loop);
+  }
+
+  function moveNode(n, x, y, z) {
+    if (z !== n.z) {
+      for (const l of G.lines.slice()) if (!l.lift && l.nodes.includes(n.id)) removeNodeFromLine(l, n.id);
+    }
+    n.x = x; n.y = y; n.z = z;
+    n.code = roomCode(x, y, z);
+    n.born = G.t;
+    G.routeCache.clear();
+    invalidateNet();
+    for (const v of G.vehicles) if (!v.line.lift && v.line.nodes.includes(n.id)) remapVehicle(v);
+    floater(x, y - NODE_R - 16, 'Déménagé', 'accent', z);
+  }
+
   function applyCart(l) {
     l.cart += 2;
     G.inv.cart--; G.apply = null; G.uiVersion++;
@@ -1925,7 +2123,7 @@
   // ================================================================
   const el = {
     score: $('#score'), clock: $('#clock'), day: $('#dayName'), strikes: $('#strikes'), palette: $('#palette'),
-    pool: $('#poolN'), bridges: $('#bridgesN'), floorbar: $('#floorbar'), inv: $('#inv'), hint: $('#hint'), toasts: $('#toasts'),
+    pool: $('#poolN'), bridges: $('#bridgesN'), floorbar: $('#floorbar'), moves: $('#movesN'), moveBtn: $('#moveBtn'), inv: $('#inv'), hint: $('#hint'), toasts: $('#toasts'),
     lp: $('#linePanel'), nt: $('#nodeTip'), tension: $('#tension'), tensionLabel: $('#tensionLabel'),
   };
 
@@ -1977,7 +2175,10 @@
     lastUi = G.uiVersion;
     renderPalette();
     el.pool.textContent = G.pool;
-    el.bridges.textContent = `${G.bridges - bridgesUsed(null)}/${G.bridges}`;
+    el.bridges.textContent = `${Math.max(0, G.bridges - bridgesUsed(null))}/${G.bridges}`;
+    el.moves.textContent = G.moves;
+    el.moveBtn.disabled = G.moves <= 0;
+    el.moveBtn.classList.toggle('active', G.apply === 'move');
     renderInventory();
     if (!el.lp.hidden && lpLine) fillLinePanel(lpLine);
   }
@@ -2076,7 +2277,13 @@
   let hintKey = '';
   function updateHint() {
     let key = '', html = '';
-    if (G.apply) { key = 'apply' + G.apply; html = `${TOKEN_HINT[G.apply]}<button id="cancelApply">Annuler</button>`; }
+    if (G.apply === 'move') {
+      key = 'move' + (G.moveNode ? G.moveNode.id : '');
+      html = (G.moveNode
+        ? `Touchez le nouvel emplacement de ${TYPES[G.moveNode.type].name.toLowerCase()}${G.floors.length > 1 ? ', à cet étage ou à un autre (colonne Niveaux)' : ''}.`
+        : 'Touchez le service à déménager. Ses patients le suivent.') + '<button id="cancelApply">Annuler</button>';
+    }
+    else if (G.apply) { key = 'apply' + G.apply; html = `${TOKEN_HINT[G.apply]}<button id="cancelApply">Annuler</button>`; }
     else if (!G.lines.length) { key = 'first'; html = 'Glissez d’un service à un autre pour tracer votre premier circuit de brancardage.'; }
     else if (G.floors.length > 1 && G.floors.some(f => G.nodes.filter(n => n.z === f).length > 1 && !G.lines.some(l => !l.lift && l.z === f))) {
       const f = G.floors.find(f => G.nodes.filter(n => n.z === f).length > 1 && !G.lines.some(l => !l.lift && l.z === f));
@@ -2093,7 +2300,7 @@
     hintKey = key;
     el.hint.innerHTML = html;
     const b = $('#cancelApply');
-    if (b) b.addEventListener('click', () => { G.apply = null; G.uiVersion++; });
+    if (b) b.addEventListener('click', () => cancelMove());
   }
 
   // ---------- Panneau de circuit ----------
@@ -2125,6 +2332,11 @@
     $('#lpCap').textContent = `${VEH_CAP + l.cart} places par brancardier · ${G.pool} brancardier(s) en réserve.`;
   }
   $('#lpClose').addEventListener('click', () => { el.lp.hidden = true; });
+  $('#moveBtn').addEventListener('click', () => {
+    if (!G || G.moves <= 0) return;
+    if (G.apply === 'move') cancelMove();
+    else { G.apply = 'move'; G.moveNode = null; closePanels(); G.uiVersion++; }
+  });
   $('#lpPlus').addEventListener('click', () => {
     if (!lpLine) return;
     if (G.pool <= 0) { toast('Aucun brancardier en réserve. Retirez-en un d’un autre circuit, ou attendez la fin de semaine.', true); return; }
@@ -2211,7 +2423,8 @@
         if (k === 'lift') {
           const sh = activateShaft(nextCore());
           if (sh) toast(`<b>Ascenseur ${sh.letter}</b> en service à tous les niveaux. Reliez ses paliers à vos circuits.`);
-        } else if (k === 'bridge') { G.bridges += 2; toast('Deux passerelles de plus : vos circuits peuvent franchir davantage de patios.'); }
+        } else if (k === 'move') { G.moves += 2; toast('Deux déménagements de plus : touchez le compteur en bas de l’écran pour déplacer un service.'); }
+        else if (k === 'bridge') { G.bridges += 2; toast('Deux passerelles de plus : vos circuits peuvent franchir davantage de patios.'); }
         else if (k === 'line_sep') unlockSlot('sep');
         else if (k === 'line_rad') unlockSlot('rad');
         else { G.inv[k]++; toast(`${TOKEN_LABEL[k]} en réserve : touchez-la en bas de l’écran pour l’utiliser.`); }
@@ -2273,7 +2486,7 @@
     else if (ev.key === '2') setSpeed(2);
     else if (G && (ev.key === 'ArrowUp' || ev.key === 'PageUp')) { ev.preventDefault(); stepView(1); }
     else if (G && (ev.key === 'ArrowDown' || ev.key === 'PageDown')) { ev.preventDefault(); stepView(-1); }
-    else if (ev.key === 'Escape') { if (G) { G.apply = null; G.selSlot = null; G.uiVersion++; } drag = null; closePanels(); }
+    else if (ev.key === 'Escape') { if (G) { cancelMove(); G.selSlot = null; } drag = null; closePanels(); }
   });
 
   // ---------- Légende ----------
@@ -2390,7 +2603,7 @@
   requestAnimationFrame(frame);
 
   // Accès de débogage depuis la console.
-  window.miniHopital = { get state() { return G; }, step, spawnPatient, addVehicle, routeInfo: (a, b) => routeInfo(a, b), createLine: (ids, kind = 'std') => {
+  window.miniHopital = { get state() { return G; }, step, spawnPatient, addVehicle, routeInfo: (a, b) => routeInfo(a, b), canPlace: (n, x, y, z) => canPlace(n, x, y, z), createLine: (ids, kind = 'std') => {
     const slot = G.slots.find(s => s.kind === kind && s.unlocked && !s.line);
     return slot ? createLine(slot, ids, false) : null;
   } };
